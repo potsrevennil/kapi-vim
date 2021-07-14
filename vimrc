@@ -1,73 +1,77 @@
-call plug#begin()
+""""""""""""""""""""""""""""""""""""""""""
+"                                        "
+"                                        "
+"                                        "
+"                                        "
+""""""""""""""""""""""""""""""""""""""""""
+" 1. General {{{1
+""""""""""""""""""""""""""""""""""""""""""
+set shell=$SHELL
 
+filetype plugin on
+""""""""""""""""""""""""""""""""""""""""""
+" 2. Plugins {{{1
+""""""""""""""""""""""""""""""""""""""""""
+call plug#begin()
 Plug 'sheerun/vim-polyglot'
 Plug 'preservim/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ayu-theme/ayu-vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-
-"language plugins
+" language plugins
 Plug 'rust-lang/rust.vim'
 Plug 'derekelkins/agda-vim'
 Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
 Plug 'dense-analysis/ale'
-
-
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
+""""""""""""""""""""""""""""""""""""""""""
+" 3. Fold {{{1
+""""""""""""""""""""""""""""""""""""""""""
+set foldmethod=marker
+set foldcolumn=1
 
-filetype plugin on
+augroup match_folds
+    autocmd!
+    " VimEnter handles at start up, WinNew for each window created AFTER startup.
+    " Regex matches { { { with an empty group in the middle so that vim does
+    " not create a fold in this code, then either a 1 or 2 then a space. Then
+    " zs is the start of the match which is the rest of the line then ze is
+    " the end of the match. Refer to :help pattern-overview
+    autocmd VimEnter,WinNew * let w:_foldlevel1_id = matchadd('_FoldLevel1', '{{\(\){1\ \zs.\+\ze', -1)
+    autocmd VimEnter,WinNew * let w:_foldlevel2_id = matchadd('_FoldLevel2', '{{\(\){2\ \zs.\+\ze', -1)
+augroup END
 
-set shell=bash\ -i
-
+hi Folded               guifg=#FF9999 guibg=#005050 gui=bold,italic
+hi FoldColumn           guifg=#FF9999 guibg=#005050 gui=bold
+hi _FoldLevel1          guifg=#005050 guibg=#FF9999 gui=bold,italic
+hi _FoldLevel2          guifg=#003030 guibg=#CC8080 gui=bold,italic
+""""""""""""""""""""""""""""""""""""""""""
+" 4. Tab, Indent {{{1
+""""""""""""""""""""""""""""""""""""""""""
 set tabstop=4
 set expandtab
 set shiftwidth=4
 set shiftround
 set autoindent
-
+""""""""""""""""""""""""""""""""""""""""""
+" 5. UI {{{1
+""""""""""""""""""""""""""""""""""""""""""
+:set number relativenumber
+""""""""""""""""""""""""""""""""""""""""""
+" 6. Color Theme {{{1
+""""""""""""""""""""""""""""""""""""""""""
 syntax on
 set termguicolors
 let ayucolor="dark"
 colorscheme ayu
-
+""""""""""""""""""""""""""""""""""""""""""
+" 7. ALE Global Setting {{{1
+""""""""""""""""""""""""""""""""""""""""""
 let g:ale_fixers = {
 \    '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
 let g:ale_fix_on_save = 1
 
-
-:set number relativenumber
-" ## added by OPAM user-setup for vim / base ## 93ee63e278bdfc07d1139a748ed3fff2 ## you can edit, but keep this line
-let s:opam_share_dir = system("opam config var share")
-let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
-
-let s:opam_configuration = {}
-
-function! OpamConfOcpIndent()
-  execute "set rtp^=" . s:opam_share_dir . "/ocp-indent/vim"
-endfunction
-let s:opam_configuration['ocp-indent'] = function('OpamConfOcpIndent')
-
-function! OpamConfOcpIndex()
-  execute "set rtp+=" . s:opam_share_dir . "/ocp-index/vim"
-endfunction
-let s:opam_configuration['ocp-index'] = function('OpamConfOcpIndex')
-
-function! OpamConfMerlin()
-  let l:dir = s:opam_share_dir . "/merlin/vim"
-  execute "set rtp+=" . l:dir
-endfunction
-let s:opam_configuration['merlin'] = function('OpamConfMerlin')
-
-let s:opam_packages = ["ocp-indent", "ocp-index", "merlin"]
-let s:opam_check_cmdline = ["opam list --installed --short --safe --color=never"] + s:opam_packages
-let s:opam_available_tools = split(system(join(s:opam_check_cmdline)))
-for tool in s:opam_packages
-  " Respect package order (merlin should be after ocp-index)
-  if count(s:opam_available_tools, tool) > 0
-    call s:opam_configuration[tool]()
-  endif
-endfor
-" ## end of OPAM user-setup addition for vim / base ## keep this line
+""""""""""""""""""""""""""""""""""""""""""
+" }}}1
