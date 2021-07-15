@@ -8,10 +8,54 @@
 """"""""""""""""""""""""""""""""""""""""""
 set shell=$SHELL
 
+" compatibility for vim and neovim
+if !has('nvim')
+  set nocompatible
+  " set term inside tmux for xterm-key on (nvim doesn't need this)
+  if &term =~ '^screen\|^tmux' && exists('$TMUX')
+    if &term =~ '256color'
+      set term=xterm-256color
+    else
+      set term=xterm
+    endif
+  endif
+  if &term =~ '256color'
+    set t_ut=
+  endif
+
+  "" NOTE: Not woring
+  "if exists('$TMUX')
+    "set t_8f=[38;2;%lu;%lu;%lum]
+    "set t_8b=[48;2;%lu;%lu;%lum]
+  "endif
+endif
+
+" True color support
+if has('termguicolors')
+  set termguicolors
+endif
+
+" Neovim settings
+let g:python3_host_prog = '/usr/bin/python3'
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
 filetype plugin on
 """"""""""""""""""""""""""""""""""""""""""
 " 2. Plugins {{{1
 """"""""""""""""""""""""""""""""""""""""""
+" Install vim-plug if not found
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+    silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+endif
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
 call plug#begin()
 Plug 'sheerun/vim-polyglot'
 Plug 'preservim/nerdcommenter'
