@@ -23,7 +23,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'derekelkins/agda-vim'
 Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
 Plug 'dense-analysis/ale'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim'
 call plug#end()
 """"""""""""""""""""""""""""""""""""""""""
 " 3. Fold {{{1
@@ -72,6 +72,7 @@ let g:ale_fixers = {
 \    '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
 let g:ale_fix_on_save = 1
+let g:ale_disable_lsp=1
 
 """"""""""""""""""""""""""""""""""""""""""
 " }}}1
