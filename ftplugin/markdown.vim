@@ -1,1 +1,3 @@
-set shell=bash\ -i
+if $SHELL == "/bin/zsh"
+    set shell=bash\ -i
+endif
