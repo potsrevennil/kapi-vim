@@ -66,12 +66,13 @@ call plug#begin()
 Plug 'sheerun/vim-polyglot'
 Plug 'preservim/nerdcommenter'
 Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ayu-theme/ayu-vim'
 " language plugins
 Plug 'rust-lang/rust.vim'
-Plug 'derekelkins/agda-vim'
 Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
 "Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim'
@@ -316,6 +317,7 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 " Open the existing NERDTree on each new tab.
 autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
+let g:NERDTreeLimitedSyntax = 1
 """"""""""""""""""""""""""""""""""""""""""
 " 9. ALE Global Setting {{{1
 """"""""""""""""""""""""""""""""""""""""""
