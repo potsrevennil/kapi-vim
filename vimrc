@@ -71,6 +71,7 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ayu-theme/ayu-vim'
+Plug 'junegunn/fzf.vim'
 " language plugins
 Plug 'rust-lang/rust.vim'
 Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
@@ -126,7 +127,7 @@ colorscheme ayu
 """"""""""""""""""""""""""""""""""""""""""
 " 8. Coc Global Setting {{{1
 """"""""""""""""""""""""""""""""""""""""""
-let g:coc_global_extensions = ['coc-git', 'coc-eslint', 'coc-json']
+let g:coc_global_extensions = ['coc-git', 'coc-eslint', 'coc-json', 'coc-tsserver', 'coc-go', 'coc-rust-analyzer']
 
 " Some servers have issues with backup files, see #649.
 set nobackup
@@ -292,7 +293,7 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 " 9. NERDTree {{{1
 """"""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
+"nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
 

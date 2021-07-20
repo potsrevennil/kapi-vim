@@ -1,10 +1,9 @@
 # TODO
 
-- vim color scheme issue in tmux (need to fix the NOTE)
-- airline configuration
+- fzf configuration
+- auto install, setup script
 - nerdtree plugin install
     - try dirvish
     - try vim-vinegar
-- coc configuration
-    - coc multi-cursor support
-- auto install, setup script
+- airline configuration
+- vim color scheme issue in tmux (need to fix the NOTE)
