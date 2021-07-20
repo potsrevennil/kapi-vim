@@ -298,12 +298,12 @@ nnoremap <C-f> :NERDTreeFind<CR>
 
 " Start NERDTree and put the cursor back in the other window.
 " Start NERDTree when Vim starts with a directory argument.
-autocmd StdinReadPre * let s:std_in=1
+"autocmd StdinReadPre * let s:std_in=1
 
-autocmd VimEnter * 
-    \ if argc() == 1 && isdirectory(argv()[0]) |
-        \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | 
-    \ else | NERDTree | wincmd p | endif
+"autocmd VimEnter * 
+    "\ if argc() == 1 && isdirectory(argv()[0]) |
+        "\ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | 
+    "\ else | NERDTree | wincmd p | endif
 
 " Exit Vim if NERDTree is the only window remaining in the only tab.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
