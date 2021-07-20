@@ -315,11 +315,11 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+"autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
 let g:NERDTreeLimitedSyntax = 1
 """"""""""""""""""""""""""""""""""""""""""
-" 9. ALE Global Setting {{{1
+" 10. ALE Global Setting {{{1
 """"""""""""""""""""""""""""""""""""""""""
 "let g:ale_fixers={
 "\    '*': ['remove_trailing_lines', 'trim_whitespace'],
