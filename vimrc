@@ -71,10 +71,12 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ayu-theme/ayu-vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 " language plugins
 Plug 'rust-lang/rust.vim'
-Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
+Plug 'skanehira/preview-markdown.vim'
+"Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
 "Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim'
 call plug#end()
@@ -133,9 +135,6 @@ let g:coc_global_extensions = ['coc-git', 'coc-eslint', 'coc-json', 'coc-tsserve
 set nobackup
 set nowritebackup
 
-" Give more space for displaying messages.
-set cmdheight=2
-
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
 set updatetime=300
@@ -151,6 +150,9 @@ if has("nvim-0.5.0") || has("patch-8.1.1564")
 else
   set signcolumn=yes
 endif
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Auto Completion {{{2
 " Use tab for trigger completion with characters ahead and navigate.
@@ -203,9 +205,6 @@ function! s:show_documentation()
   endif
 endfunction
 " }}}2
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
@@ -292,7 +291,7 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 """"""""""""""""""""""""""""""""""""""""""
 " 9. NERDTree {{{1
 """"""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>n :NERDTreeFocus<CR>
+"nnoremap <leader>n :NERDTreeFocus<CR>
 "nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>

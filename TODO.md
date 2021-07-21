@@ -1,6 +1,7 @@
 # TODO
 
 - fzf configuration
+    - delta configuration
 - auto install, setup script
 - nerdtree plugin install
     - try dirvish
