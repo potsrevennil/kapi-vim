@@ -4,6 +4,7 @@
 
 - Plugin management via [vim-plug](https://github.com/junegunn/vim-plug)
 - Common config for Neovim's native LSP [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+- LSP install manager [nvim-lspinstall](https://github.com/kabouzeid/nvim-lspinstall)
 - Status line via [vim-airline](https://github.com/vim-airline/vim-airline)
 - Status line color scheme [vim-airline-themes](https://github.com/vim-airline/vim-airline-themes)
 - File browser with [fern](https://github.com/lambdalisue/fern.vim)
