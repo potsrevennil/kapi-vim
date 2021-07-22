@@ -85,6 +85,8 @@ local function setup_servers()
   -- ... and add manually installed servers
   --table.insert(servers, "clangd")
   table.insert(servers, "hls")
+  table.insert(servers, "gopls")
+  table.insert(servers, "leanls")
 
   for _, server in pairs(servers) do
     local config = make_config()

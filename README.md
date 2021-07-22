@@ -22,6 +22,9 @@
 
 ## Requirements
 
+### haskell language server
+- Follow the installation instruction [here](https://github.com/haskell/haskell-language-server#installatio)
+
 ### fzf
 - The Silver Searcher
     ```sh
@@ -49,6 +52,9 @@ brew tap homebrew/cask-fonts
 brew install --cask font-hack-nerd-font
 # should set the font of iterm2 afterwards
 ```
+
+## markdown preview
+Install markdown parser from [here](https://github.com/MichaelMure/mdr/releases)
 
 ## Customize
 
