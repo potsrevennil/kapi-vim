@@ -1,5 +1,6 @@
 # TODO
 
+- shift to neovim
 - fzf configuration
     - delta configuration
 - auto install, setup script
