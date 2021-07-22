@@ -1,4 +1,11 @@
-# Kapi(咖啡) vim
+# Kapi Vim
+
+## Introduction
+  Ka-pi means "咖啡", which is coffee, in my native language. Hoping that my configuration will be customized and gernal enough,
+  so that the installation won't take longer time than making a cup of coffee.
+  
+## Table of Contents
+
 
 ## Plugins
 
@@ -15,25 +22,35 @@
 
 ## Requirements
 
-- fzf
+### fzf
     - The Silver Searcher
-    > brew install the_silver_searcher
+        ```sh
+        brew install the_silver_searcher
+        ```
 
     - ripgrep
-    > brew install ripgrep
+        ```sh
+        brew install ripgrep
+        ```
 
     - bat
-    > brew install bat
+        ```sh
+        brew install bat
+        ```
 
     - delta
-    > brew install git-delta
+        ```sh 
+        brew install git-delta
+        ```
 
-- nerd font
-    > brew tap homebrew/cask-fonts
-    > brew install --cask font-hack-nerd-font
-    > # should set the font of iterm2 afterwards
+### nerd font
+    ```sh
+    brew tap homebrew/cask-fonts
+    brew install --cask font-hack-nerd-font
+    # should set the font of iterm2 afterwards
+    ```
 
 ## Customize
 
 - fern 
-    - for more customized configuration example for fern please refer to [fern tips]https://github.com/lambdalisue/fern.vim/wiki/Tips
+    - For more customized configuration example for fern please refer to [fern tips](https://github.com/lambdalisue/fern.vim/wiki/Tips)
