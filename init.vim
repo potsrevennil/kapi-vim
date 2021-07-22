@@ -16,6 +16,12 @@ endif
 " Neovim settings
 let g:python3_host_prog = '/usr/bin/python3'
 
+" vsplit the new buffer on the right side
+set splitright
+
+" split the new buffer below
+set splitbelow
+
 " TextEdit might fail if hidden is not set.
 "set hidden
 "set ma
@@ -76,6 +82,17 @@ let g:airline#extensions#tabline#enabled = 1
 """"""""""""""""""""""""""""""""""""""""""
 let ayucolor="dark"
 colorscheme ayu
+""""""""""""""""""""""""""""""""""""""""""
+" 6. Terminal Setting {{{1
+
+" split terminal vertically or horizontally
+nmap <C-v><C-t> :vs<bar>te<CR>
+nnoremap <C-s><C-t> :sp<bar>te<CR>
+
+
+" Leave the terminal mode
+tnoremap <Esc> <C-\><C-n>
+
 """"""""""""""""""""""""""""""""""""""""""
 " 6. Fern Related Setup {{{1
 let g:fern#renderer = "nerdfont"
