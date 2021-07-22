@@ -30,3 +30,8 @@
     > brew tap homebrew/cask-fonts
     > brew install --cask font-hack-nerd-font
     > # should set the font of iterm2 afterwards
+
+## Customize
+
+- fern 
+    - for more customized configuration example for fern please refer to [fern tips]https://github.com/lambdalisue/fern.vim/wiki/Tips
