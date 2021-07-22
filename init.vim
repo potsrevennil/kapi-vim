@@ -77,14 +77,12 @@ set number relativenumber
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled = 1
 
-"let g:airline#extensions#coc#enabled = 1
-""""""""""""""""""""""""""""""""""""""""""
-" 5. Color Theme {{{1
-""""""""""""""""""""""""""""""""""""""""""
 let ayucolor="dark"
 colorscheme ayu
+"let g:airline#extensions#coc#enabled = 1
 """"""""""""""""""""""""""""""""""""""""""
 " 6. Terminal Setting {{{1
+""""""""""""""""""""""""""""""""""""""""""
 
 " split terminal vertically or horizontally
 nmap <C-v><C-t> :vs<bar>te<CR>
@@ -95,7 +93,13 @@ nnoremap <C-s><C-t> :sp<bar>te<CR>
 tnoremap <Esc> <C-\><C-n>
 
 """"""""""""""""""""""""""""""""""""""""""
-" 6. Fern Related Setup {{{1
+" 7. LSP {{{1
+""""""""""""""""""""""""""""""""""""""""""
+lua require("lsp")
+
+""""""""""""""""""""""""""""""""""""""""""
+" 8. Fern Related Setup {{{1
+""""""""""""""""""""""""""""""""""""""""""
 let g:fern#renderer = "nerdfont"
 
 nnoremap <C-t> :Fern . -drawer -toggle<CR>
