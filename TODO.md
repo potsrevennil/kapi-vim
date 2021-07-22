@@ -1,5 +1,7 @@
 # TODO
 
+- transfer to neovim
+    - lua script for configuring fern
 - fzf configuration
 - auto install, setup script
 - nerdtree plugin install
