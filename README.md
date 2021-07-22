@@ -23,32 +23,32 @@
 ## Requirements
 
 ### fzf
-    - The Silver Searcher
-        ```sh
-        brew install the_silver_searcher
-        ```
+- The Silver Searcher
+    ```sh
+    brew install the_silver_searcher
+    ```
 
-    - ripgrep
-        ```sh
-        brew install ripgrep
-        ```
+- ripgrep
+    ```sh
+    brew install ripgrep
+    ```
 
-    - bat
-        ```sh
-        brew install bat
-        ```
+- bat
+    ```sh
+    brew install bat
+    ```
 
-    - delta
-        ```sh 
-        brew install git-delta
-        ```
+- delta
+    ```sh 
+    brew install git-delta
+    ```
 
 ### nerd font
-    ```sh
-    brew tap homebrew/cask-fonts
-    brew install --cask font-hack-nerd-font
-    # should set the font of iterm2 afterwards
-    ```
+```sh
+brew tap homebrew/cask-fonts
+brew install --cask font-hack-nerd-font
+# should set the font of iterm2 afterwards
+```
 
 ## Customize
 
