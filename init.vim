@@ -42,6 +42,9 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 call plug#begin()
 Plug 'neovim/nvim-lspconfig'
 Plug 'kabouzeid/nvim-lspinstall'
+Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/vim-vsnip'
+
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -95,7 +98,15 @@ tnoremap <Esc> <C-\><C-n>
 """"""""""""""""""""""""""""""""""""""""""
 " 7. LSP {{{1
 """"""""""""""""""""""""""""""""""""""""""
-lua require("lsp")
+lua require("lsp-config")
+lua require("nvim-compe")
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
 
 """"""""""""""""""""""""""""""""""""""""""
 " 8. Fern Related Setup {{{1

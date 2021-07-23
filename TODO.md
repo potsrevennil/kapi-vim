@@ -1,6 +1,7 @@
 # TODO
 
 - [nvim-compe](https://github.com/hrsh7th/nvim-compe) install and config
+    - [rust magic completion](https://rust-analyzer.github.io/manual.html#magic-completions)
 - Installed LSP status to confirm or config
     - [rust](https://github.com/simrat39/rust-tools.nvim/)
     - bash
