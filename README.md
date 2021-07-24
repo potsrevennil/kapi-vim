@@ -10,8 +10,12 @@
 ## Plugins
 
 - Plugin management via [vim-plug](https://github.com/junegunn/vim-plug)
+- Auto Completion for nvim via [nvim-compe](https://github.com/hrsh7th/nvim-compe)
 - Common config for Neovim's native LSP via [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 - LSP install manager via [nvim-lspinstall](https://github.com/kabouzeid/nvim-lspinstall)
+- Language specific plugins
+    - [rust-lang](https://github.com/rust-lang/rust.vim) and [rust-tools](https://github.com/simrat39/rust-tools.nvim)
+    - [lean](https://github.com/Julian/lean.nvim)
 - Status line via [vim-airline](https://github.com/vim-airline/vim-airline)
 - Status line color scheme using [vim-airline-themes](https://github.com/vim-airline/vim-airline-themes)
 - File browser via [fern](https://github.com/lambdalisue/fern.vim)

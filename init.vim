@@ -45,9 +45,14 @@ Plug 'kabouzeid/nvim-lspinstall'
 Plug 'hrsh7th/nvim-compe'
 Plug 'hrsh7th/vim-vsnip'
 
+" Language specific
+Plug 'rust-lang/rust.vim'
+Plug 'simrat39/rust-tools.nvim'
 
+" ui
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'ayu-theme/ayu-vim'
 
 " Fern related plugins
 Plug 'lambdalisue/fern.vim'
@@ -57,7 +62,6 @@ Plug 'yuki-yano/fern-preview.vim'
 
 "Plug 'sheerun/vim-polyglot'
 Plug 'preservim/nerdcommenter'
-Plug 'ayu-theme/ayu-vim'
 Plug 'junegunn/fzf.vim'
 call plug#end()
 """"""""""""""""""""""""""""""""""""""""""
@@ -106,8 +110,6 @@ inoremap <silent><expr> <CR>      compe#confirm('<CR>')
 inoremap <silent><expr> <C-e>     compe#close('<C-e>')
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
-
-
 """"""""""""""""""""""""""""""""""""""""""
 " 8. Fern Related Setup {{{1
 """"""""""""""""""""""""""""""""""""""""""
