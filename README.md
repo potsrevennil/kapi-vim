@@ -14,6 +14,7 @@
 - Common config for Neovim's native LSP via [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 - plenary [plenary]('https://github.com/nvim-lua/plenary.nvim')
 - LSP install manager via [nvim-lspinstall](https://github.com/kabouzeid/nvim-lspinstall)
+- Highlighting via [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
 - Asynchronous Lint Engine [ale](https://github.com/dense-analysis/ale)
 - Language specific plugins
     - [rust-lang](https://github.com/rust-lang/rust.vim) and [rust-tools](https://github.com/simrat39/rust-tools.nvim)
