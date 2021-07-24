@@ -33,4 +33,5 @@ command! RustParentModule
 command! RustJoinLines
     \ lua require('rust-tools.join_lines').join_lines()
 
-
+let b:ale_fixers = ['analyzer', 'remove_trailing_lines', 'trim_whitespace']
+let b:ale_linters = ['analyzer']

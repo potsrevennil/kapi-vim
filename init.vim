@@ -48,6 +48,9 @@ Plug 'hrsh7th/vim-vsnip'
 " Language specific
 Plug 'rust-lang/rust.vim'
 Plug 'simrat39/rust-tools.nvim'
+Plug 'Julian/lean.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'dense-analysis/ale'
 
 " ui
 Plug 'vim-airline/vim-airline'

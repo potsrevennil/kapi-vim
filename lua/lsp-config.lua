@@ -64,6 +64,29 @@ local lua_settings = {
   }
 }
 
+local lean_config = {
+    abbreviations = {
+        builtin = true,
+        compe = true,
+        snippets = false,
+        extra = {
+            wknight = '♘',
+        },
+        leader = '\\',
+    },
+    mappings = true,
+    infoview = {
+        enable = true,
+        autoopen = true,
+        width = 50,
+    },
+    progress_bars = {
+        enable = true,
+        priority = 10,
+    },
+}
+
+
 -- config that activates keymaps and enables snippet support
 local function make_config()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -86,7 +109,7 @@ local function setup_servers()
   --table.insert(servers, "clangd")
   table.insert(servers, "hls")
   table.insert(servers, "gopls")
-  table.insert(servers, "leanls")
+  table.insert(servers, "lean")
 
   for _, server in pairs(servers) do
     local config = make_config()
@@ -102,11 +125,16 @@ local function setup_servers()
             }
         }
     end
+    if server == "lean" then
+        --config = lean_config
+        require('lean').setup(lean_config)
+    else
+        require'lspconfig'[server].setup(config)
+    end
     --if server == "clangd" then
       --config.filetypes = {"c", "cpp"}; -- we don't want objective-c and objective-cpp!
     --end
 
-    require'lspconfig'[server].setup(config)
   end
 end
 
