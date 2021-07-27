@@ -52,6 +52,8 @@ Plug 'simrat39/rust-tools.nvim'
 Plug 'Julian/lean.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'dense-analysis/ale'
+Plug 'instant-markdown/vim-instant-markdown'
+
 
 " ui
 Plug 'vim-airline/vim-airline'
@@ -66,7 +68,8 @@ Plug 'yuki-yano/fern-preview.vim'
 
 "Plug 'sheerun/vim-polyglot'
 Plug 'preservim/nerdcommenter'
-Plug 'junegunn/fzf.vim'
+Plug 'jbyuki/venn.nvim'
+"Plug 'junegunn/fzf.vim'
 call plug#end()
 """"""""""""""""""""""""""""""""""""""""""
 " 3. Fold {{{1
@@ -115,6 +118,7 @@ inoremap <silent><expr> <CR>      compe#confirm('<CR>')
 inoremap <silent><expr> <C-e>     compe#close('<C-e>')
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
 """"""""""""""""""""""""""""""""""""""""""
 " 8. Fern Related Setup {{{1
 """"""""""""""""""""""""""""""""""""""""""

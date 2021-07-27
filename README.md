@@ -32,6 +32,11 @@
 ### haskell language server
 - Follow the installation instruction [here](https://github.com/haskell/haskell-language-server#installatio)
 
+### rust analyzer
+```sh
+brew install rust-analyzer
+```
+
 ### fzf
 - The Silver Searcher
     ```sh
