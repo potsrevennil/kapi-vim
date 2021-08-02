@@ -21,11 +21,10 @@
     - [lean](https://github.com/Julian/lean.nvim)
 - Status line via [vim-airline](https://github.com/vim-airline/vim-airline)
 - Status line color scheme using [vim-airline-themes](https://github.com/vim-airline/vim-airline-themes)
-- File browser via [fern](https://github.com/lambdalisue/fern.vim)
-- Pretty icons for file browser via [nerdfont](https://github.com/lambdalisue/nerdfont.vim) and [fern-renderer-nerdfont](https://github.com/lambdalisue/fern-renderer-nerdfont.vim)
-- Preview files for File browser via [fern-preview.vim](https://github.com/yuki-yano/fern-preview.vim)
+- File browser via [nvim-tree](https://github.com/kyazdani42/nvim-tree.lua)
+- Pretty icons for file browser via [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)
 - Code commenting via [nerdcommenter](https://github.com/preservim/nerdcommenter)
-- Fuzzy finder via [fzf](https://github.com/junegunn/fzf)
+<!--- Fuzzy finder via [fzf](https://github.com/junegunn/fzf)-->
 
 ## Requirements
 
@@ -37,26 +36,26 @@
 brew install rust-analyzer
 ```
 
-### fzf
-- The Silver Searcher
-    ```sh
-    brew install the_silver_searcher
-    ```
+<!--### fzf-->
+<!--- The Silver Searcher-->
+<!--```sh-->
+<!--brew install the_silver_searcher-->
+<!--```-->
 
-- ripgrep
-    ```sh
-    brew install ripgrep
-    ```
+<!--- ripgrep-->
+<!--```sh-->
+<!--brew install ripgrep-->
+<!--```-->
 
-- bat
-    ```sh
-    brew install bat
-    ```
+<!--- bat-->
+<!--```sh-->
+<!--brew install bat-->
+<!--```-->
 
-- delta
-    ```sh 
-    brew install git-delta
-    ```
+<!--- delta-->
+<!--```sh -->
+<!--brew install git-delta-->
+<!--```-->
 
 ### nerd font
 ```sh
@@ -67,8 +66,3 @@ brew install --cask font-hack-nerd-font
 
 ## markdown preview
 Install markdown parser from [here](https://github.com/MichaelMure/mdr/releases)
-
-## Customize
-
-### fern 
-- For more customized configuration examples for fern please refer to [fern tips](https://github.com/lambdalisue/fern.vim/wiki/Tips)

@@ -61,10 +61,13 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'ayu-theme/ayu-vim'
 
 " Fern related plugins
-Plug 'lambdalisue/fern.vim'
-Plug 'lambdalisue/nerdfont.vim'
-Plug 'lambdalisue/fern-renderer-nerdfont.vim'
-Plug 'yuki-yano/fern-preview.vim'
+"Plug 'lambdalisue/fern.vim'
+"Plug 'lambdalisue/nerdfont.vim'
+"Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+"Plug 'yuki-yano/fern-preview.vim'
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+
 
 "Plug 'sheerun/vim-polyglot'
 Plug 'preservim/nerdcommenter'
@@ -120,50 +123,19 @@ inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
 """"""""""""""""""""""""""""""""""""""""""
-" 8. Fern Related Setup {{{1
+" 8. nvim-tree Related Setup {{{1
 """"""""""""""""""""""""""""""""""""""""""
-let g:fern#renderer = "nerdfont"
+nnoremap <C-t> :NvimTreeToggle<CR>
+nnoremap <leader>r :NvimTreeRefresh<CR>
+nnoremap <leader>n :NvimTreeFindFile<CR>
 
-nnoremap <C-t> :Fern . -drawer -toggle<CR>
-
-function! s:init_fern() abort
-  " Define NERDTree like mappings
-  nmap <buffer> o <Plug>(fern-action-open:edit)
-  nmap <buffer> go <Plug>(fern-action-open:edit)<C-w>p
-  nmap <buffer> t <Plug>(fern-action-open:tabedit)
-  nmap <buffer> T <Plug>(fern-action-open:tabedit)gT
-  nmap <buffer> i <Plug>(fern-action-open:split)
-  nmap <buffer> gi <Plug>(fern-action-open:split)<C-w>p
-  nmap <buffer> s <Plug>(fern-action-open:vsplit)
-  nmap <buffer> gs <Plug>(fern-action-open:vsplit)<C-w>p
-  nmap <buffer> ma <Plug>(fern-action-new-path)
-  nmap <buffer> P gg
-
-  nmap <buffer> C <Plug>(fern-action-enter)
-  nmap <buffer> u <Plug>(fern-action-leave)
-  nmap <buffer> r <Plug>(fern-action-reload)
-  nmap <buffer> R gg<Plug>(fern-action-reload)<C-o>
-  nmap <buffer> cd <Plug>(fern-action-cd)
-  nmap <buffer> CD gg<Plug>(fern-action-cd)<C-o>
-
-  nmap <buffer> I <Plug>(fern-action-hide-toggle)
-
-  nmap <buffer> q :<C-u>quit<CR>
-endfunction
-
-function! s:fern_settings() abort
-  nmap <silent> <buffer> p     <Plug>(fern-action-preview:toggle)
-  nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:auto:toggle)
-  nmap <silent> <buffer> <C-d> <Plug>(fern-action-preview:scroll:down:half)
-  nmap <silent> <buffer> <C-u> <Plug>(fern-action-preview:scroll:up:half)
-endfunction
-
-augroup fern-settings
-  autocmd!
-  autocmd FileType fern call s:init_fern()
-  autocmd FileType fern call s:fern_settings()
-augroup END
-
+let g:nvim_tree_width = 20
+let g:nvim_tree_lsp_diagnostics = 1
+let g:nvim_tree_gitignore = 1
+let g:nvim_tree_auto_close = 1
+let g:nvim_tree_hide_dotfiles = 1
+let g:nvim_tree_git_hl = 1
+let g:nvim_tree_highlight_opened_files = 1
 
 """"""""""""""""""""""""""""""""""""""""""
 " 10. ALE Global Setting {{{1
@@ -171,7 +143,7 @@ augroup END
 "let g:ale_fixers={
 "\    '*': ['remove_trailing_lines', 'trim_whitespace'],
 "\}
-"let g:ale_fix_on_save=1
+let g:ale_fix_on_save=1
 "let g:ale_disable_lsp=1
 
 """"""""""""""""""""""""""""""""""""""""""
