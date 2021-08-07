@@ -30,6 +30,7 @@
 
 ### haskell language server
 - Follow the installation instruction [here](https://github.com/haskell/haskell-language-server#installatio)
+- install [apply-refact](https://github.com/mpickering/apply-refact)
 
 ### rust analyzer
 ```sh

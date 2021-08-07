@@ -22,6 +22,8 @@ set splitright
 " split the new buffer below
 set splitbelow
 
+set mouse=a
+
 " TextEdit might fail if hidden is not set.
 "set hidden
 "set ma
@@ -125,7 +127,7 @@ inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 """"""""""""""""""""""""""""""""""""""""""
 " 8. nvim-tree Related Setup {{{1
 """"""""""""""""""""""""""""""""""""""""""
-nnoremap <C-t> :NvimTreeToggle<CR>
+nnoremap <C-n> :NvimTreeToggle<CR>
 nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>
 

@@ -6,6 +6,7 @@ brew install --cask font-hack-nerd-font
 # languages
 
 # install hls
+cabal install apply-refact
 
 # install rust-analyzer
 brew install rust-analyzer
