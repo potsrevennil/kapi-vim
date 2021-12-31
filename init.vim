@@ -42,39 +42,26 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 \| endif
 
 call plug#begin()
-Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-Plug 'kabouzeid/nvim-lspinstall'
 Plug 'hrsh7th/nvim-compe'
 Plug 'hrsh7th/vim-vsnip'
 
 " Language specific
+Plug 'neovim/nvim-lspconfig'
 Plug 'rust-lang/rust.vim'
 Plug 'simrat39/rust-tools.nvim'
 Plug 'Julian/lean.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'dense-analysis/ale'
-Plug 'instant-markdown/vim-instant-markdown'
-
+"Plug 'instant-markdown/vim-instant-markdown'
 
 " ui
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ayu-theme/ayu-vim'
 
-" Fern related plugins
-"Plug 'lambdalisue/fern.vim'
-"Plug 'lambdalisue/nerdfont.vim'
-"Plug 'lambdalisue/fern-renderer-nerdfont.vim'
-"Plug 'yuki-yano/fern-preview.vim'
-Plug 'kyazdani42/nvim-web-devicons' " for file icons
-Plug 'kyazdani42/nvim-tree.lua'
-
-
-"Plug 'sheerun/vim-polyglot'
 Plug 'preservim/nerdcommenter'
 Plug 'jbyuki/venn.nvim'
-"Plug 'junegunn/fzf.vim'
 call plug#end()
 """"""""""""""""""""""""""""""""""""""""""
 " 3. Fold {{{1
@@ -127,17 +114,6 @@ inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 """"""""""""""""""""""""""""""""""""""""""
 " 8. nvim-tree Related Setup {{{1
 """"""""""""""""""""""""""""""""""""""""""
-nnoremap <C-n> :NvimTreeToggle<CR>
-nnoremap <leader>r :NvimTreeRefresh<CR>
-nnoremap <leader>n :NvimTreeFindFile<CR>
-
-let g:nvim_tree_width = 20
-let g:nvim_tree_lsp_diagnostics = 1
-let g:nvim_tree_gitignore = 1
-let g:nvim_tree_auto_close = 1
-let g:nvim_tree_hide_dotfiles = 1
-let g:nvim_tree_git_hl = 1
-let g:nvim_tree_highlight_opened_files = 1
 
 """"""""""""""""""""""""""""""""""""""""""
 " 10. ALE Global Setting {{{1
