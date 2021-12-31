@@ -112,9 +112,23 @@ inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
 """"""""""""""""""""""""""""""""""""""""""
-" 8. nvim-tree Related Setup {{{1
+" 8. netrw Related Setup {{{1
 """"""""""""""""""""""""""""""""""""""""""
+let g:netrw_liststyle   = 3
+let g:netrw_insize      = 30
+nmap <A-f> :15Lexplore<CR>
 
+" cheat sheet
+" netrw-mf : mark file/dir
+" netrw-mF : unmark file/dir
+" netrw-a : hide marked file/dir
+" netrw-d : mkdir
+" netrw-D : rm -r marked files/dir
+" netrw-- : going up (dir)
+" netrw-% : open new file
+" netrw-qf : diplay file info
+" netrw-ms : source the file
+" netrw-R : rename the file
 """"""""""""""""""""""""""""""""""""""""""
 " 10. ALE Global Setting {{{1
 """"""""""""""""""""""""""""""""""""""""""
