@@ -59,7 +59,6 @@ Plug 'Julian/lean.nvim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'dense-analysis/ale'
-"Plug 'instant-markdown/vim-instant-markdown'
 
 " ui
 Plug 'vim-airline/vim-airline'
