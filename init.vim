@@ -51,6 +51,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'rust-lang/rust.vim'
 Plug 'simrat39/rust-tools.nvim'
 Plug 'Julian/lean.nvim'
+Plug 'neovimhaskell/haskell-vim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'dense-analysis/ale'
 "Plug 'instant-markdown/vim-instant-markdown'
@@ -59,6 +60,9 @@ Plug 'dense-analysis/ale'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ayu-theme/ayu-vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'cocopon/iceberg.vim'
+
 
 Plug 'preservim/nerdcommenter'
 Plug 'jbyuki/venn.nvim'
@@ -83,9 +87,10 @@ set number relativenumber
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled = 1
 
-let ayucolor="dark"
-colorscheme ayu
-"let g:airline#extensions#coc#enabled = 1
+syntax on
+filetype plugin indent on
+"let ayucolor="dark"
+colorscheme iceberg
 """"""""""""""""""""""""""""""""""""""""""
 " 6. Terminal Setting {{{1
 """"""""""""""""""""""""""""""""""""""""""
