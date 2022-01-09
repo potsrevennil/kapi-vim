@@ -130,7 +130,10 @@ inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 """"""""""""""""""""""""""""""""""""""""""
 let g:netrw_liststyle   = 3
 let g:netrw_insize      = 30
+let g:netrw_winsize = 20
+let g:netrw_keepdir = 0
 nmap <A-f> :15Lexplore<CR>
+nmap <A-f><A-c> :15Lexplore %:p:h<CR>
 
 " cheat sheet
 " netrw-mf : mark file/dir
@@ -143,6 +146,7 @@ nmap <A-f> :15Lexplore<CR>
 " netrw-qf : diplay file info
 " netrw-ms : source the file
 " netrw-R : rename the file
+" netrw-gn : make top of the tree the directory below the cursor
 """"""""""""""""""""""""""""""""""""""""""
 " 10. ALE Global Setting {{{1
 """"""""""""""""""""""""""""""""""""""""""
