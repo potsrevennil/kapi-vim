@@ -24,6 +24,11 @@ set splitbelow
 
 set mouse=a
 
+" fuzzy file finding
+" provide tab-completion for all file-related tasks
+set path+=**
+
+
 " TextEdit might fail if hidden is not set.
 "set hidden
 "set ma
@@ -66,6 +71,9 @@ Plug 'cocopon/iceberg.vim'
 
 Plug 'preservim/nerdcommenter'
 Plug 'jbyuki/venn.nvim'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 """"""""""""""""""""""""""""""""""""""""""
 " 3. Fold {{{1
