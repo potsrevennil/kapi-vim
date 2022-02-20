@@ -48,8 +48,11 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 
 call plug#begin()
 "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-"Plug 'hrsh7th/nvim-compe'
-"Plug 'hrsh7th/vim-vsnip'
+
+" auto completion
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/cmp-nvim-lsp'
 
 " Language specific
 Plug 'neovim/nvim-lspconfig'
@@ -83,6 +86,7 @@ set tabstop=4
 set expandtab
 set shiftwidth=4
 set shiftround
+set completeopt=menu,menuone,noselect
 """"""""""""""""""""""""""""""""""""""""""
 " 5. UI {{{1
 """"""""""""""""""""""""""""""""""""""""""
@@ -110,17 +114,9 @@ tnoremap <Esc> <C-\><C-n>
 " 7. LSP {{{1
 """"""""""""""""""""""""""""""""""""""""""
 lua require("lsp-config")
-"lua require("nvim-compe")
-"lua require("treesitter-config")
-"lua require('rust-tools-config')
+lua require("nvim-cmp-config")
 
 map <A-,> <C-o>
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
-
 """"""""""""""""""""""""""""""""""""""""""
 " 8. netrw Related Setup {{{1
 """"""""""""""""""""""""""""""""""""""""""

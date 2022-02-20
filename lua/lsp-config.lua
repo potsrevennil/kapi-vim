@@ -103,6 +103,7 @@ local servers = {'gopls', 'hls', 'rust_analyzer'}
 local nvim_lsp = require('lspconfig')
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,

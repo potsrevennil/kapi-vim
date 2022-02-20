@@ -10,7 +10,7 @@
 ## Plugins
 
 - Plugin management via [vim-plug](https://github.com/junegunn/vim-plug)
-<!--- Auto Completion for nvim via [nvim-compe](https://github.com/hrsh7th/nvim-compe)-->
+- Auto Completion for nvim via [nvim-comp](https://github.com/hrsh7th/nvim-compe) with snippet engine [vim-vsnip](https://github.com/hrsh7th/vim-vsnip)
 - Common config for Neovim's native LSP via [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 <!--- plenary [plenary](https://github.com/nvim-lua/plenary.nvim)-->
 <!--- Highlighting via [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)-->
