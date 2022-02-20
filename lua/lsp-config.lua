@@ -99,7 +99,7 @@ local function make_config()
 end
 
 -- lsp-install
-local servers = {'gopls', 'hls'}
+local servers = {'gopls', 'hls', 'rust_analyzer'}
 local nvim_lsp = require('lspconfig')
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {

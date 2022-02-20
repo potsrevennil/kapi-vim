@@ -54,7 +54,7 @@ Plug 'hrsh7th/vim-vsnip'
 " Language specific
 Plug 'neovim/nvim-lspconfig'
 Plug 'rust-lang/rust.vim'
-Plug 'simrat39/rust-tools.nvim'
+"Plug 'simrat39/rust-tools.nvim'
 Plug 'Julian/lean.nvim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'nvim-lua/plenary.nvim'
@@ -116,6 +116,7 @@ tnoremap <Esc> <C-\><C-n>
 lua require("lsp-config")
 lua require("nvim-compe")
 lua require("treesitter-config")
+"lua require('rust-tools-config')
 
 map <A-,> <C-o>
 inoremap <silent><expr> <C-Space> compe#complete()
