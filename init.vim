@@ -47,9 +47,9 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 \| endif
 
 call plug#begin()
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-Plug 'hrsh7th/nvim-compe'
-Plug 'hrsh7th/vim-vsnip'
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+"Plug 'hrsh7th/nvim-compe'
+"Plug 'hrsh7th/vim-vsnip'
 
 " Language specific
 Plug 'neovim/nvim-lspconfig'
@@ -57,20 +57,16 @@ Plug 'rust-lang/rust.vim'
 "Plug 'simrat39/rust-tools.nvim'
 Plug 'Julian/lean.nvim'
 Plug 'neovimhaskell/haskell-vim'
-Plug 'nvim-lua/plenary.nvim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'dense-analysis/ale'
 
 " ui
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'ayu-theme/ayu-vim'
-Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'cocopon/iceberg.vim'
 
 
 Plug 'preservim/nerdcommenter'
-Plug 'jbyuki/venn.nvim'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -97,7 +93,6 @@ let g:airline#extensions#tabline#enabled = 1
 
 syntax on
 filetype plugin indent on
-"let ayucolor="dark"
 colorscheme iceberg
 """"""""""""""""""""""""""""""""""""""""""
 " 6. Terminal Setting {{{1
@@ -115,8 +110,8 @@ tnoremap <Esc> <C-\><C-n>
 " 7. LSP {{{1
 """"""""""""""""""""""""""""""""""""""""""
 lua require("lsp-config")
-lua require("nvim-compe")
-lua require("treesitter-config")
+"lua require("nvim-compe")
+"lua require("treesitter-config")
 "lua require('rust-tools-config')
 
 map <A-,> <C-o>

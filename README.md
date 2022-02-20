@@ -10,19 +10,18 @@
 ## Plugins
 
 - Plugin management via [vim-plug](https://github.com/junegunn/vim-plug)
-- Auto Completion for nvim via [nvim-compe](https://github.com/hrsh7th/nvim-compe)
+<!--- Auto Completion for nvim via [nvim-compe](https://github.com/hrsh7th/nvim-compe)-->
 - Common config for Neovim's native LSP via [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
-- plenary [plenary]('https://github.com/nvim-lua/plenary.nvim')
-- LSP install manager via [nvim-lspinstall](https://github.com/kabouzeid/nvim-lspinstall)
-- Highlighting via [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+<!--- plenary [plenary](https://github.com/nvim-lua/plenary.nvim)-->
+<!--- Highlighting via [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)-->
 - Asynchronous Lint Engine [ale](https://github.com/dense-analysis/ale)
 - Language specific plugins
+    - [markdown preview](https://github.com/iamcco/markdown-preview.nvim)
     - [rust-lang](https://github.com/rust-lang/rust.vim) and [rust-tools](https://github.com/simrat39/rust-tools.nvim)
-    - [lean](https://github.com/Julian/lean.nvim)
+    <!--- [lean](https://github.com/Julian/lean.nvim)-->
 - Status line via [vim-airline](https://github.com/vim-airline/vim-airline)
 - Status line color scheme using [vim-airline-themes](https://github.com/vim-airline/vim-airline-themes)
-- File browser via [nvim-tree](https://github.com/kyazdani42/nvim-tree.lua)
-- Pretty icons for file browser via [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)
+- color scheme [iceberg](https://github.com/cocopon/iceberg.vim)
 - Code commenting via [nerdcommenter](https://github.com/preservim/nerdcommenter)
 <!--- Fuzzy finder via [fzf](https://github.com/junegunn/fzf)-->
 
@@ -64,6 +63,3 @@ brew tap homebrew/cask-fonts
 brew install --cask font-hack-nerd-font
 # should set the font of iterm2 afterwards
 ```
-
-## markdown preview
-Install markdown parser from [here](https://github.com/MichaelMure/mdr/releases)
