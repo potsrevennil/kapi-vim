@@ -58,6 +58,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'Julian/lean.nvim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'dense-analysis/ale'
 
 " ui
