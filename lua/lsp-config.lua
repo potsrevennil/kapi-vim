@@ -96,7 +96,7 @@ lsp_settings["sumneko_lua"] = {
 --}
 
 -- lsp-install
-local servers = { "sumneko_lua", "bashls", "gopls", "hls", "rust_analyzer", "pylsp", "tsserver", "solc" }
+local servers = { "sumneko_lua", "bashls", "gopls", "hls", "rust_analyzer", "pylsp", "tsserver", "solidity_ls" }
 local nvim_lsp = require("lspconfig")
 
 for _, lsp in ipairs(servers) do
