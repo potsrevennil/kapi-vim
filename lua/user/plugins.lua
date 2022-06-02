@@ -39,8 +39,8 @@ Plug("preservim/nerdcommenter")
 
 --auto completion
 Plug("hrsh7th/nvim-cmp")
-Plug("hrsh7th/vim-vsnip")
 Plug("hrsh7th/cmp-nvim-lsp")
+Plug("L3MON4D3/LuaSnip")
 
 -- LSP
 Plug("neovim/nvim-lspconfig")
