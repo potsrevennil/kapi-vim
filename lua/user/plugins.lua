@@ -5,18 +5,18 @@ local data_dir
 if fn.has('nvim') then
     data_dir = fn.stdpath('data') .. '/site'
 else
-	data_dir = '~/.vim'
+    data_dir = '~/.vim'
 end
 
 if fn.empty(fn.glob(data_dir .. '/autoload/plug.vim')) > 0 then
-	print('Installing Vim Plug...')
-	os.execute(
-		'!curl -fLo'
-			.. data_dir
-			.. '/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-	)
+    print('Installing Vim Plug...')
+    os.execute(
+        '!curl -fLo'
+        .. data_dir
+        .. '/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    )
 else
-	print('Vim Plug is installed.')
+    print('Vim Plug is installed.')
 end
 
 -- Run PlugInstall if there are missing plugins
