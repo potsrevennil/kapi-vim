@@ -59,7 +59,7 @@ Plug("vim-airline/vim-airline")
 Plug("vim-airline/vim-airline-themes")
 Plug("cocopon/iceberg.vim")
 
-Plug("junegunn/fzf", { ["do"] = fn["fzf#install"] })
-Plug("junegunn/fzf.vim")
+-- fuzzy finder
+Plug("nvim-telescope/telescope.nvim")
 
 vim.call("plug#end")
