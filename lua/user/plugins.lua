@@ -40,8 +40,12 @@ Plug('hrsh7th/nvim-cmp')
 Plug('hrsh7th/vim-vsnip')
 Plug('hrsh7th/cmp-nvim-lsp')
 
---Language specific
+-- LSP
 Plug('neovim/nvim-lspconfig')
+Plug('williamboman/nvim-lsp-installer')
+
+
+--Language specific
 Plug('rust-lang/rust.vim')
 --Plug 'simrat39/rust-tools.nvim'
 Plug('Julian/lean.nvim')
