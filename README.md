@@ -9,21 +9,33 @@
 
 ## Plugins
 
-- Plugin management via [vim-plug](https://github.com/junegunn/vim-plug)
-- Auto Completion for nvim via [nvim-comp](https://github.com/hrsh7th/nvim-compe) with snippet engine [vim-vsnip](https://github.com/hrsh7th/vim-vsnip)
-- Common config for Neovim's native LSP via [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
-<!--- plenary [plenary](https://github.com/nvim-lua/plenary.nvim)-->
-<!--- Highlighting via [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)-->
-- Asynchronous Lint Engine [ale](https://github.com/dense-analysis/ale)
+### Plugin management
+- [vim-plug](https://github.com/junegunn/vim-plug)
+
+### General Purpose Plugins
+- [plenary](https://github.com/nvim-lua/plenary.nvim)
+- [nerdcommenter](https://github.com/preservim/nerdcommenter)
+
+### Auto Completion
+- [nvim-comp](https://github.com/hrsh7th/nvim-compe)
+- [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
+- [vim-vsnip](https://github.com/hrsh7th/vim-vsnip)
+
+### LSP
+- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+- [lsp-installer](https://github.com/williamboman/nvim-lsp-installer)
+- [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim)
 - Language specific plugins
     - [markdown preview](https://github.com/iamcco/markdown-preview.nvim)
     - [rust-lang](https://github.com/rust-lang/rust.vim) and [rust-tools](https://github.com/simrat39/rust-tools.nvim)
     <!--- [lean](https://github.com/Julian/lean.nvim)-->
-- Status line via [vim-airline](https://github.com/vim-airline/vim-airline)
-- Status line color scheme using [vim-airline-themes](https://github.com/vim-airline/vim-airline-themes)
-- color scheme [iceberg](https://github.com/cocopon/iceberg.vim)
-- Code commenting via [nerdcommenter](https://github.com/preservim/nerdcommenter)
-<!--- Fuzzy finder via [fzf](https://github.com/junegunn/fzf)-->
+
+### Status Line
+- [vim-airline](https://github.com/vim-airline/vim-airline)
+- [vim-airline-themes](https://github.com/vim-airline/vim-airline-themes)
+
+### Colorscheme
+- [iceberg](https://github.com/cocopon/iceberg.vim)
 
 ## Requirements
 

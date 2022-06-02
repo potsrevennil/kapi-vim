@@ -35,6 +35,7 @@ vim.call('plug#begin')
 
 --Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  ' We recommend updating the parsers on update
 Plug("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
+Plug('preservim/nerdcommenter')
 
 --auto completion
 Plug('hrsh7th/nvim-cmp')
@@ -57,8 +58,6 @@ Plug('iamcco/markdown-preview.nvim', { ['do'] = fn['cd app && yarn install'] })
 Plug('vim-airline/vim-airline')
 Plug('vim-airline/vim-airline-themes')
 Plug('cocopon/iceberg.vim')
-
-Plug('preservim/nerdcommenter')
 
 Plug('junegunn/fzf', { ['do'] = fn['fzf#install'] })
 Plug('junegunn/fzf.vim')
