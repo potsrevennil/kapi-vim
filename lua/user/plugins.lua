@@ -34,6 +34,7 @@ local Plug = fn['plug#']
 vim.call('plug#begin')
 
 --Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  ' We recommend updating the parsers on update
+Plug("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
 
 --auto completion
 Plug('hrsh7th/nvim-cmp')
@@ -43,7 +44,7 @@ Plug('hrsh7th/cmp-nvim-lsp')
 -- LSP
 Plug('neovim/nvim-lspconfig')
 Plug('williamboman/nvim-lsp-installer')
-
+Plug('jose-elias-alvarez/null-ls.nvim')
 
 --Language specific
 Plug('rust-lang/rust.vim')
@@ -51,7 +52,6 @@ Plug('rust-lang/rust.vim')
 Plug('Julian/lean.nvim')
 Plug('neovimhaskell/haskell-vim')
 Plug('iamcco/markdown-preview.nvim', { ['do'] = fn['cd app && yarn install'] })
-Plug('dense-analysis/ale')
 
 --ui
 Plug('vim-airline/vim-airline')
