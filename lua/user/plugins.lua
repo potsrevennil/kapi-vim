@@ -31,7 +31,6 @@ vim.cmd([[
 local Plug = fn["plug#"]
 vim.call("plug#begin")
 
---Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  ' We recommend updating the parsers on update
 Plug("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
 Plug("preservim/nerdcommenter")
 
@@ -44,6 +43,9 @@ Plug("L3MON4D3/LuaSnip")
 Plug("neovim/nvim-lspconfig")
 Plug("williamboman/nvim-lsp-installer")
 Plug("jose-elias-alvarez/null-ls.nvim")
+
+-- syntax highlighting
+Plug("nvim-treesitter/nvim-treesitter", { ["do"] = fn[":TSUpdate"] })
 
 --Language specific
 Plug("rust-lang/rust.vim")
