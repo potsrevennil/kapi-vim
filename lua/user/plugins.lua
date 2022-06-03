@@ -15,8 +15,6 @@ if fn.empty(fn.glob(data_dir .. "/autoload/plug.vim")) > 0 then
 			.. data_dir
 			.. "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 	)
-else
-	print("Vim Plug is installed.")
 end
 
 -- Run PlugInstall if there are missing plugins
