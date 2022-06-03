@@ -67,4 +67,7 @@ Plug("cocopon/iceberg.vim")
 -- fuzzy finder
 Plug("nvim-telescope/telescope.nvim")
 
+-- git
+Plug("lewis6991/gitsigns.nvim")
+
 vim.call("plug#end")
