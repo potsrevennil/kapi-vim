@@ -48,15 +48,20 @@ Plug("jose-elias-alvarez/null-ls.nvim")
 Plug("nvim-treesitter/nvim-treesitter", { ["do"] = fn[":TSUpdate"] })
 
 --Language specific
-Plug("rust-lang/rust.vim")
---Plug 'simrat39/rust-tools.nvim'
-Plug("Julian/lean.nvim")
-Plug("neovimhaskell/haskell-vim")
-Plug("iamcco/markdown-preview.nvim", { ["do"] = fn["cd app && yarn install"] })
+Plug("rust-lang/rust.vim", { ["for"] = "rust" })
+Plug("Julian/lean.nvim", { ["for"] = "lean" })
+Plug("neovimhaskell/haskell-vim", { ["for"] = "haskell" })
+Plug("iamcco/markdown-preview.nvim", { ["do"] = fn["cd app && yarn install"], ["for"] = "markdown" })
 
 --ui
-Plug("vim-airline/vim-airline")
-Plug("vim-airline/vim-airline-themes")
+Plug(
+	"vim-airline/vim-airline",
+	{ ["on"] = { "AirlineExtensions", "AirlineRefresh", "AirlineTheme", "AirlineToggle", "AirlineToggleWhitespace" } }
+)
+Plug(
+	"vim-airline/vim-airline-themes",
+	{ ["on"] = { "AirlineExtensions", "AirlineRefresh", "AirlineTheme", "AirlineToggle", "AirlineToggleWhitespace" } }
+)
 Plug("cocopon/iceberg.vim")
 
 -- fuzzy finder
