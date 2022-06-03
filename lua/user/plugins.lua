@@ -33,6 +33,7 @@ vim.call("plug#begin")
 
 Plug("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
 Plug("preservim/nerdcommenter")
+Plug("windwp/nvim-autopairs")
 
 --auto completion
 Plug("hrsh7th/nvim-cmp")
