@@ -1,74 +1,100 @@
 local fn = vim.fn
 
--- Install vim-plug if not found
-local data_dir
-if fn.has("nvim") then
-	data_dir = fn.stdpath("data") .. "/site"
-else
-	data_dir = "~/.vim"
+-- Automatically install packer
+local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+if fn.empty(fn.glob(install_path)) > 0 then
+	PACKER_BOOTSTRAP = fn.system({
+		"git",
+		"clone",
+		"--depth",
+		"1",
+		"https://github.com/wbthomason/packer.nvim",
+		install_path,
+	})
+	print("Installing packer close and reopen Neovim...")
+	vim.cmd([[packadd packer.nvim]])
 end
 
-if fn.empty(fn.glob(data_dir .. "/autoload/plug.vim")) > 0 then
-	print("Installing Vim Plug...")
-	os.execute(
-		"!curl -fLo"
-			.. data_dir
-			.. "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-	)
-end
-
--- Run PlugInstall if there are missing plugins
+-- Autocommand that reloads neovim whenever you save the plugins.lua file
 vim.cmd([[
-    augroup vim_plug_config
-        autocmd!
-        autocmd BufWritePost plugins.lua source <afile> | PlugUpdate
-        autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)')) 
-            \| PlugUpdate | source $MYVIMRC 
-        \| endif
-    augroup end
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerSync
+  augroup end
 ]])
 
-local Plug = fn["plug#"]
-vim.call("plug#begin")
+local status_ok, packer = pcall(require, "packer")
+if not status_ok then
+	return
+end
 
-Plug("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
-Plug("preservim/nerdcommenter")
-Plug("windwp/nvim-autopairs")
+-- Have packer use a popup window
+packer.init({
+	display = {
+		open_fn = function()
+			return require("packer.util").float({ border = "rounded" })
+		end,
+	},
+})
 
---auto completion
-Plug("hrsh7th/nvim-cmp")
-Plug("hrsh7th/cmp-nvim-lsp")
-Plug("hrsh7th/cmp-buffer")
-Plug("hrsh7th/cmp-path")
-Plug("L3MON4D3/LuaSnip")
+return packer.startup(function(use)
+	use("preservim/nerdcommenter")
+	use("windwp/nvim-autopairs")
 
--- LSP
-Plug("neovim/nvim-lspconfig")
-Plug("williamboman/nvim-lsp-installer")
-Plug("jose-elias-alvarez/null-ls.nvim")
+	--auto completion
+	use({ "hrsh7th/nvim-cmp", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path" })
+	use("L3MON4D3/LuaSnip")
 
--- syntax highlighting
-Plug("nvim-treesitter/nvim-treesitter", { ["do"] = fn[":TSUpdate"] })
+	-- LSP
+	use({ "neovim/nvim-lspconfig", "williamboman/nvim-lsp-installer" })
+	use({ "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" })
 
---Language specific
-Plug("iamcco/markdown-preview.nvim", { ["do"] = fn["cd app && yarn install"], ["for"] = "markdown" })
+	-- syntax highlighting
+	use({
+		"nvim-treesitter/nvim-treesitter",
+		run = ":TSUpdate",
+	})
 
---ui
-Plug(
-	"vim-airline/vim-airline",
-	{ ["on"] = { "AirlineExtensions", "AirlineRefresh", "AirlineTheme", "AirlineToggle", "AirlineToggleWhitespace" } }
-)
-Plug(
-	"vim-airline/vim-airline-themes",
-	{ ["on"] = { "AirlineExtensions", "AirlineRefresh", "AirlineTheme", "AirlineToggle", "AirlineToggleWhitespace" } }
-)
-Plug("cocopon/iceberg.vim")
+	--Language specific
+	use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install", ft = "markdown" })
 
--- fuzzy finder
-Plug("nvim-telescope/telescope.nvim")
-Plug("nvim-telescope/telescope-fzf-native.nvim", { ["do"] = fn["make"] })
+	--ui
+	use({
+		{
+			"vim-airline/vim-airline",
+			cmd = {
+				"AirlineExtensions",
+				"AirlineRefresh",
+				"AirlineTheme",
+				"AirlineToggle",
+				"AirlineToggleWhitespace",
+			},
+		},
+		{
+			"vim-airline/vim-airline-themes",
+			cmd = {
+				"AirlineExtensions",
+				"AirlineRefresh",
+				"AirlineTheme",
+				"AirlineToggle",
+				"AirlineToggleWhitespace",
+			},
+		},
+	})
+	use("cocopon/iceberg.vim")
 
--- git
-Plug("lewis6991/gitsigns.nvim")
+	-- fuzzy finder
+	use({
+		{ "nvim-telescope/telescope.nvim", requires = "nvim-lua/plenary.nvim" },
+		{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+	})
 
-vim.call("plug#end")
+	-- git
+	use("lewis6991/gitsigns.nvim")
+
+	-- Automatically set up your configuration after cloning packer.nvim
+	-- Put this at the end after all plugins
+	if PACKER_BOOTSTRAP then
+		require("packer").sync()
+	end
+end)
