@@ -49,9 +49,6 @@ Plug("jose-elias-alvarez/null-ls.nvim")
 Plug("nvim-treesitter/nvim-treesitter", { ["do"] = fn[":TSUpdate"] })
 
 --Language specific
-Plug("rust-lang/rust.vim", { ["for"] = "rust" })
-Plug("Julian/lean.nvim", { ["for"] = "lean" })
-Plug("neovimhaskell/haskell-vim", { ["for"] = "haskell" })
 Plug("iamcco/markdown-preview.nvim", { ["do"] = fn["cd app && yarn install"], ["for"] = "markdown" })
 
 --ui
