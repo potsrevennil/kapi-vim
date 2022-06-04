@@ -46,7 +46,10 @@ return packer.startup(function(use)
 	use("L3MON4D3/LuaSnip")
 
 	-- LSP
-	use({ "neovim/nvim-lspconfig", "williamboman/nvim-lsp-installer" })
+	use({
+		"neovim/nvim-lspconfig",
+		"williamboman/nvim-lsp-installer",
+	})
 	use({ "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" })
 
 	-- syntax highlighting
@@ -56,37 +59,25 @@ return packer.startup(function(use)
 	})
 
 	--Language specific
-	use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install", ft = "markdown" })
+	use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install", ft = "markdown", cmd = "MarkdownPreview" })
 
 	--ui
 	use({
 		{
 			"vim-airline/vim-airline",
-			cmd = {
-				"AirlineExtensions",
-				"AirlineRefresh",
-				"AirlineTheme",
-				"AirlineToggle",
-				"AirlineToggleWhitespace",
-			},
+			cmd = "AirlineToggle",
 		},
 		{
 			"vim-airline/vim-airline-themes",
-			cmd = {
-				"AirlineExtensions",
-				"AirlineRefresh",
-				"AirlineTheme",
-				"AirlineToggle",
-				"AirlineToggleWhitespace",
-			},
+			cmd = "AirlineToggle",
 		},
 	})
-	use("cocopon/iceberg.vim")
+	use({ "cocopon/iceberg.vim", event = "ColorScheme" })
 
 	-- fuzzy finder
 	use({
-		{ "nvim-telescope/telescope.nvim", requires = "nvim-lua/plenary.nvim" },
-		{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+		{ "nvim-telescope/telescope.nvim", requires = "nvim-lua/plenary.nvim", cmd = "Telescope" },
+		{ "nvim-telescope/telescope-fzf-native.nvim", run = "make", cmd = "Telescope" },
 	})
 
 	-- git
