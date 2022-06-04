@@ -22,9 +22,9 @@ local options = {
 	numberwidth = 2,
 	signcolumn = "yes",
 	scrolloff = 10,
+	foldenable = false,
 	foldmethod = "expr",
 	foldexpr = "nvim_treesitter#foldexpr()",
-	foldcolumn = "auto",
 	termguicolors = true,
 }
 
