@@ -38,6 +38,8 @@ Plug("windwp/nvim-autopairs")
 --auto completion
 Plug("hrsh7th/nvim-cmp")
 Plug("hrsh7th/cmp-nvim-lsp")
+Plug("hrsh7th/cmp-buffer")
+Plug("hrsh7th/cmp-path")
 Plug("L3MON4D3/LuaSnip")
 
 -- LSP

@@ -98,5 +98,6 @@ cmp.setup({
 		{ name = "luasnip" }, -- For vsnip users.
 	}, {
 		{ name = "buffer" },
+		{ name = "path" },
 	}),
 })
