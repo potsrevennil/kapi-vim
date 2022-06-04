@@ -64,6 +64,7 @@ Plug("cocopon/iceberg.vim")
 
 -- fuzzy finder
 Plug("nvim-telescope/telescope.nvim")
+Plug("nvim-telescope/telescope-fzf-native.nvim", { ["do"] = fn["make"] })
 
 -- git
 Plug("lewis6991/gitsigns.nvim")
