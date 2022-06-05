@@ -69,10 +69,13 @@ return packer.startup(function(use)
 	})
 
 	-- git
-	use("lewis6991/gitsigns.nvim")
+    -- Execute the `Show` command will result in `packer_compiled` error
+	use({ "lewis6991/gitsigns.nvim", cmd = "Show", config = "require 'user.gitsigns'"
+	})
 
-    -- bufferline
-    use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
+	-- bufferline
+	use({ "akinsho/bufferline.nvim", tag = "v2.*", requires = "kyazdani42/nvim-web-devicons", cmd = "Show", config = "require 'user.bufferline'"
+	})
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
