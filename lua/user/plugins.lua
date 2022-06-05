@@ -38,6 +38,7 @@ packer.init({
 })
 
 return packer.startup(function(use)
+	use("nathom/filetype.nvim")
 	use({ "echasnovski/mini.nvim", branch = "stable" })
 
 	--auto completion
