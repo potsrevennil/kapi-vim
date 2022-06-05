@@ -61,19 +61,6 @@ return packer.startup(function(use)
 	--Language specific
 	use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install", ft = "markdown", cmd = "MarkdownPreview" })
 
-	--ui
-	use({
-		{
-			"vim-airline/vim-airline",
-			cmd = "AirlineToggle",
-		},
-		{
-			"vim-airline/vim-airline-themes",
-			cmd = "AirlineToggle",
-		},
-	})
-	use({ "cocopon/iceberg.vim", event = "ColorScheme" })
-
 	-- fuzzy finder
 	use({
 		{ "nvim-telescope/telescope.nvim", requires = "nvim-lua/plenary.nvim", cmd = "Telescope" },
