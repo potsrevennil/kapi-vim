@@ -1,4 +1,9 @@
-require("bufferline").setup({
+local status_ok, bufferline = pcall(require, "bufferline")
+if not status_ok then
+	return
+end
+
+bufferline.setup({
 	options = {
 		mode = "buffers", -- set to "tabs" to only show tabpages instead
 		numbers = "buffer_id", -- "none" | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
