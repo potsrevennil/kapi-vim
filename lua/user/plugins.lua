@@ -19,7 +19,7 @@ end
 vim.cmd([[
   augroup packer_user_config
     autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
   augroup end
 ]])
 
@@ -38,17 +38,17 @@ packer.init({
 })
 
 return packer.startup(function(use)
-	use("nathom/filetype.nvim")
-	use({ "echasnovski/mini.nvim", branch = "stable" })
+	use({"nathom/filetype.nvim", config = "require 'user.filetype'"})
+	use({ "echasnovski/mini.nvim", branch = "stable", config = "require 'user.mini'" })
 
 	--auto completion
-	use({ "hrsh7th/nvim-cmp", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path" })
+	use({ {"hrsh7th/nvim-cmp", config = "require 'user.cmp'"}, "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path" })
 	use("L3MON4D3/LuaSnip")
-	use("windwp/nvim-autopairs")
+	use({"windwp/nvim-autopairs", config = "require 'user.autopairs'"})
 
 	-- LSP
 	use({
-		"neovim/nvim-lspconfig",
+        {"neovim/nvim-lspconfig", config = "require 'user.lsp'"},
 		"williamboman/nvim-lsp-installer",
 	})
 	use({ "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" })
@@ -57,6 +57,7 @@ return packer.startup(function(use)
 	use({
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
+        config = "require 'user.treesitter'"
 	})
 
 	--Language specific
@@ -64,7 +65,7 @@ return packer.startup(function(use)
 
 	-- fuzzy finder
 	use({
-		{ "nvim-telescope/telescope.nvim", requires = "nvim-lua/plenary.nvim", cmd = "Telescope" },
+		{ "nvim-telescope/telescope.nvim", requires = "nvim-lua/plenary.nvim", cmd = "Telescope", config = "require 'user.telescope'" },
 		{ "nvim-telescope/telescope-fzf-native.nvim", run = "make", cmd = "Telescope" },
 	})
 
