@@ -101,3 +101,17 @@ cmp.setup({
 		{ name = "path" },
 	}),
 })
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+local cmp_lsp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+if not cmp_lsp_status_ok then
+	return
+end
+
+local lsp_handlers_status_ok, lsp_handlers = pcall(require, "user.lsp.handlers")
+if not lsp_handlers_status_ok then
+	return
+end
+
+lsp_handlers.capabilities = cmp_nvim_lsp.update_capabilities(capabilities)

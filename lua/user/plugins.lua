@@ -38,26 +38,36 @@ packer.init({
 })
 
 return packer.startup(function(use)
-	use({"nathom/filetype.nvim", config = "require 'user.filetype'"})
+	use({ "dstein64/vim-startuptime", opt = true })
+	use({ "nathom/filetype.nvim", config = "require 'user.filetype'" })
 	use({ "echasnovski/mini.nvim", branch = "stable", config = "require 'user.mini'" })
 
 	--auto completion
-	use({ {"hrsh7th/nvim-cmp", config = "require 'user.cmp'"}, "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path" })
-	use("L3MON4D3/LuaSnip")
-	use({"windwp/nvim-autopairs", config = "require 'user.autopairs'"})
+	use({
+		"hrsh7th/nvim-cmp",
+		config = "require 'user.cmp'",
+		event = "InsertEnter",
+		requires = {
+			{ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
+			{ "hrsh7th/cmp-buffer", after = "nvim-cmp" },
+			{ "hrsh7th/cmp-path", after = "nvim-cmp" },
+			{ "L3MON4D3/LuaSnip", after = "nvim-cmp" },
+			{ "windwp/nvim-autopairs", after = "nvim-cmp", config = "require 'user.autopairs'" },
+		},
+	})
 
 	-- LSP
 	use({
-        {"neovim/nvim-lspconfig", config = "require 'user.lsp'"},
-		"williamboman/nvim-lsp-installer",
+		"neovim/nvim-lspconfig",
+		config = "require 'user.lsp'",
+		requires = { "williamboman/nvim-lsp-installer", "jose-elias-alvarez/null-ls.nvim", "nvim-lua/plenary.nvim" },
 	})
-	use({ "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" })
 
 	-- syntax highlighting
 	use({
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
-        config = "require 'user.treesitter'"
+		config = "require 'user.treesitter'",
 	})
 
 	--Language specific
@@ -65,17 +75,23 @@ return packer.startup(function(use)
 
 	-- fuzzy finder
 	use({
-		{ "nvim-telescope/telescope.nvim", requires = "nvim-lua/plenary.nvim", cmd = "Telescope", config = "require 'user.telescope'" },
-		{ "nvim-telescope/telescope-fzf-native.nvim", run = "make", cmd = "Telescope" },
+		"nvim-telescope/telescope.nvim",
+		requires = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", run = "make" } },
+		keys = { "<Leader>ff", "<Leader>fg", "<Leader>fb", "<Leader>fh", "<Leader>fr" },
+		config = "require 'user.telescope'",
 	})
 
 	-- git
-    -- Execute the `Show` command will result in `packer_compiled` error
-	use({ "lewis6991/gitsigns.nvim", cmd = "Show", config = "require 'user.gitsigns'"
-	})
+	-- Execute the `Show` command will result in `packer_compiled` error
+	use({ "lewis6991/gitsigns.nvim", keys = "<Leader>g", config = "require 'user.gitsigns'" })
 
 	-- bufferline
-	use({ "akinsho/bufferline.nvim", tag = "v2.*", requires = "kyazdani42/nvim-web-devicons", cmd = "Show", config = "require 'user.bufferline'"
+	use({
+		"akinsho/bufferline.nvim",
+		tag = "v2.*",
+		requires = "kyazdani42/nvim-web-devicons",
+		keys = "<Leader>b",
+		config = "require 'user.bufferline'",
 	})
 
 	-- Automatically set up your configuration after cloning packer.nvim
