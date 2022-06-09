@@ -1,3 +1,11 @@
 require("user.options")
 require("user.keymaps")
 require("user.plugins")
+require("user.filetype")
+require("user.mini")
+require("user.cmp")
+require("user.autopairs")
+require("user.lsp")
+require("user.treesitter")
+require("user.telescope")
+

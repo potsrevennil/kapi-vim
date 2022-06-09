@@ -35,9 +35,3 @@ telescope.setup({
 })
 
 telescope.load_extension("fzf")
-
-vim.api.nvim_set_keymap("", "<leader>ff", ":Telescope find_files<cr>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("", "<leader>fg", ":Telescope live_grep<cr>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("", "<leader>fb", ":Telescope buffers<cr>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("", "<leader>fh", ":Telescope help_tags<cr>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("", "<leader>fr", ":Telescope resume<cr>", { noremap = true, silent = true })
