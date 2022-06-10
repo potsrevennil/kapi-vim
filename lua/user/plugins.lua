@@ -46,12 +46,11 @@ return packer.startup(function(use)
 	use({
 		"hrsh7th/nvim-cmp",
 		config = "require 'user.cmp'",
-		event = "InsertEnter",
 		requires = {
 			{ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
 			{ "hrsh7th/cmp-buffer", after = "nvim-cmp" },
 			{ "hrsh7th/cmp-path", after = "nvim-cmp" },
-			{ "L3MON4D3/LuaSnip", after = "nvim-cmp" },
+			"L3MON4D3/LuaSnip",
 			{ "windwp/nvim-autopairs", after = "nvim-cmp", config = "require 'user.autopairs'" },
 		},
 	})
