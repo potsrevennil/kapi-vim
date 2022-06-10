@@ -93,7 +93,8 @@ return packer.startup(function(use)
 		config = "require 'user.bufferline'",
 	})
 
-	use("cocopon/iceberg.vim")
+	use({ "cocopon/iceberg.vim", opt = true })
+	use({ "dracula/vim", as = "dracula" })
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
