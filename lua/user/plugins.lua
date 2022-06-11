@@ -85,14 +85,14 @@ return packer.startup(function(use)
 
 	-- git
 	-- Execute the `Show` command will result in `packer_compiled` error
-	use({ "lewis6991/gitsigns.nvim", keys = "<Leader>g", config = "require 'user.gitsigns'" })
+	use({ "lewis6991/gitsigns.nvim", keys = "<Leader>gs", config = "require 'user.gitsigns'" })
 
 	-- bufferline
 	use({
 		"akinsho/bufferline.nvim",
 		tag = "v2.*",
 		requires = "kyazdani42/nvim-web-devicons",
-		keys = "<Leader>b",
+		keys = "<Leader>bl",
 		config = "require 'user.bufferline'",
 	})
 
