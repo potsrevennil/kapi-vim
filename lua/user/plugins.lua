@@ -45,7 +45,7 @@ return packer.startup(function(use)
 	--auto completion
 	use({
 		"hrsh7th/nvim-cmp",
-        event = "InsertEnter",
+		event = "InsertEnter",
 		config = "require 'user.cmp'",
 		requires = {
 			{ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
@@ -58,12 +58,17 @@ return packer.startup(function(use)
 
 	-- LSP
 	use({
-        "williamboman/nvim-lsp-installer",
+		"williamboman/nvim-lsp-installer",
 		config = "require 'user.lsp.installer'",
-		requires = {{"neovim/nvim-lspconfig", config = "require 'user.lsp.config'.setup()"}},
+		requires = { { "neovim/nvim-lspconfig", config = "require 'user.lsp.config'.setup()" } },
 	})
 
-    use({"jose-elias-alvarez/null-ls.nvim", keys = "<Leader>nl", config = "require 'user.null-ls'", requires = "nvim-lua/plenary.nvim"})
+	use({
+		"jose-elias-alvarez/null-ls.nvim",
+		keys = "<Leader>nl",
+		config = "require 'user.null-ls'",
+		requires = "nvim-lua/plenary.nvim",
+	})
 
 	-- syntax highlighting
 	use({
