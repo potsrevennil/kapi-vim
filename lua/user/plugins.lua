@@ -45,6 +45,7 @@ return packer.startup(function(use)
 	--auto completion
 	use({
 		"hrsh7th/nvim-cmp",
+        event = "InsertEnter",
 		config = "require 'user.cmp'",
 		requires = {
 			{ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
