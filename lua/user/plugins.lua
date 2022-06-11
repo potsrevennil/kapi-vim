@@ -12,7 +12,6 @@ if fn.empty(fn.glob(install_path)) > 0 then
 		install_path,
 	})
 	print("Installing packer close and reopen Neovim...")
-	vim.cmd([[packadd packer.nvim]])
 end
 
 -- Autocommand that reloads neovim whenever you save the plugins.lua file
@@ -38,6 +37,7 @@ packer.init({
 })
 
 return packer.startup(function(use)
+	use("wbthomason/packer.nvim")
 	use({ "dstein64/vim-startuptime", opt = true })
 	use({ "nathom/filetype.nvim", config = "require 'user.filetype'" })
 	use({ "echasnovski/mini.nvim", branch = "stable", config = "require 'user.mini'" })
