@@ -58,9 +58,9 @@ return packer.startup(function(use)
 
 	-- LSP
 	use({
-		"neovim/nvim-lspconfig",
-		config = "require 'user.lsp'",
-		requires = { "williamboman/nvim-lsp-installer" },
+        "williamboman/nvim-lsp-installer",
+		config = "require 'user.lsp.installer'",
+		requires = {{"neovim/nvim-lspconfig", config = "require 'user.lsp.config'.setup()"}},
 	})
 
     use({"jose-elias-alvarez/null-ls.nvim", keys = "<Leader>nl", config = "require 'user.null-ls'", requires = "nvim-lua/plenary.nvim"})

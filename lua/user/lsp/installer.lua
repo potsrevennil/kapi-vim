@@ -8,8 +8,8 @@ end
 -- { "sumneko_lua", "bashls", "gopls", "hls", "rust_analyzer", "pylsp", "tsserver", "solidity_ls" }
 lsp_installer.on_server_ready(function(server)
 	local opts = {
-		on_attach = require("user.lsp.handlers").on_attach,
-		capabilities = require("user.lsp.handlers").capabilities,
+		on_attach = require("user.lsp.config").on_attach,
+		capabilities = require("user.lsp.config").capabilities,
 		flags = {
 			debounce_text_changes = 150,
 		},
