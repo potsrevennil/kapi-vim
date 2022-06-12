@@ -34,6 +34,7 @@ packer.init({
 			return require("packer.util").float({ border = "rounded" })
 		end,
 	},
+	autoremove = true,
 })
 
 return packer.startup(function(use)
