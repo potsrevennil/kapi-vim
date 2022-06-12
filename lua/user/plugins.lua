@@ -44,6 +44,8 @@ return packer.startup(function(use)
 	use({ "echasnovski/mini.nvim", branch = "stable", config = "require 'user.mini'" })
 
 	--auto completion
+	use({ "L3MON4D3/LuaSnip", event = "InsertEnter" })
+
 	use({
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
@@ -52,7 +54,6 @@ return packer.startup(function(use)
 			{ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
 			{ "hrsh7th/cmp-buffer", after = "nvim-cmp" },
 			{ "hrsh7th/cmp-path", after = "nvim-cmp" },
-			"L3MON4D3/LuaSnip",
 			{ "windwp/nvim-autopairs", after = "nvim-cmp", config = "require 'user.autopairs'" },
 		},
 	})
@@ -84,7 +85,28 @@ return packer.startup(function(use)
 	-- fuzzy finder
 	use({
 		"nvim-telescope/telescope.nvim",
-		requires = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", run = "make" } },
+		requires = {
+			"nvim-lua/plenary.nvim",
+			{
+				"nvim-telescope/telescope-fzf-native.nvim",
+				run = "make",
+				after = "telescope.nvim",
+				config = function()
+					require("telescope").setup({
+						extensions = {
+							fzf = {
+								fuzzy = true, -- false will only do exact matching
+								override_generic_sorter = true, -- override the generic sorter
+								override_file_sorter = true, -- override the file sorter
+								case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+							},
+						},
+					})
+
+					require("telescope").load_extension("fzf")
+				end,
+			},
+		},
 		keys = { "<Leader>ff", "<Leader>fg", "<Leader>fb", "<Leader>fh", "<Leader>fr" },
 		config = "require 'user.telescope'",
 	})
