@@ -80,7 +80,6 @@ return packer.startup(function(use)
 
 	use({
 		"jose-elias-alvarez/null-ls.nvim",
-		keys = "<Leader>nl",
 		config = "require 'user.null-ls'",
 		requires = "nvim-lua/plenary.nvim",
 	})
