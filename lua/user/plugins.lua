@@ -66,6 +66,19 @@ return packer.startup(function(use)
 	})
 
 	use({
+		"Julian/lean.nvim",
+		ft = "lean",
+		config = function()
+			require("lean").setup({
+				abbreviations = { builtin = true },
+				lsp = { on_attach = require("user.lsp.config").on_attach },
+				lsp3 = { on_attach = require("user.lsp.config").on_attach },
+				mappings = true,
+			})
+		end,
+	})
+
+	use({
 		"jose-elias-alvarez/null-ls.nvim",
 		keys = "<Leader>nl",
 		config = "require 'user.null-ls'",
