@@ -39,6 +39,7 @@ packer.init({
 
 return packer.startup(function(use)
 	use("wbthomason/packer.nvim")
+	use({ "lewis6991/impatient.nvim", config = "require 'impatient'" })
 	use({ "dstein64/vim-startuptime", opt = true })
 	use({ "nathom/filetype.nvim", config = "require 'user.filetype'" })
 	use({ "echasnovski/mini.nvim", branch = "stable", config = "require 'user.mini'" })
