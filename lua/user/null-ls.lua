@@ -34,7 +34,7 @@ null_ls.setup({
 		formatting.brittany,
 
 		-- rust
-		formatting.rustfmt,
+		-- formatting.rustfmt,
 
 		-- shell
 		formatting.shfmt,
