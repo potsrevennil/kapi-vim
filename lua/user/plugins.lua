@@ -120,7 +120,7 @@ return packer.startup(function(use)
 				end,
 			},
 		},
-		keys = { "<Leader>ff", "<Leader>fg", "<Leader>fb", "<Leader>fh", "<Leader>fr" },
+		keys = { "<Leader>ff", "<Leader>fg", "<Leader>fb", "<Leader>fh", "<Leader>fr", "<Leader>fl" },
 		config = "require 'user.telescope'",
 	})
 
