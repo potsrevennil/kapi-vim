@@ -19,3 +19,5 @@ keymap("n", "<Leader>dl", ":lua vim.diagnostic.setqflist()<CR>", opts)
 
 keymap("n", "<Leader>qf", ":lua vim.lsp.buf.code_action({only=quickfix})<CR>", opts)
 keymap("n", "<Leader>rf", ":lua vim.lsp.buf.code_action({only=refactor})<CR>", opts)
+
+keymap("n", "<F2>", ":silent! source ./.session.vim<CR>", opts)
