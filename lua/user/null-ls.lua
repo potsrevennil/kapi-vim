@@ -26,9 +26,9 @@ null_ls.setup({
 		diagnostics.flake8,
 
 		-- go
-		-- formatting.gofmt,
-		-- formatting.goimports,
-		-- diagnostics.staticcheck,
+		formatting.gofmt,
+		formatting.goimports,
+		diagnostics.staticcheck,
 
 		-- haskell
 		-- formatting.brittany,
