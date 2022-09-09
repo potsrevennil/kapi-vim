@@ -8,7 +8,7 @@ keymap("n", "<Leader>ff", ":lua vim.lsp.buf.formatting()<CR>", opts)
 
 keymap(
 	"n",
-	"<Leader><Leader>dv",
+	"<Leader>dv",
 	":lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>",
 	opts
 )
