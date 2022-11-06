@@ -9,7 +9,10 @@ return {
 				loadOutDirsFromCheck = true,
 			},
 			procMacro = {
-				enable = false,
+				enable = true,
+			},
+			checkOnSave = {
+				command = "clippy",
 			},
 		},
 	},
