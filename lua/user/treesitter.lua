@@ -4,7 +4,25 @@ if not status_ok then
 end
 
 configs.setup({
-	ensure_installed = "all",
+	ensure_installed = {
+		"bash",
+		"gitignore",
+		"go",
+		"gomod",
+		"javascript",
+		"json",
+		"lua",
+		"markdown",
+		"python",
+		"rust",
+		"sql",
+		"tlaplus",
+		"toml",
+		"typescript",
+		"vim",
+		"yaml",
+		"jsonnet",
+	},
 	sync_install = false,
 	autopairs = {
 		enable = true,
