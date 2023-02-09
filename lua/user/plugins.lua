@@ -61,22 +61,14 @@ return packer.startup(function(use)
 
 	-- LSP
 	use({
-		"williamboman/nvim-lsp-installer",
-		config = "require 'user.lsp.installer'",
-		requires = { { "neovim/nvim-lspconfig", config = "require 'user.lsp.config'.setup()" } },
-	})
-
-	use({
-		"Julian/lean.nvim",
-		ft = "lean",
+		"neovim/nvim-lspconfig",
 		config = function()
-			require("lean").setup({
-				abbreviations = { builtin = true },
-				lsp = { on_attach = require("user.lsp.config").on_attach },
-				lsp3 = { on_attach = require("user.lsp.config").on_attach },
-				mappings = true,
-			})
+			require("user.lsp").setup()
 		end,
+		requires = {
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+		},
 	})
 
 	use({

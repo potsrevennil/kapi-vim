@@ -1,31 +1,50 @@
-local status_ok, lsp_installer = pcall(require, "nvim-lsp-installer")
-if not status_ok then
-	return
-end
+local M = {}
 
--- Register a handler that will be called for all installed servers.
--- Alternatively, you may also register handlers on specific server instances instead (see example below).
--- { "sumneko_lua", "bashls", "gopls", "hls", "rust_analyzer", "pylsp", "tsserver", "solidity_ls" }
-lsp_installer.on_server_ready(function(server)
-	local opts = {
-		on_attach = require("user.lsp.config").on_attach,
-		capabilities = require("user.lsp.config").capabilities,
-		flags = {
-			debounce_text_changes = 150,
-		},
-	}
-
-	if server.name == "sumneko_lua" then
-		local sumneko_opts = require("user.lsp.settings.sumneko_lua")
-		opts = vim.tbl_deep_extend("force", sumneko_opts, opts)
+function M.setup(opts)
+	local status_ok, lspconfig = pcall(require, "lspconfig")
+	if not status_ok then
+		return
 	end
 
-    if server.name == "rust_analyzer" then
-        local rust_opts = require("user.lsp.settings.rust_analyzer")
-        opts = vim.tbl_deep_extend("force", rust_opts, opts)
-    end
+	require("mason").setup({
+		ui = {
+			icons = {
+				package_installed = "✓",
+				package_pending = "➜",
+				package_uninstalled = "✗",
+			},
+		},
+	})
+	require("mason-lspconfig").setup({
+		ensure_installed = {
+			"sumneko_lua",
+			"bashls",
+			"rust_analyzer",
+			"gopls",
+			"hls",
+			"pylsp",
+			"taplo",
+			"yamlls",
+			"jsonls",
+			"dockerls",
+		},
+	})
 
-	-- This setup() function is exactly the same as lspconfig's setup function.
-	-- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-	server:setup(opts)
-end)
+	require("mason-lspconfig").setup_handlers({
+		function(server_name)
+			if server_name == "sumneko_lua" then
+				local sumneko_opts = require("user.lsp.settings.sumneko_lua")
+				opts = vim.tbl_deep_extend("force", sumneko_opts, opts)
+			end
+
+			if server_name == "rust_analyzer" then
+				local rust_opts = require("user.lsp.settings.rust_analyzer")
+				opts = vim.tbl_deep_extend("force", rust_opts, opts)
+			end
+
+			lspconfig[server_name].setup(opts)
+		end,
+	})
+end
+
+return M
