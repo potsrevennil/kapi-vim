@@ -33,7 +33,7 @@ return {
                 experimental = {
                     enable = false,
                 },
-                disabled = { "unresolved-proc-macro" },
+                disabled = { "unresolved-method", "unresolved-proc-macro" },
             },
         },
     },
