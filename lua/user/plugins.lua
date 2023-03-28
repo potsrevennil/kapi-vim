@@ -133,6 +133,7 @@ return packer.startup(function(use)
 
     use({ "cocopon/iceberg.vim", opt = true })
     use({ "dracula/vim", as = "dracula" })
+    use({ "jbyuki/venn.nvim", keys = "<Leader>vb", config = "require 'user.vbox'" })
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
