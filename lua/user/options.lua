@@ -36,3 +36,6 @@ for k, v in pairs(options) do
 end
 
 vim.cmd("set whichwrap+=<,>,[,],h,l")
+
+vim.g.netrw_winsize = 10
+vim.g.netrw_banner = 0
