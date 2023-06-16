@@ -11,10 +11,10 @@ npairs.setup({
 		java = false,
 	},
 	disable_filetype = { "TelescopePrompt" },
-	enable_check_bracket_line = false,
+	enable_check_bracket_line = true,
 	ignored_next_char = "[%w%.:<-]",
 	fast_wrap = {
-		map = "<M-e>",
+		map = "<M-a>",
 		chars = { "{", "[", "(", '"', "'" },
 		pattern = [=[[%'%"%)%>%]%)%}%,]]=],
 		end_key = "$",
