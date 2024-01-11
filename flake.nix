@@ -68,9 +68,11 @@
               nixd
 
               # lua
+              lua
               lua-language-server
 
               # shell
+              nodePackages.bash-language-server
               shfmt
               shellcheck
 
@@ -96,6 +98,10 @@
               # C
               llvmPackages.clang
               clang-tools
+
+              # python
+              python3
+              python311Packages.python-lsp-server
             ];
           };
         };
