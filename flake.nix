@@ -50,6 +50,7 @@
                   telescope-nvim
                   mini-nvim
                   dracula-vim
+                  hardtime-nvim
                   markdown-preview-nvim
                 ];
                 opt = [ ];
