@@ -32,30 +32,39 @@
           # system.
 
           # Equivalent to  inputs'.nixpkgs.legacyPackages.hello;
-          packages.default = pkgs.wrapNeovim pkgs.neovim-unwrapped {
-            viAlias = true;
-            vimAlias = true;
-            configure = {
-              customRC =
-                ''
-                  lua package.path = "${LuaConfig}/lua/?.lua;${LuaConfig}/lua/?/init.lua;" .. package.path
-                  execute "source ${LuaConfig}/init.lua"
-                '';
-              packages.kapi-vim = with pkgs.vimPlugins; {
-                start = [
-                  nvim-lspconfig
-                  nvim-cmp
-                  cmp-nvim-lsp
-                  nvim-treesitter.withAllGrammars
-                  telescope-nvim
-                  mini-nvim
-                  dracula-vim
-                  hardtime-nvim
-                  markdown-preview-nvim
-                ];
-                opt = [ ];
-              };
-            };
+
+          packages.default = with pkgs; buildEnv {
+            name = "nvim";
+            paths = [
+              ripgrep
+              (pkgs.wrapNeovim
+                pkgs.neovim-unwrapped
+                {
+                  viAlias = true;
+                  vimAlias = true;
+                  configure = {
+                    customRC =
+                      ''
+                        lua package.path = "${LuaConfig}/lua/?.lua;${LuaConfig}/lua/?/init.lua;" .. package.path
+                        execute "source ${LuaConfig}/init.lua"
+                      '';
+                    packages.kapi-vim = with pkgs.vimPlugins; {
+                      start = [
+                        nvim-lspconfig
+                        nvim-cmp
+                        cmp-nvim-lsp
+                        nvim-treesitter.withAllGrammars
+                        telescope-nvim
+                        mini-nvim
+                        dracula-vim
+                        hardtime-nvim
+                        markdown-preview-nvim
+                      ];
+                      opt = [ ];
+                    };
+                  };
+                })
+            ];
           };
 
           packages.lsp = with pkgs; buildEnv {
