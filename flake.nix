@@ -60,6 +60,7 @@
                         dracula-vim
                         hardtime-nvim
                         markdown-preview-nvim
+                        vim-startuptime
                       ];
                       opt = [ ];
                     };
