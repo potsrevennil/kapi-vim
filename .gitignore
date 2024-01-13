@@ -1,5 +1,2 @@
-plugged
-plugin
-autoload
-.netrwhist
 .session.vim
+.direnv

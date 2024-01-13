@@ -120,6 +120,24 @@
               python311Packages.python-lsp-server
             ];
           };
+
+          devShells.default = with pkgs; mkShellNoCC {
+            packages = [
+              tokei
+
+              direnv
+              nix-direnv
+
+              nixpkgs-fmt
+              nixd
+
+              nodePackages.vim-language-server
+              lua
+              lua-language-server
+
+              codespell
+            ];
+          };
         };
       flake = {
         # The usual flake attributes can be defined here, including system-
