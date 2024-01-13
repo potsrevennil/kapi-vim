@@ -16,13 +16,12 @@
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
       perSystem = { config, self', inputs', pkgs, system, ... }:
         let
-          LuaConfig = pkgs.stdenv.mkDerivation {
-            name = builtins.baseNameOf self;
-            src = self;
+          nvimConfig = pkgs.stdenv.mkDerivation {
+            name = "nvim-config";
+            src = ./.;
             buildPhase = ''
-              source $stdenv/setup
               mkdir -p $out
-              cp -r ${self}/* $out/
+              cp -r * $out
             '';
           };
         in
@@ -33,21 +32,23 @@
 
           # Equivalent to  inputs'.nixpkgs.legacyPackages.hello;
 
-          packages.default = with pkgs; buildEnv {
+          packages.default = with pkgs; symlinkJoin {
             name = "nvim";
             paths = [
-              ripgrep
               (pkgs.wrapNeovim
                 pkgs.neovim-unwrapped
                 {
                   viAlias = true;
                   vimAlias = true;
                   configure = {
-                    customRC =
-                      ''
-                        lua package.path = "${LuaConfig}/lua/?.lua;${LuaConfig}/lua/?/init.lua;" .. package.path
-                        execute "source ${LuaConfig}/init.lua"
-                      '';
+                    customRC = ''
+                      lua << EOF
+                        vim.opt.rtp:append('${nvimConfig}')
+                    ''
+                    + builtins.readFile ./init.lua
+                    + ''
+                      EOF
+                    '';
                     packages.kapi-vim = with pkgs.vimPlugins; {
                       start = [
                         nvim-lspconfig
@@ -64,6 +65,9 @@
                     };
                   };
                 })
+
+              # runtime deps
+              ripgrep
             ];
           };
 
