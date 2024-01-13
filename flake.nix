@@ -81,6 +81,8 @@
               nixpkgs-fmt
               nixd
 
+              # vim
+              nodePackages.vim-language-server
               # lua
               lua
               lua-language-server
