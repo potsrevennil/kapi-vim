@@ -121,3 +121,5 @@ for _, server in ipairs(servers) do
     end
     lspconfig[server].setup(opts)
 end
+
+require("lsp.none-ls").setup(opts)

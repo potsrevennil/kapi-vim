@@ -52,6 +52,7 @@
                     packages.kapi-vim = with pkgs.vimPlugins; {
                       start = [
                         nvim-lspconfig
+                        none-ls-nvim
                         nvim-cmp
                         cmp-nvim-lsp
                         nvim-treesitter.withAllGrammars
@@ -119,6 +120,9 @@
               # python
               python3
               python311Packages.python-lsp-server
+
+              # git commit
+              commitlint
             ];
           };
 
@@ -139,6 +143,7 @@
 
               taplo
               codespell
+              commitlint
             ];
 
             shellHook = ''
