@@ -9,7 +9,7 @@
 
 local comment_status_ok, comment = pcall(require, "mini.comment")
 if not comment_status_ok then
-	return
+    return
 end
 
 comment.setup()

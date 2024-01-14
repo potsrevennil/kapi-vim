@@ -1,6 +1,6 @@
 return {
     settings = {
-        ['rust_analyzer'] = {
+        ["rust_analyzer"] = {
             imports = {
                 granularity = {
                     group = "module",

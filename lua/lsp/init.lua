@@ -84,16 +84,14 @@ local opts = {
         -- Configure formatting
         format_setup(client, bufnr)
     end,
-    capabilities = require("cmp_nvim_lsp").default_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
-    ),
+    capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     flags = {
         debounce_text_changes = 150,
     },
 }
 
 -- Setup LSP config
-require('lsp.handler').setup()
+require("lsp.handler").setup()
 
 local servers = {
     "lua_ls",
