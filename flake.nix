@@ -86,6 +86,7 @@
               # lua
               lua
               lua-language-server
+              stylua
 
               # shell
               nodePackages.bash-language-server
@@ -134,9 +135,15 @@
               nodePackages.vim-language-server
               lua
               lua-language-server
+              stylua
 
+              taplo
               codespell
             ];
+
+            shellHook = ''
+              export PATH=$PWD/bin:$PATH
+            '';
           };
         };
       flake = {
