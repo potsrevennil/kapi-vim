@@ -9,7 +9,7 @@ so that the installation won't take longer time than making a cup of coffee.
 
 ## Plugins
 
-https://github.com/potsrevennil/kapi-vim/blob/ec44714a274468d23bd242e99028fb31c38e1142/flake.nix#L44-L54
+https://github.com/potsrevennil/kapi-vim/blob/09950fe0fbd2eac223c23563495d1aacf85f0174/flake.nix#L52-L66
 
 ## Usage
 
