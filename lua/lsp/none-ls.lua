@@ -15,8 +15,12 @@ local sources = {
         extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" },
     }),
 
-    -- git commit
-    diagnostics.commitlint,
+    -- NOTE:
+    -- tmp comment out
+    -- as default config required commitlint-format-json, but the npm package cannot be found in nixpkgs
+    --
+    -- -- git commit
+    -- diagnostics.commitlint,
 
     -- lua
     formatting.stylua,
