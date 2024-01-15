@@ -19,3 +19,6 @@ stylua --verify "$ROOT"
 
 info "Formatting toml"
 taplo format "$ROOT"
+
+info "Chekcking misspellings"
+codespell "$ROOT"
