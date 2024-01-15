@@ -1,0 +1,98 @@
+default_stages: [commit]
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-json
+        exclude: ".vscode/.+.json"
+      - id: check-merge-conflict
+      - id: check-shebang-scripts-are-executable
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-vcs-permalinks
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+      - id: detect-private-key
+  - repo: local
+    hooks:
+      - id: codespell
+        name: codespell
+        description: Checks for common misspellings in text files
+        language: system
+        entry: codespell
+      - id: commitlint
+        name: commitlint
+        description: Lint your commit messages
+        stages: [commit-msg]
+        language: system
+        entry: commitlint
+        args:
+          - --edit
+        always_run: true
+        pass_filenames: false
+      - id: nixpkgs-fmt
+        name: nixpkgs-fmt
+        description: Format nix code with nixpkgs-fmt
+        language: system
+        entry: nixpkgs-fmt
+        types:
+          - file
+          - nix
+      - id: deadnix
+        name: deadnix
+        description: Scan Nix files for dead code
+        language: system
+        entry: deadnix
+        args:
+          - --fail
+          - --hidden
+        types:
+          - file
+          - nix
+      - id: shfmt
+        name: shfmt
+        description: Rewrites all shell scripts to a canonical format
+        language: system
+        entry: shfmt
+        args:
+          - --write
+          - --list
+          - --indent
+          - "2"
+        types:
+          - file
+          - shell
+      - id: shellcheck
+        name: shellcheck
+        description: Static analysis tool for shell scripts
+        language: system
+        entry: shellcheck
+        args:
+          - --check-sourced
+          - --shell
+          - bash
+        types:
+          - file
+          - shell
+      - id: taplo
+        name: taplo
+        language: system
+        entry: taplo
+        args:
+          - format
+        types:
+          - file
+          - toml
+      - id: stylua
+        name: stylua
+        language: system
+        entry: stylua
+        types:
+          - file
+          - lua
