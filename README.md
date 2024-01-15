@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Ka-pi(咖啡) means coffee in my native language. Hoping that my configuration will be customized and gernal enough,
+Ka-pi(咖啡) means coffee in my native language. Hoping that my configuration will be customized and general enough,
 so that the installation won't take longer time than making a cup of coffee.
 
 ## Table of Contents
