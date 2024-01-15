@@ -10,11 +10,11 @@
     };
   };
 
-  outputs = inputs@{ self, flake-parts, ... }:
+  outputs = inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [ ];
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
-      perSystem = { config, self', inputs', pkgs, system, ... }:
+      perSystem = { pkgs, ... }:
         let
           nvimConfig = pkgs.stdenv.mkDerivation {
             name = "nvim-config";
@@ -136,6 +136,7 @@
 
               nixpkgs-fmt
               nixd
+              deadnix
 
               nodePackages.vim-language-server
               lua
