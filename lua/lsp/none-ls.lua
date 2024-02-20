@@ -22,6 +22,9 @@ local sources = {
     -- -- git commit
     -- diagnostics.commitlint,
 
+    -- typst
+    formatting.typstfmt,
+
     -- lua
     formatting.stylua,
 

@@ -100,6 +100,11 @@
               yaml-language-server
               codespell
 
+              #typst
+              typst
+              typst-lsp
+              typstfmt
+
               # rust
               rustup
 

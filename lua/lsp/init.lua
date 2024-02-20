@@ -105,6 +105,7 @@ local servers = {
     "jsonls",
     "dockerls",
     "nixd",
+    "typst_lsp",
 }
 
 local status_ok, lspconfig = pcall(require, "lspconfig")
