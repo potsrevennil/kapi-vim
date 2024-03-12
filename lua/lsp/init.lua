@@ -106,6 +106,7 @@ local servers = {
     "dockerls",
     "nixd",
     "typst_lsp",
+    "clangd",
 }
 
 local status_ok, lspconfig = pcall(require, "lspconfig")
