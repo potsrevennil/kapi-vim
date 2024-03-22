@@ -4,13 +4,26 @@ if not status_ok then
     return
 end
 
+local _, telescopeConfig = pcall(require, "telescope.config")
+
+local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
+
+table.insert(vimgrep_arguments, "--hidden")
+table.insert(vimgrep_arguments, "--glob")
+table.insert(vimgrep_arguments, "!**/.git/*")
+
 telescope.setup({
     defaults = {
-        prompt_prefix = " ",
-        selection_caret = " ",
-        path_display = { "smart" },
+        -- prompt_prefix = " ",
+        -- selection_caret = " ",
+        -- path_display = { "smart" },
+        vimgrep_arguments = vimgrep_arguments,
     },
     pickers = {
+        find_files = {
+            -- `hidden = true` will still show the inside of `.git/` as it's not `.gitignore`d.
+            find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
+        },
         -- Default configuration for builtin pickers goes here:
         -- picker_name = {
         --   picker_config_key = value,
