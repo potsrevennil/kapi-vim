@@ -82,6 +82,8 @@
               # nix
               nixpkgs-fmt
               nixd
+              deadnix
+              statix
 
               # vim
               nodePackages.vim-language-server
@@ -143,6 +145,7 @@
               nixpkgs-fmt
               nixd
               deadnix
+              statix
 
               nodePackages.vim-language-server
               lua
