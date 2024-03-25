@@ -50,6 +50,7 @@ local sources = {
 
     diagnostics.codespell,
 
+    -- c
     formatting.astyle,
 }
 

@@ -50,8 +50,13 @@ end
 
 local function format_setup(client, bufnr)
     local enable = true
-    client.server_capabilities.documentFormattingProvider = enable
-    client.server_capabilities.documentRangeFormattingProvider = enable
+    if client.name ~= "null-ls" then
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+    else
+        client.server_capabilities.documentFormattingProvider = enable
+        client.server_capabilities.documentRangeFormattingProvider = enable
+    end
 
     if client.server_capabilities.documentFormattingProvider then
         local lsp_format_grp = vim.api.nvim_create_augroup("LspFormat", { clear = true })
