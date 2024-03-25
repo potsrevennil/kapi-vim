@@ -122,6 +122,7 @@
               # C
               llvmPackages.clang
               clang-tools
+              astyle
 
               # python
               python3

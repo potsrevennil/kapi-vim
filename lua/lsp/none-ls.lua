@@ -49,6 +49,8 @@ local sources = {
     }),
 
     diagnostics.codespell,
+
+    formatting.astyle,
 }
 
 function M.setup(opts)
