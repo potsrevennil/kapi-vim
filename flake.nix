@@ -12,9 +12,9 @@
 
   outputs = inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ ];
+      imports = [ flake-parts.flakeModules.easyOverlay ];
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
-      perSystem = { pkgs, ... }:
+      perSystem = { config, pkgs, ... }:
         let
           nvimConfig = pkgs.stdenv.mkDerivation {
             name = "nvim-config";
@@ -31,6 +31,10 @@
           # system.
 
           # Equivalent to  inputs'.nixpkgs.legacyPackages.hello;
+          overlayAttrs = {
+            kapi-vim = config.packages.default;
+            kapi-vim-lsp = config.packages.lsp;
+          };
 
           packages.default = with pkgs; symlinkJoin {
             name = "nvim";
