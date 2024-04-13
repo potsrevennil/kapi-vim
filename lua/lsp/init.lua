@@ -49,7 +49,7 @@ local function highlighter_setup(client)
 end
 
 local function format_setup(client, bufnr)
-    local enable = true
+    local enable = false
     if client.name ~= "null-ls" then
         client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.documentRangeFormattingProvider = false
@@ -112,6 +112,7 @@ local servers = {
     "nixd",
     "typst_lsp",
     "clangd",
+    "lean",
 }
 
 local status_ok, lspconfig = pcall(require, "lspconfig")
@@ -121,11 +122,15 @@ if not status_ok then
 end
 
 for _, server in ipairs(servers) do
-    local require_ok, conf_opts = pcall(require, "lsp.settings." .. server)
-    if require_ok then
-        opts = vim.tbl_deep_extend("force", conf_opts, opts)
+    if server == "lean" then
+        require("lean").setup(opts)
+    else
+        local require_ok, conf_opts = pcall(require, "lsp.settings." .. server)
+        if require_ok then
+            opts = vim.tbl_deep_extend("force", conf_opts, opts)
+        end
+        lspconfig[server].setup(opts)
     end
-    lspconfig[server].setup(opts)
 end
 
 require("lsp.none-ls").setup(opts)

@@ -67,6 +67,7 @@
                         hardtime-nvim
                         markdown-preview-nvim
                         vim-startuptime
+                        lean-nvim
                       ];
                       opt = [ ];
                     };
@@ -133,6 +134,9 @@
               # python
               python3
               python311Packages.python-lsp-server
+
+              # lean
+              lean4
 
               # git commit
               commitlint
