@@ -134,6 +134,7 @@
               # python
               python3
               python311Packages.python-lsp-server
+              python311Packages.black
 
               # lean
               lean4

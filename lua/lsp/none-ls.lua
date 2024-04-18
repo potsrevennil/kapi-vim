@@ -30,9 +30,7 @@ local sources = {
     formatting.stylua,
 
     -- python
-    formatting.yapf,
-    -- formatting.black.with({ extra_args = { "--fast" } }),
-    diagnostics.flake8,
+    formatting.black.with({ extra_args = { "--fast" } }),
 
     -- go
     formatting.goimports,
