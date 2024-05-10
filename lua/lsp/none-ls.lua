@@ -36,12 +36,6 @@ local sources = {
     formatting.goimports,
     diagnostics.golangci_lint,
 
-    -- haskell
-    formatting.brittany,
-
-    -- rust
-    formatting.rustfmt,
-
     -- shell
     formatting.shfmt.with({
         extra_args = { "-s", "-i", "2", "-ci", "-fn" },
