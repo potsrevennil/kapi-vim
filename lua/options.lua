@@ -27,6 +27,7 @@ local options = {
     foldexpr = "nvim_treesitter#foldexpr()",
     termguicolors = true,
     virtualedit = "all", -- cursor can be placed anywhere
+    shortmess = "aoOtTICF",
 }
 
 vim.opt.path:append("**")
