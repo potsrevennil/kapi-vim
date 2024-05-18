@@ -21,8 +21,35 @@
             src = ./.;
             buildPhase = ''
               mkdir -p $out
-              cp -r * $out
+              cp -r ftdetect $out/
+              cp -r ftplugin $out/
+              cp -r lua $out/
+              cp -r init.lua $out/
             '';
+          };
+
+          sharedPkgs = builtins.attrValues {
+            inherit (pkgs)
+              tokei
+
+              direnv
+              nix-direnv
+
+              nixpkgs-fmt
+              nixd
+              deadnix
+              statix
+
+              lua
+              lua-language-server
+              stylua
+
+              taplo
+              codespell
+              commitlint;
+
+            inherit (pkgs.nodePackages)
+              vim-language-server;
           };
         in
         {
@@ -39,137 +66,99 @@
           packages.default = pkgs.symlinkJoin {
             name = "nvim";
             paths = [
-              (pkgs.wrapNeovim
-                pkgs.neovim-unwrapped
-                {
-                  viAlias = true;
-                  vimAlias = true;
-                  configure = {
-                    customRC = ''
-                      lua << EOF
-                        vim.opt.rtp:append('${nvimConfig}')
-                    ''
-                    + builtins.readFile ./init.lua
-                    + ''
-                      EOF
-                    '';
-                    packages.kapi-vim = with pkgs.vimPlugins; {
-                      start = [
-                        nvim-lspconfig
-                        none-ls-nvim
-                        nvim-cmp
-                        cmp-nvim-lsp
-                        luasnip
-                        nvim-treesitter.withAllGrammars
-                        telescope-nvim
-                        mini-nvim
-                        dracula-vim
-                        hardtime-nvim
-                        markdown-preview-nvim
-                        vim-startuptime
-                        lean-nvim
-                      ];
-                      opt = [ ];
-                    };
-                  };
-                })
-
-              # runtime deps
+              (pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
+                viAlias = true;
+                vimAlias = true;
+                wrapperArgs = [
+                  "--add-flags"
+                  ''-u ${nvimConfig}/init.lua''
+                  "--add-flags"
+                  ''--cmd "set rtp^=${nvimConfig}"''
+                ];
+                wrapRc = false;
+                packpathDirs.myNeovimPackages = with pkgs.vimPlugins; {
+                  start = [
+                    nvim-lspconfig
+                    none-ls-nvim
+                    nvim-cmp
+                    cmp-nvim-lsp
+                    luasnip
+                    nvim-treesitter.withAllGrammars
+                    telescope-nvim
+                    mini-nvim
+                    dracula-vim
+                    hardtime-nvim
+                    markdown-preview-nvim
+                    vim-startuptime
+                    lean-nvim
+                  ];
+                };
+              })
               pkgs.ripgrep
             ];
           };
 
-          packages.lsp = with pkgs; buildEnv {
-            name = "LSP";
-            paths = [
-              tokei
+          packages.lsp = pkgs.buildEnv
+            {
+              name = "LSP";
+              paths = sharedPkgs ++ builtins.attrValues {
+                inherit (pkgs)
+                  # shell
+                  shfmt
+                  shellcheck
 
-              # nix
-              nixpkgs-fmt
-              nixd
-              deadnix
-              statix
+                  # toml, yaml
+                  yaml-language-server
 
-              # vim
-              nodePackages.vim-language-server
-              # lua
-              lua
-              lua-language-server
-              stylua
+                  #typst
+                  typst
+                  typst-lsp
+                  typstfmt
 
-              # shell
-              nodePackages.bash-language-server
-              shfmt
-              shellcheck
+                  # rust
+                  rustup
 
-              # toml, yaml
-              taplo
-              yaml-language-server
-              codespell
+                  # go
+                  go
+                  gopls
+                  golangci-lint
+                  gotools
+                  govulncheck
 
-              #typst
-              typst
-              typst-lsp
-              typstfmt
+                  # haskell
+                  ghc
+                  haskell-language-server
 
-              # rust
-              rustup
+                  # C
+                  clang-tools
+                  astyle
 
-              # go
-              go
-              gopls
-              golangci-lint
-              gotools
-              govulncheck
+                  # python
+                  python3
 
-              # haskell
-              ghc
-              haskell-language-server
+                  # lean
+                  lean4;
 
-              # C
-              llvmPackages.clang
-              clang-tools
-              astyle
+                inherit (pkgs.llvmPackages)
+                  clang;
 
-              # python
-              python3
-              python311Packages.python-lsp-server
-              python311Packages.black
+                inherit (pkgs.python311Packages)
+                  python-lsp-server
+                  black;
 
-              # lean
-              lean4
+                inherit (pkgs.nodePackages)
+                  bash-language-server;
+              };
+            };
 
-              # git commit
-              commitlint
-            ];
-          };
+          devShells. default = pkgs.mkShellNoCC
+            {
+              packages = sharedPkgs;
 
-          devShells.default = with pkgs; mkShellNoCC {
-            packages = [
-              tokei
-
-              direnv
-              nix-direnv
-
-              nixpkgs-fmt
-              nixd
-              deadnix
-              statix
-
-              nodePackages.vim-language-server
-              lua
-              lua-language-server
-              stylua
-
-              taplo
-              codespell
-              commitlint
-            ];
-
-            shellHook = ''
-              export PATH=$PWD/bin:$PATH
-            '';
-          };
+              shellHook = ''
+                export PATH=$PWD/bin:$PATH
+              '';
+            };
         };
       flake = {
         # The usual flake attributes can be defined here, including system-
