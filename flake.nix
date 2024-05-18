@@ -60,11 +60,13 @@
           # Equivalent to  inputs'.nixpkgs.legacyPackages.hello;
           overlayAttrs = {
             kapi-vim = config.packages.default;
+            kapi-vim-base = config.packages.base;
             kapi-vim-lsp = config.packages.lsp;
           };
 
+          # plug-and-play neovim, no additional setup needed
           packages.default = pkgs.symlinkJoin {
-            name = "nvim";
+            name = "kapi-vim";
             paths = [
               (pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
                 viAlias = true;
@@ -98,9 +100,39 @@
             ];
           };
 
+          # nvim with built-in dependencies, customize to your liking
+          packages.base = pkgs.symlinkJoin {
+            name = "kapi-vim-base";
+            paths = [
+              (pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
+                viAlias = true;
+                vimAlias = true;
+                wrapRc = false;
+                packpathDirs.myNeovimPackages = with pkgs.vimPlugins; {
+                  start = [
+                    nvim-lspconfig
+                    none-ls-nvim
+                    nvim-cmp
+                    cmp-nvim-lsp
+                    luasnip
+                    nvim-treesitter.withAllGrammars
+                    telescope-nvim
+                    mini-nvim
+                    dracula-vim
+                    hardtime-nvim
+                    markdown-preview-nvim
+                    vim-startuptime
+                    lean-nvim
+                  ];
+                };
+              })
+              pkgs.ripgrep
+            ];
+          };
+
           packages.lsp = pkgs.buildEnv
             {
-              name = "LSP";
+              name = "kapi-vim-lsp";
               paths = sharedPkgs ++ builtins.attrValues {
                 inherit (pkgs)
                   # shell
