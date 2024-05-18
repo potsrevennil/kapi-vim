@@ -2,7 +2,7 @@
   description = "kapi-vim";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -36,7 +36,7 @@
             kapi-vim-lsp = config.packages.lsp;
           };
 
-          packages.default = with pkgs; symlinkJoin {
+          packages.default = pkgs.symlinkJoin {
             name = "nvim";
             paths = [
               (pkgs.wrapNeovim
@@ -75,7 +75,7 @@
                 })
 
               # runtime deps
-              ripgrep
+              pkgs.ripgrep
             ];
           };
 
