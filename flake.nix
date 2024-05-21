@@ -165,7 +165,7 @@
                   astyle
 
                   # python
-                  python3
+                  python313
 
                   # lean
                   lean4;
