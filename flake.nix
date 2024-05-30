@@ -164,9 +164,6 @@
                   clang-tools
                   astyle
 
-                  # python
-                  python313
-
                   # lean
                   lean4;
 
@@ -174,6 +171,7 @@
                   clang;
 
                 inherit (pkgs.python311Packages)
+                  python
                   python-lsp-server
                   black;
 
