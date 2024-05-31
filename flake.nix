@@ -161,14 +161,14 @@
                   haskell-language-server
 
                   # C
-                  clang-tools
+                  # clang-tools
                   astyle
 
                   # lean
                   lean4;
 
-                inherit (pkgs.llvmPackages)
-                  clang;
+                # inherit (pkgs.llvmPackages)
+                #   clang;
 
                 inherit (pkgs.python311Packages)
                   python
