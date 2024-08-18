@@ -3,10 +3,4 @@ if vim.loader then
 end
 require("options")
 require("keymaps")
-require("colorscheme")
-require("lsp")
-require("user.cmp")
-require("user.telescope")
-require("user.treesitter")
-
-require("hardtime").setup()
+require("user.plugins")

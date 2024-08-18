@@ -109,19 +109,7 @@
                 wrapRc = false;
                 packpathDirs.myNeovimPackages = with pkgs.vimPlugins; {
                   start = [
-                    nvim-lspconfig
-                    none-ls-nvim
-                    nvim-cmp
-                    cmp-nvim-lsp
-                    luasnip
-                    nvim-treesitter.withAllGrammars
-                    telescope-nvim
-                    mini-nvim
-                    dracula-vim
-                    hardtime-nvim
-                    markdown-preview-nvim
-                    vim-startuptime
-                    lean-nvim
+                    lazy-nvim
                   ];
                 };
               })
