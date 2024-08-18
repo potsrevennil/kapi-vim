@@ -52,16 +52,18 @@ return {
         telescope.load_extension("live_grep_args")
     end,
     init = function()
-        vim.api.nvim_set_keymap("", "<leader>ff", ":Telescope find_files<cr>", { noremap = true, silent = true })
-        vim.api.nvim_set_keymap(
+        local builtin = require("telescope.builtin")
+        vim.keymap.set("", "<leader>ff", builtin.find_files, { noremap = true, silent = true })
+        vim.keymap.set(
             "",
             "<leader>fg",
             ":lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
             { noremap = true, silent = true }
         )
-        vim.api.nvim_set_keymap("", "<leader>fb", ":Telescope buffers<cr>", { noremap = true, silent = true })
-        vim.api.nvim_set_keymap("", "<leader>fh", ":Telescope help_tags<cr>", { noremap = true, silent = true })
-        vim.api.nvim_set_keymap("", "<leader>fr", ":Telescope resume<cr>", { noremap = true, silent = true })
-        vim.api.nvim_set_keymap("", "<leader>fl", ":Telescope lsp_references<cr>", { noremap = true, silent = true })
+        vim.keymap.set("", "<leader>fb", builtin.buffers, { noremap = true, silent = true })
+        vim.keymap.set("", "<leader>fh", builtin.help_tags, { noremap = true, silent = true })
+        vim.keymap.set("", "<leader>fr", builtin.resume, { noremap = true, silent = true })
+        vim.keymap.set("", "<leader>fl", builtin.lsp_references, { noremap = true, silent = true })
+        vim.keymap.set("", "<leader>fw", builtin.grep_string, { noremap = true, silent = true })
     end,
 }
