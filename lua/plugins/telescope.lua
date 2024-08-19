@@ -55,17 +55,21 @@ return {
     end,
     init = function()
         local builtin = require("telescope.builtin")
-        vim.keymap.set("", "<leader>ff", builtin.find_files, { noremap = true, silent = true })
-        vim.keymap.set(
+        local keymap = function(mode, lhs, rhs, desc)
+            vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, desc = desc })
+        end
+
+        keymap("", "<leader>ff", builtin.find_files, "Find files")
+        keymap(
             "",
             "<leader>fg",
             ":lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
-            { noremap = true, silent = true }
+            "Grep string"
         )
-        vim.keymap.set("", "<leader>fb", builtin.buffers, { noremap = true, silent = true })
-        vim.keymap.set("", "<leader>fh", builtin.help_tags, { noremap = true, silent = true })
-        vim.keymap.set("", "<leader>fr", builtin.resume, { noremap = true, silent = true })
-        vim.keymap.set("", "<leader>fl", builtin.lsp_references, { noremap = true, silent = true })
-        vim.keymap.set("", "<leader>fw", builtin.grep_string, { noremap = true, silent = true })
+        keymap("n", "<leader>fb", builtin.buffers, "Find buffer")
+        keymap("n", "<leader>fh", builtin.help_tags, "Help tags")
+        keymap("n", "<leader>fr", builtin.resume, "Resume")
+        keymap("n", "<leader>fl", builtin.lsp_references, "Find reference")
+        keymap("n", "<leader>fw", builtin.grep_string, "Find under cursor")
     end,
 }

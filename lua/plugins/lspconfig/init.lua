@@ -49,23 +49,24 @@ function user.init()
 end
 
 function user.keymap(eb)
-    local keymap = function(mode, lhs, rhs, buf)
-        vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = buf })
+    local keymap = function(mode, lhs, rhs, desc, buf)
+        vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = buf, desc = desc })
     end
 
     -- key mapping
-    keymap("n", "<space>e", vim.diagnostic.open_float)
-    keymap("n", "<space>q", vim.diagnostic.setloclist)
+    keymap("n", "<space>e", vim.diagnostic.open_float, "vim.diagnostic.open_float")
+    keymap("n", "<space>q", vim.diagnostic.setloclist, "vim.diagnostic.setloclist")
 
-    keymap("n", "<space>.", vim.lsp.buf.definition, eb)
-    keymap("n", "<space>k", vim.lsp.buf.hover, eb)
-    keymap("n", "gd", vim.lsp.buf.definition, eb)
-    keymap("n", "gD", vim.lsp.buf.declaration, eb)
-    keymap("n", "gi", vim.lsp.buf.implementation, eb)
-    keymap("n", "go", vim.lsp.buf.type_definition, eb)
-    keymap("n", "gr", vim.lsp.buf.references, eb)
-    keymap("n", "<space>rn", vim.lsp.buf.rename, eb)
-    keymap("n", "<space>f", vim.lsp.buf.format, eb)
+    keymap("n", "<space>.", vim.lsp.buf.definition, "vim.lsp.buf.definition", eb)
+    keymap("n", "<space>k", vim.lsp.buf.hover, "Hover", eb)
+    keymap("n", "gd", vim.lsp.buf.definition, "Definition", eb)
+    keymap("n", "gD", vim.lsp.buf.declaration, "Declaration", eb)
+    keymap("n", "gi", vim.lsp.buf.implementation, "Implementation", eb)
+    keymap("n", "go", vim.lsp.buf.type_definition, "Type definition", eb)
+    keymap("n", "<space>rn", vim.lsp.buf.rename, "Rename", eb)
+    keymap("n", "gra", vim.lsp.buf.code_action, "Code action", eb)
+    keymap("n", "grr", vim.lsp.buf.references, "References", eb)
+    keymap("n", "gq", vim.lsp.buf.format, "Format", eb)
 end
 
 -- semantic highlight

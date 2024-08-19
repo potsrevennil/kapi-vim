@@ -60,12 +60,6 @@ return {
                 if client.server_capabilities.documentFormattingProvider then
                     if client.name == "null-ls" and is_null_ls_formatting_enabled(buf) or client.name ~= "null-ls" then
                         vim.bo[buf].formatexpr = "v:lua.vim.lsp.formatexpr()"
-                        vim.keymap.set(
-                            "n",
-                            "<leader>gq",
-                            "<cmd>lua vim.lsp.buf.format({ async = true })<CR>",
-                            { noremap = true, silent = true, buffer = buf }
-                        )
                     else
                         vim.bo[buf].formatexpr = nil
                     end
