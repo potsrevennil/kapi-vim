@@ -1,7 +1,13 @@
 return {
     "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
     opts = {
-        sync_install = false,
+        ensure_installed = {
+            "vimdoc",
+            "luadoc",
+            "vim",
+            "lua",
+        },
         autopairs = {
             enable = true,
         },
