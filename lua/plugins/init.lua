@@ -1,5 +1,5 @@
 return {
-    "dstein64/vim-startuptime",
+    { "dstein64/vim-startuptime",    cmd = "StartupTime" },
     { "nvim-tree/nvim-web-devicons", opts = {} },
     {
         "folke/which-key.nvim",
