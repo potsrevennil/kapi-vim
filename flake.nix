@@ -131,7 +131,7 @@
 
                   #typst
                   typst
-                  typst-lsp
+                  # typst-lsp # need fix
                   typstfmt
 
                   # rust
