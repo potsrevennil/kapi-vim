@@ -30,6 +30,7 @@
 
           sharedPkgs = builtins.attrValues {
             inherit (pkgs)
+              tree-sitter
               tokei
 
               direnv
@@ -40,14 +41,18 @@
               deadnix
               statix
 
-              lua
               lua-language-server
               stylua
 
               taplo
               codespell
-              commitlint;
+              commitlint
+              prettierd
+              ;
 
+            inherit (pkgs.lua54Packages)
+              lua
+              luarocks;
             inherit (pkgs.nodePackages)
               vim-language-server;
           };
@@ -80,18 +85,7 @@
                 wrapRc = false;
                 packpathDirs.myNeovimPackages = with pkgs.vimPlugins; {
                   start = [
-                    nvim-lspconfig
-                    none-ls-nvim
-                    nvim-cmp
-                    cmp-nvim-lsp
-                    luasnip
-                    nvim-treesitter.withAllGrammars
-                    telescope-nvim
-                    dracula-vim
-                    hardtime-nvim
-                    markdown-preview-nvim
-                    vim-startuptime
-                    lean-nvim
+                    lazy-nvim
                   ];
                 };
               })
