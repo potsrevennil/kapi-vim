@@ -1,6 +1,5 @@
 return {
     settings = {
-
         Lua = {
             runtime = {
                 -- LuaJIT in the case of Neovim
