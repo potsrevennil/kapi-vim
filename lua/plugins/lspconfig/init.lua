@@ -66,7 +66,6 @@ function user.keymap(eb)
     keymap("n", "<space>rn", vim.lsp.buf.rename, "Rename", eb)
     keymap("n", "gra", vim.lsp.buf.code_action, "Code action", eb)
     keymap("n", "grr", vim.lsp.buf.references, "References", eb)
-    keymap("n", "gq", vim.lsp.buf.format, "Format", eb)
 end
 
 -- semantic highlight

@@ -126,7 +126,7 @@
                   #typst
                   typst
                   # typst-lsp # need fix
-                  typstfmt
+                  typstyle
 
                   # rust
                   rustup
