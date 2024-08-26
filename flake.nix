@@ -28,34 +28,7 @@
             '';
           };
 
-          sharedPkgs = builtins.attrValues {
-            inherit (pkgs)
-              tree-sitter
-              tokei
-
-              direnv
-              nix-direnv
-
-              nixpkgs-fmt
-              nixd
-              deadnix
-              statix
-
-              lua-language-server
-              stylua
-
-              taplo
-              codespell
-              commitlint
-              prettierd
-              ;
-
-            inherit (pkgs.lua54Packages)
-              lua
-              luarocks;
-            inherit (pkgs.nodePackages)
-              vim-language-server;
-          };
+          lspPkgs = pkgs.callPackage ./lsp.nix { };
         in
         {
           # Per-system attributes can be defined here. The self' and inputs'
@@ -114,57 +87,12 @@
           packages.lsp = pkgs.buildEnv
             {
               name = "kapi-vim-lsp";
-              paths = sharedPkgs ++ builtins.attrValues {
-                inherit (pkgs)
-                  # shell
-                  shfmt
-                  shellcheck
-
-                  # toml, yaml
-                  yaml-language-server
-
-                  #typst
-                  typst
-                  # typst-lsp # need fix
-                  typstyle
-
-                  # rust
-                  rustup
-
-                  # go
-                  go
-                  gopls
-                  golangci-lint
-                  gotools
-                  govulncheck
-
-                  # haskell
-                  ghc
-                  haskell-language-server
-
-                  # C
-                  # clang-tools
-                  astyle
-
-                  # lean
-                  lean4;
-
-                # inherit (pkgs.llvmPackages)
-                #   clang;
-
-                inherit (pkgs.python311Packages)
-                  python
-                  python-lsp-server
-                  black;
-
-                inherit (pkgs.nodePackages)
-                  bash-language-server;
-              };
+              path = lspPkgs;
             };
 
           devShells. default = pkgs.mkShellNoCC
             {
-              packages = sharedPkgs;
+              packages = lspPkgs;
 
               shellHook = ''
                 export PATH=$PWD/bin:$PATH
