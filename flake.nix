@@ -16,17 +16,33 @@
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
       perSystem = { config, pkgs, ... }:
         let
-          nvimConfig = pkgs.stdenv.mkDerivation {
-            name = "nvim-config";
+          kapiVimRC = pkgs.stdenv.mkDerivation {
+            name = "kapi-vim-rc";
             src = ./.;
             buildPhase = ''
               mkdir -p $out
               cp -r ftdetect $out/
-              cp -r ftplugin $out/
               cp -r lua $out/
               cp -r init.lua $out/
+              cp -r filetype.lua $out/
+              cp -r lazy-lock.json $out/
             '';
           };
+
+          kapiVimConfig = pkgs.neovimUtils.makeNeovimConfig {
+            viAlias = true;
+            vimAlias = true;
+            wrapRc = false;
+            plugins = [ pkgs.vimPlugins.lazy-nvim ];
+          };
+
+          wrapKapiVim = pkgs.wrapNeovimUnstable (
+            pkgs.neovim-unwrapped.overrideAttrs (
+              old: {
+                buildInputs = old.buildInputs ++ builtins.attrValues { inherit (pkgs) tree-sitter ripgrep; };
+              }
+            )
+          );
 
           lspPkgs = pkgs.callPackage ./lsp.nix { };
         in
@@ -43,54 +59,22 @@
           };
 
           # plug-and-play neovim, no additional setup needed
-          packages.default = pkgs.symlinkJoin {
-            name = "kapi-vim";
-            paths = [
-              (pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
-                viAlias = true;
-                vimAlias = true;
-                wrapperArgs = [
-                  "--add-flags"
-                  ''-u ${nvimConfig}/init.lua''
-                  "--add-flags"
-                  ''--cmd "set rtp^=${nvimConfig}"''
-                ];
-                wrapRc = false;
-                packpathDirs.myNeovimPackages = with pkgs.vimPlugins; {
-                  start = [
-                    lazy-nvim
-                  ];
-                };
-              })
-              pkgs.ripgrep
-            ];
-          };
+          packages.default =
+            wrapKapiVim (kapiVimConfig // {
+              wrapperArgs = [
+                "--add-flags"
+                ''-u ${kapiVimRC}/init.lua''
+                "--add-flags"
+                ''--cmd "set rtp^=${kapiVimRC}"''
+              ];
+            });
 
-          # nvim with built-in dependencies, customize to your liking
-          packages.base = pkgs.symlinkJoin {
-            name = "kapi-vim-base";
-            paths = [
-              (pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
-                viAlias = true;
-                vimAlias = true;
-                wrapRc = false;
-                packpathDirs.myNeovimPackages = with pkgs.vimPlugins; {
-                  start = [
-                    lazy-nvim
-                  ];
-                };
-              })
-              pkgs.ripgrep
-            ];
-          };
+          # nvim with built-in dependencies, but without any configuration
+          packages.base = wrapKapiVim kapiVimConfig;
 
-          packages.lsp = pkgs.buildEnv
-            {
-              name = "kapi-vim-lsp";
-              path = lspPkgs;
-            };
+          packages.lsp = lspPkgs;
 
-          devShells. default = pkgs.mkShellNoCC
+          devShells.default = pkgs.mkShellNoCC
             {
               packages = lspPkgs;
 
