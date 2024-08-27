@@ -36,13 +36,17 @@
             plugins = [ pkgs.vimPlugins.lazy-nvim ];
           };
 
-          wrapKapiVim = pkgs.wrapNeovimUnstable (
-            pkgs.neovim-unwrapped.overrideAttrs (
-              _: {
-                propagatedBuildInputs = builtins.attrValues { inherit (pkgs) tree-sitter ripgrep; };
-              }
-            )
-          );
+          wrapKapiVim = pname: conf: pkgs.buildEnv {
+            name = pname;
+            paths =
+              builtins.attrValues {
+                nvim = pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped conf;
+
+                inherit (pkgs)
+                  tree-sitter
+                  ripgrep;
+              };
+          };
 
           lspPkgs = pkgs.callPackage ./lsp { };
         in
@@ -60,7 +64,7 @@
 
           # plug-and-play neovim, no additional setup needed
           packages.default =
-            wrapKapiVim (kapiVimConfig // {
+            wrapKapiVim "kapi-vim" (kapiVimConfig // {
               wrapperArgs = [
                 "--add-flags"
                 ''-u ${kapiVimRC}/init.lua''
@@ -70,7 +74,7 @@
             });
 
           # nvim with built-in dependencies, but without any configuration
-          packages.base = wrapKapiVim kapiVimConfig;
+          packages.base = wrapKapiVim "kapi-vim-base" kapiVimConfig;
 
           packages.lsp = pkgs.buildEnv {
             name = "kapi-vim-lsp";
