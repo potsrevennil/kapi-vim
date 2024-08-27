@@ -72,7 +72,10 @@
           # nvim with built-in dependencies, but without any configuration
           packages.base = wrapKapiVim kapiVimConfig;
 
-          packages.lsp = lspPkgs;
+          packages.lsp = pkgs.buildEnv {
+            name = "kapi-vim-lsp";
+            paths = lspPkgs;
+          };
 
           devShells.default = pkgs.mkShellNoCC
             {
