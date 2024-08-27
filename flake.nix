@@ -44,7 +44,7 @@
             )
           );
 
-          lspPkgs = pkgs.callPackage ./lsp.nix { };
+          lspPkgs = pkgs.callPackage ./lsp { };
         in
         {
           # Per-system attributes can be defined here. The self' and inputs'

@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, ... }:
 let
   nixPkgs = builtins.attrValues {
     inherit (pkgs)
@@ -49,8 +49,8 @@ let
   typstPkgs = builtins.attrValues {
     inherit (pkgs)
       typst
-      # typst-lsp # need fix
-      typstyle;
+      typstyle
+      typst-lsp;
   };
 
   goPkgs = builtins.attrValues {
