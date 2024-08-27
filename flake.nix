@@ -38,8 +38,8 @@
 
           wrapKapiVim = pkgs.wrapNeovimUnstable (
             pkgs.neovim-unwrapped.overrideAttrs (
-              old: {
-                buildInputs = old.buildInputs ++ builtins.attrValues { inherit (pkgs) tree-sitter ripgrep; };
+              _: {
+                propagatedBuildInputs = builtins.attrValues { inherit (pkgs) tree-sitter ripgrep; };
               }
             )
           );
@@ -79,7 +79,7 @@
 
           devShells.default = pkgs.mkShellNoCC
             {
-              packages = lspPkgs;
+              packages = lspPkgs ++ [ config.packages.base ];
 
               shellHook = ''
                 export PATH=$PWD/bin:$PATH

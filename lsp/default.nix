@@ -14,7 +14,6 @@ let
 
   vimPkgs = builtins.attrValues {
     inherit (pkgs)
-      tree-sitter
       lua-language-server
       stylua;
     inherit (pkgs.lua54Packages)
