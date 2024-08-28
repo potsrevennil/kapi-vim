@@ -61,8 +61,14 @@ let
       govulncheck;
   };
 in
-builtins.attrValues {
-  inherit nixPkgs vimPkgs mkPkgs pyPkgs shPkgs goPkgs typstPkgs;
+nixPkgs
+++ vimPkgs
+++ mkPkgs
+++ pyPkgs
+++ shPkgs
+++ goPkgs
+++ typstPkgs
+++ builtins.attrValues {
   inherit (pkgs)
     tokei
     codespell
