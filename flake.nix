@@ -36,19 +36,31 @@
             plugins = [ pkgs.vimPlugins.lazy-nvim ];
           };
 
-          wrapKapiVim = pname: conf: pkgs.buildEnv {
-            name = pname;
-            paths =
-              builtins.attrValues {
-                nvim = pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped conf;
-
-                inherit (pkgs)
-                  tree-sitter
-                  ripgrep;
-              };
-          };
-
-          lspPkgs = pkgs.callPackage ./lsp { };
+          wrapKapiVim =
+            { pname, conf }:
+            { enable_markdown ? true
+            , enable_python ? true
+            , enable_shell ? true
+            , enable_typst ? true
+            , enable_c ? true
+            , enable_rust ? true
+            , enable_go ? true
+            , enable_haskell ? false
+            , enable_lean ? false
+            }: pkgs.buildEnv {
+              name = pname;
+              paths =
+                pkgs.callPackage ./lsp
+                  {
+                    inherit enable_markdown enable_python enable_shell enable_typst enable_c enable_rust enable_go enable_haskell enable_lean;
+                  } ++
+                builtins.attrValues {
+                  nvim = pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped conf;
+                  inherit (pkgs)
+                    tree-sitter
+                    ripgrep;
+                };
+            };
         in
         {
           # Per-system attributes can be defined here. The self' and inputs'
@@ -58,32 +70,35 @@
           # Equivalent to  inputs'.nixpkgs.legacyPackages.hello;
           overlayAttrs = {
             kapi-vim = config.packages.default;
-            kapi-vim-base = config.packages.base;
-            kapi-vim-lsp = config.packages.lsp;
+            kapi-vim-bundle = config.packages.bundle;
           };
-
-          # plug-and-play neovim, no additional setup needed
-          packages.default =
-            wrapKapiVim "kapi-vim" (kapiVimConfig // {
-              wrapperArgs = [
-                "--add-flags"
-                ''-u ${kapiVimRC}/init.lua''
-                "--add-flags"
-                ''--cmd "set rtp^=${kapiVimRC}"''
-              ];
-            });
 
           # nvim with built-in dependencies, but without any configuration
-          packages.base = wrapKapiVim "kapi-vim-base" kapiVimConfig;
+          packages.default = pkgs.lib.makeOverridable
+            (wrapKapiVim {
+              pname = "kapi-vim";
+              conf = kapiVimConfig;
+            })
+            { };
 
-          packages.lsp = pkgs.buildEnv {
-            name = "kapi-vim-lsp";
-            paths = lspPkgs;
-          };
+          # plug-and-play neovim, no additional setup needed
+          packages.bundle = pkgs.lib.makeOverridable
+            (wrapKapiVim {
+              pname = "kapi-vim-bundle";
+              conf = kapiVimConfig // {
+                wrapperArgs = [
+                  "--add-flags"
+                  ''-u ${kapiVimRC}/init.lua''
+                  "--add-flags"
+                  ''--cmd "set rtp^=${kapiVimRC}"''
+                ];
+              };
+            })
+            { };
 
           devShells.default = pkgs.mkShellNoCC
             {
-              packages = lspPkgs ++ [ config.packages.base ];
+              packages = [ config.packages.default ];
 
               shellHook = ''
                 export PATH=$PWD/bin:$PATH

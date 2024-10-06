@@ -1,89 +1,129 @@
-{ pkgs, ... }:
+{ enable_markdown ? true
+, enable_python ? true
+, enable_shell ? true
+, enable_typst ? true
+, enable_c ? true
+, enable_rust ? true
+, enable_go ? true
+, enable_haskell ? false
+, enable_lean ? false
+, lib
+, direnv
+, nix-direnv
+, nixpkgs-fmt
+, nixd
+, deadnix
+, statix
+, lua54Packages
+, nodePackages
+, lua-language-server
+, stylua
+, prettierd
+, taplo
+, yaml-language-server
+, python311Packages
+, shfmt
+, shellcheck
+, typst
+, typstyle
+, typst-lsp
+, go
+, gopls
+, golangci-lint
+, gotools
+, govulncheck
+, rustup
+, ghc
+, haskell-language-server
+, clang-tools
+, lean
+, tokei
+, codespell
+, commitlint
+, ...
+}:
 let
-  nixPkgs = builtins.attrValues {
-    inherit (pkgs)
-      direnv
-      nix-direnv
+  nixPkgs = [
+    direnv
+    nix-direnv
 
-      # nix
-      nixpkgs-fmt
-      nixd
-      deadnix
-      statix;
-  };
+    # nix
+    nixpkgs-fmt
+    nixd
+    deadnix
+    statix
+  ];
 
-  vimPkgs = builtins.attrValues {
-    inherit (pkgs)
-      lua-language-server
-      stylua;
-    inherit (pkgs.lua54Packages)
+  vimPkgs = [ lua-language-server stylua ] ++ builtins.attrValues {
+    inherit (lua54Packages)
       lua
       luarocks;
-    inherit (pkgs.nodePackages)
+    inherit (nodePackages)
       vim-language-server;
   };
 
-  mkPkgs = builtins.attrValues {
-    inherit (pkgs)
-      prettierd
-      taplo
-      yaml-language-server;
-  };
+  mkPkgs = [
+    prettierd
+    taplo
+    yaml-language-server
+  ];
 
   pyPkgs = builtins.attrValues {
-    inherit (pkgs.python311Packages)
+    inherit (python311Packages)
       python
       python-lsp-server
       black;
   };
 
-  shPkgs = builtins.attrValues {
-    inherit (pkgs)
-      shfmt
-      shellcheck;
-    inherit (pkgs.nodePackages)
+  shPkgs = [ shfmt shellcheck ] ++ builtins.attrValues {
+    inherit (nodePackages)
       bash-language-server;
   };
 
-  typstPkgs = builtins.attrValues {
-    inherit (pkgs)
-      typst
-      typstyle
-      typst-lsp;
-  };
+  typstPkgs = [
+    typst
+    typstyle
+    typst-lsp
+  ];
 
-  goPkgs = builtins.attrValues {
-    inherit (pkgs)
-      go
-      gopls
-      golangci-lint
-      gotools
-      govulncheck;
-  };
+  goPkgs = [
+    go
+    gopls
+    golangci-lint
+    gotools
+    govulncheck
+  ];
+
+  rustPkgs = [
+    rustup
+  ];
+
+  hsPkgs = [
+    ghc
+    haskell-language-server
+  ];
+
+  cPkgs = [
+    clang-tools
+  ];
+
+  leanPkgs = [
+    lean
+  ];
 in
 nixPkgs
 ++ vimPkgs
-++ mkPkgs
-++ pyPkgs
-++ shPkgs
-++ goPkgs
-++ typstPkgs
-++ builtins.attrValues {
-  inherit (pkgs)
-    tokei
-    codespell
-    commitlint
-
-    # rust
-    rustup
-
-    # haskell
-    ghc
-    haskell-language-server
-
-    # C
-    astyle
-
-    # lean
-    lean4;
-}
+++ lib.optionals enable_markdown mkPkgs
+++ lib.optionals enable_python pyPkgs
+++ lib.optionals enable_shell shPkgs
+++ lib.optionals enable_c cPkgs
+++ lib.optionals enable_rust rustPkgs
+++ lib.optionals enable_go goPkgs
+++ lib.optionals enable_haskell hsPkgs
+++ lib.optionals enable_lean leanPkgs
+++ lib.optionals enable_typst typstPkgs
+++ [
+  tokei
+  codespell
+  commitlint
+]
