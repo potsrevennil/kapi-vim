@@ -47,6 +47,16 @@ return {
         indent = { enable = true, disable = { "yaml" } },
     },
     config = function(_, opts)
+        local config = require("nvim-treesitter.parsers").get_parser_configs()
+        config.jasmin = {
+            install_info = {
+                url = "https://github.com/y4cer/tree-sitter-jasmin",
+                files = { "src/parser.c" },
+                generate_requires_npm = false,
+                requires_generate_from_grammar = false,
+            },
+        }
+
         require("nvim-treesitter.configs").setup(opts)
     end,
 }
