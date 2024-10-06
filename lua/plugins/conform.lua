@@ -9,7 +9,7 @@ return {
             nix = { "nixpkgs_fmt" },
             python = { "black" },
             go = { "goimports" },
-            c = { "astyle" },
+            c = { "clang-format" },
             typst = { "typstyle" },
             toml = { "taplo" },
             ["*"] = { "codespell" },
