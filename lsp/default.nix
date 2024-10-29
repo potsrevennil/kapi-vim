@@ -15,6 +15,7 @@
 , deadnix
 , statix
 , lua54Packages
+  # , vim-language-server
 , nodePackages
 , lua-language-server
 , stylua
@@ -55,11 +56,10 @@ let
   ];
 
   vimPkgs = [ lua-language-server stylua ] ++ builtins.attrValues {
+    # inherit vim-language-server;
     inherit (lua54Packages)
       lua
       luarocks;
-    inherit (nodePackages)
-      vim-language-server;
   };
 
   mkPkgs = [
