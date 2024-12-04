@@ -27,7 +27,7 @@ return {
         end,
         formatters = {
             shfmt = {
-                prepend_args = { "-s", "-i", "2", "-ci", "-fn" },
+                args = { "-s", "-i", "2", "-ci", "-fn", "-filename", "$FILENAME" },
             },
             black = {
                 prepend_args = { "--fast" },
