@@ -37,7 +37,7 @@
 , ghc
 , haskell-language-server
 , clang-tools
-, lean
+, elan
 , tokei
 , codespell
 , commitlint
@@ -108,7 +108,7 @@ let
   ];
 
   leanPkgs = [
-    lean
+    elan
   ];
 in
 nixPkgs
