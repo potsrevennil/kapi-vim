@@ -10,7 +10,7 @@ local servers = {
     "jsonls",
     "dockerls",
     "nixd",
-    "typst_lsp",
+    "tinymist",
     "clangd",
     "lean",
 }

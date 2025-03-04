@@ -27,7 +27,7 @@
 , shellcheck
 , typst
 , typstyle
-, typst-lsp
+, tinymist
 , go
 , gopls
 , golangci-lint
@@ -83,7 +83,7 @@ let
   typstPkgs = [
     typst
     typstyle
-    typst-lsp
+    tinymist
   ];
 
   goPkgs = [
