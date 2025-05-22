@@ -116,17 +116,27 @@ return {
         })
 
         -- lspconfig
-        local lspconfig = require("lspconfig")
         for _, server in ipairs(servers) do
-            if server == "lean" then
-                require("lean").setup(opts)
-            else
+            local lsp_ok, lsp = pcall(function()
+                if server == "lean" then
+                    return require("lean")
+                else
+                    return require("lspconfig")[server]
+                end
+            end)
+            if not lsp_ok then
+                vim.notify("server not found " .. server, vim.log.WARN)
+                return
+            end
+
+            if server ~= "lean" then
                 local ok, conf_opts = pcall(require, "plugins.lspconfig.settings." .. server)
                 if ok then
                     opts = vim.tbl_deep_extend("force", conf_opts, opts)
                 end
-                lspconfig[server].setup(opts)
             end
+
+            lsp.setup(opts)
         end
     end,
 }
