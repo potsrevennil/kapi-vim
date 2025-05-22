@@ -23,26 +23,26 @@ export ERROR="${RED}ERROR"
 
 log()
 {
-    local level="${FUNCNAME[1]^^}"
-    printf "%s\t%s\t%b\n" "${GREY54}$(date "+%T")" "${!level}" "${*}"
+  local level="${FUNCNAME[1]^^}"
+  printf "%s\t%s\t%b\n" "${GREY54}$(date "+%T")" "${!level}" "${*}"
 }
 
 debug()
 {
-    log "${NORMAL}${*}"
+  log "${NORMAL}${*}"
 }
 
 info()
 {
-    log "${NORMAL}${*}"
+  log "${NORMAL}${*}"
 }
 
 warn()
 {
-    log "${NORMAL}${*}" 1>&2
+  log "${NORMAL}${*}" 1>&2
 }
 
 error()
 {
-    log "${NORMAL}${*}" 1>&2
+  log "${NORMAL}${*}" 1>&2
 }
