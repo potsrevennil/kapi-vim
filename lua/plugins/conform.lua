@@ -12,6 +12,7 @@ return {
             c = { "clang-format" },
             typst = { "typstyle" },
             toml = { "taplo" },
+            rust = { "rustfmt", lsp_format = "fallback" },
             ["*"] = { "codespell" },
             ["_"] = { "trim_whitespace", "trim_newlines" },
         },
