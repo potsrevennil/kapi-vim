@@ -39,11 +39,11 @@ function user.init()
 
     vim.diagnostic.config(config)
 
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.buf.hover({
         border = "rounded",
     })
 
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.buf.signature_help({
         border = "rounded",
     })
 end
@@ -125,18 +125,16 @@ return {
                 end
             end)
             if not lsp_ok then
-                vim.notify("server not found " .. server, vim.log.WARN)
+                vim.notify("server config " .. server .. " not found.", vim.log.WARN)
                 return
             end
 
             if server ~= "lean" then
-                local ok, conf_opts = pcall(require, "plugins.lspconfig.settings." .. server)
-                if ok then
-                    opts = vim.tbl_deep_extend("force", conf_opts, opts)
-                end
+                vim.lsp.config(server, { settings = { [server] = {} } })
+                vim.lsp.enable(server)
+            else
+                lsp.setup(opts)
             end
-
-            lsp.setup(opts)
         end
     end,
 }
