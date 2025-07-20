@@ -7,11 +7,6 @@ return {
         local opts = {
             debug = false,
             sources = {
-                -- formatting.prettierd.with({
-                --     disabled_list = { "markdown", "yaml" },
-                --     extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" },
-                -- }),
-
                 -- go
                 diagnostics.golangci_lint,
                 -- nix

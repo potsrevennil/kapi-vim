@@ -31,13 +31,6 @@ local kind_icons = {
 return {
     {
         "hrsh7th/nvim-cmp",
-        event = { "InsertEnter" },
-        dependencies = {
-            { "L3MON4D3/LuaSnip", event = { "InsertEnter" } },
-            { "hrsh7th/cmp-nvim-lsp", event = { "InsertEnter" } },
-            { "hrsh7th/cmp-buffer", event = { "InsertEnter" } },
-            { "hrsh7th/cmp-path", event = { "InsertEnter" } },
-        },
         opts = function()
             local cmp = require("cmp")
             local luasnip = require("luasnip")
@@ -91,6 +84,7 @@ return {
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
                     { name = "luasnip" }, -- For vsnip users.
+                    { name = "render-markdown" },
                 }, {
                     { name = "buffer" },
                     { name = "path" },

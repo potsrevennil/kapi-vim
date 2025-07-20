@@ -33,7 +33,7 @@
             viAlias = true;
             vimAlias = true;
             wrapRc = false;
-            plugins = [ pkgs.vimPlugins.lazy-nvim ];
+            plugins = [ ];
           };
 
           wrapKapiVim =
