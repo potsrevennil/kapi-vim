@@ -5,6 +5,7 @@
 , enable_c ? true
 , enable_rust ? true
 , enable_go ? true
+, enable_js ? true
 , enable_haskell ? false
 , enable_lean ? false
 , lib
@@ -41,6 +42,7 @@
 , tokei
 , codespell
 , commitlint
+, nodejs
 , ...
 }:
 let
@@ -110,6 +112,8 @@ let
   leanPkgs = [
     elan
   ];
+
+  jsPkgs = [ nodejs ];
 in
 nixPkgs
 ++ vimPkgs
@@ -119,6 +123,7 @@ nixPkgs
 ++ lib.optionals enable_c cPkgs
 ++ lib.optionals enable_rust rustPkgs
 ++ lib.optionals enable_go goPkgs
+++ lib.optionals enable_js jsPkgs
 ++ lib.optionals enable_haskell hsPkgs
 ++ lib.optionals enable_lean leanPkgs
 ++ lib.optionals enable_typst typstPkgs
