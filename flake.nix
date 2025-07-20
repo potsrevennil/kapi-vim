@@ -10,11 +10,11 @@
     };
   };
 
-  outputs = inputs@{ flake-parts, ... }:
+  outputs = inputs@{ flake-parts, nixpkgs, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [ flake-parts.flakeModules.easyOverlay ];
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
-      perSystem = { config, pkgs, ... }:
+      perSystem = { config, pkgs, system, lib, ... }:
         let
           kapiVimRC = pkgs.stdenv.mkDerivation {
             name = "kapi-vim-rc";
@@ -63,6 +63,13 @@
             };
         in
         {
+          _module.args.pkgs = import nixpkgs {
+            inherit system;
+            config = lib.mkForce {
+              allowUnfree = true;
+            };
+
+          };
           # Per-system attributes can be defined here. The self' and inputs'
           # module parameters provide easy access to attributes of the same
           # system.
