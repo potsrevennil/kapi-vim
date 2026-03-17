@@ -1,6 +1,6 @@
 return {
     settings = {
-        ["rust_analyzer"] = {
+        ["rust-analyzer"] = {
             imports = {
                 granularity = {
                     group = "module",
@@ -12,7 +12,7 @@ return {
                     enable = true,
                     invocationLocation = "root",
                     invocationStrategy = "once",
-                    overrideCommand = "cargo check --message-format=json",
+                    overrideCommand = { "cargo", "check", "--message-format=json" },
                 },
             },
             procMacro = {
@@ -25,9 +25,7 @@ return {
             check = {
                 command = "clippy",
             },
-            checkOnSave = {
-                command = "clippy",
-            },
+            checkOnSave = true,
             diagnostics = {
                 enable = true,
                 experimental = {

@@ -1,35 +1,31 @@
-local servers = {
-    "bashls",
-    "clangd",
-    "dockerls",
-    "hls",
-    "jsonls",
-    "lua_ls",
-    "nixd",
-    "pylsp",
-    "rust_analyzer",
-    "taplo",
-    "tinymist",
-    "yamlls",
-}
 return {
     {
         "neovim/nvim-lspconfig",
         opts = function(_, opts)
-            local keys = require("lazyvim.plugins.lsp.keymaps").get()
-            keys[#keys + 1] = { "<space>de", vim.diagnostic.open_float }
-            opts.servers = opts.servers or {}
-            for _, s in ipairs(servers) do
-                opts.servers[s] = opts.servers[s] or {}
-                opts.servers[s].mason = false
-            end
-            opts.inlay_hints.exclude = { "rust" }
-            opts.float = {
-                border = "rounded",
-                source = "if_mang",
-            }
+            ---@class PluginLspOpts
+            local ret = vim.tbl_deep_extend("force", opts, {
+                inlay_hints = {
+                    enabled = true,
+                    exclude = { "rust" },
+                },
+                float = {
+                    border = "rounded",
+                    source = "if_mang",
+                },
+                servers = {
+                    bashls = {},
+                    clangd = {},
+                    hls = {},
+                    nixd = {},
+                    pylsp = {},
+                    rust_analyzer = dofile(vim.fn.stdpath("config") .. "/lsp/rust_analyzer.lua"),
+                    taplo = {},
+                    tinymist = {},
+                    yamlls = {},
+                },
+            })
 
-            return opts
+            return ret
         end,
     },
 }

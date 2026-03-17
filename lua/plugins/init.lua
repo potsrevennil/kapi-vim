@@ -20,8 +20,6 @@ return {
         "MeanderingProgrammer/render-markdown.nvim",
         event = "BufRead *.md",
         dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
-        ---@module 'render-markdown'
-        ---@type render.md.UserConfig
         opts = {},
         ft = { "markdown", "codecompanion" },
     },
@@ -38,8 +36,8 @@ return {
     { "folke/noice.nvim", enabled = false },
     { "mason-org/mason-lspconfig.nvim", enabled = false },
     { "mason-org/mason.nvim", enabled = false },
-    { "echasnovski/mini.ai", enabled = false },
-    { "echasnovski/mini.icons", enabled = false },
-    { "echasnovski/mini.pairs", enabled = false },
+    { "nvim-mini/mini.ai", enabled = false },
+    { "nvim-mini/mini.icons", enabled = false },
+    { "nvim-mini/mini.pairs", enabled = false },
     { "nvim-lualine/lualine.nvim", enabled = false },
 }
