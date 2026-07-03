@@ -1,25 +1,17 @@
--- CI smoke test for the kapi-vim-bundle package. Run after `Lazy! sync`,
--- via: <bundle>/bin/nvim --headless -S .github/scripts/smoke-test.lua
--- (bundle's nvim already has -u/--cmd baked in via wrapperArgs, so no
--- extra flags are needed to load the config).
+-- CI smoke test for the kapi-vim-lite package. Run after `Lazy! sync`, via:
+-- <lite>/bin/nvim --headless -S .github/scripts/smoke-test.lua
+-- (lite's nvim already has -u/--cmd baked in via wrapperArgs, so no extra
+-- flags are needed to load the config).
 --
--- Checks that every LSP binary lua/plugins/lsp.lua enables by default
--- (mason = false, so these must come from PATH, i.e. from lsp/default.nix)
--- actually resolves. Excludes servers that are either disabled by default
--- (hls, needs enable_haskell) or not currently packaged by lsp/default.nix
--- at all (dockerls, jsonls) -- neither is a regression introduced by CI.
+-- lite has every default-on language toggle (markdown/python/shell/typst/
+-- c/rust/go) off, so the only LSP binaries it guarantees are the ones
+-- lsp/default.nix always includes regardless of toggles: nixd and
+-- lua-language-server. Per-language binaries (pylsp, gopls, etc.) belong to
+-- the heavier default/bundle packages tested in a separate workflow.
 
 local required_binaries = {
-  "bash-language-server", -- bashls
-  "clangd",
-  "gopls",
   "lua-language-server", -- lua_ls
   "nixd",
-  "pylsp",
-  "rust-analyzer", -- via rustup shim
-  "taplo",
-  "tinymist",
-  "yaml-language-server",
 }
 
 local missing = {}
@@ -34,5 +26,5 @@ if #missing > 0 then
   vim.cmd("cquit 1")
 end
 
-print("kapi-vim smoke test passed: startup clean, all expected LSP binaries present")
+print("kapi-vim smoke test passed: startup clean, base LSP binaries present")
 vim.cmd("qa!")
