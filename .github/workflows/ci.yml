@@ -50,6 +50,7 @@ jobs:
   # (aarch64-darwin, aarch64-linux, both native runners).
   build:
     needs: flake-check
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -69,7 +70,7 @@ jobs:
   # (has to come from lsp/default.nix, since mason = false there).
   test:
     needs: flake-check
-    timeout-minutes: 10
+    timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
