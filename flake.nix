@@ -111,6 +111,24 @@
                 export PATH=$PWD/bin:$PATH
               '';
             };
+
+          # Lean shell for CI: the same tools bin/style and .pre-commit-config.yaml
+          # already use, without pulling in the full LSP/language toolchain from
+          # ./lsp, so `nix develop .#ci` stays small.
+          devShells.ci = pkgs.mkShellNoCC
+            {
+              packages = builtins.attrValues {
+                inherit (pkgs)
+                  nixpkgs-fmt
+                  deadnix
+                  statix
+                  stylua
+                  shfmt
+                  shellcheck
+                  taplo
+                  codespell;
+              };
+            };
         };
       flake = {
         # The usual flake attributes can be defined here, including system-

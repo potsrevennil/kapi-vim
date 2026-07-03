@@ -1,0 +1,86 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Same tools bin/style and .pre-commit-config.yaml already use, run in
+  # devShells.ci so this doesn't need the full LSP/language toolchain from
+  # ./lsp.
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/install-nix
+      - shell: nix develop .#ci -c bash -e {0}
+        run: |
+          nixpkgs-fmt --check flake.nix lsp/default.nix
+          deadnix --fail --hidden flake.nix lsp/default.nix
+          statix check .
+          stylua --check .
+          shfmt -d -s -i 2 -ci -fn .
+          shellcheck --check-sourced --shell bash bin/style bin/log
+          taplo format --check .
+          codespell .
+
+  # Cheap eval-only pass across every declared system -- catches
+  # syntax/option errors before the real builds/tests below spend runner
+  # time.
+  flake-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/install-nix
+      - run: nix flake check --all-systems
+
+  # packages.default: nvim + LSP runtime deps, no configuration wired in.
+  # packages.bundle (built separately in the test job below, since testing
+  # it implicitly verifies it builds too) is the fully-configured,
+  # plug-and-play package -- these are the two things this repo actually
+  # ships, so both get built on both systems this config targets
+  # (aarch64-darwin, aarch64-linux, both native runners).
+  build:
+    needs: flake-check
+    strategy:
+      fail-fast: false
+      matrix:
+        runs-on: [macos-14, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/install-nix
+      - run: nix build .#default --print-build-logs
+
+  # Headless smoke test of packages.bundle. Syncs every lazy.nvim plugin
+  # over the network (mason is disabled for LSP servers, but lazy.nvim
+  # itself still self-manages plugins this way -- see lua/config/lazy.lua),
+  # so this is exercising the same first-run experience a new user gets,
+  # not a hermetic nix build. Then verifies startup is clean and every LSP
+  # binary lua/plugins/lsp.lua enables by default actually resolves on PATH
+  # (has to come from lsp/default.nix, since mason = false there).
+  test:
+    needs: flake-check
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        runs-on: [macos-14, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/install-nix
+      - id: build
+        run: echo "out=$(nix build .#bundle --print-build-logs --no-link --print-out-paths)" >> "$GITHUB_OUTPUT"
+      - name: Sync plugins
+        run: ${{ steps.build.outputs.out }}/bin/nvim --headless "+Lazy! sync" +qa
+      - name: Run smoke test
+        run: ${{ steps.build.outputs.out }}/bin/nvim --headless -S .github/scripts/smoke-test.lua
