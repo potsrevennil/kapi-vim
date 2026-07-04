@@ -1,13 +1,14 @@
-{ enable_markdown ? true
-, enable_python ? true
-, enable_shell ? true
-, enable_typst ? true
-, enable_c ? true
-, enable_rust ? true
-, enable_go ? true
-, enable_js ? true
-, enable_haskell ? false
-, enable_lean ? false
+{ languages ? import ./languages.nix
+, enable_config ? languages.config
+, enable_python ? languages.python
+, enable_shell ? languages.shell
+, enable_typst ? languages.typst
+, enable_c ? languages.c
+, enable_rust ? languages.rust
+, enable_go ? languages.go
+, enable_js ? languages.js
+, enable_haskell ? languages.haskell
+, enable_lean ? languages.lean
 , lib
 , direnv
 , nix-direnv
@@ -64,7 +65,7 @@ let
       luarocks;
   };
 
-  mkPkgs = [
+  configPkgs = [
     prettierd
     taplo
     yaml-language-server
@@ -117,7 +118,7 @@ let
 in
 nixPkgs
 ++ vimPkgs
-++ lib.optionals enable_markdown mkPkgs
+++ lib.optionals enable_config configPkgs
 ++ lib.optionals enable_python pyPkgs
 ++ lib.optionals enable_shell shPkgs
 ++ lib.optionals enable_c cPkgs

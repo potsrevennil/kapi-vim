@@ -23,8 +23,9 @@ jobs:
       - uses: ./.github/actions/install-nix
       - shell: nix develop .#ci -c bash -e {0}
         run: |
-          nixpkgs-fmt --check flake.nix lsp/default.nix
-          deadnix --fail --hidden flake.nix lsp/default.nix
+          files=$(find . -name "*.nix")
+          nixpkgs-fmt --check $files
+          deadnix --fail --hidden -L .
           statix check .
           stylua --check .
           shfmt -d -s -i 2 -ci -fn .
