@@ -1,0 +1,76 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Same tools bin/style and .pre-commit-config.yaml already use, run in
+  # devShells.ci so this doesn't need the full LSP/language toolchain from
+  # ./lsp.
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/install-nix
+      - shell: nix develop .#ci -c bash -e {0}
+        run: |
+          nixpkgs-fmt --check flake.nix lsp/default.nix
+          deadnix --fail --hidden flake.nix lsp/default.nix
+          statix check .
+          stylua --check .
+          shfmt -d -s -i 2 -ci -fn .
+          shellcheck --check-sourced --shell bash bin/style bin/log
+          taplo format --check .
+          codespell .
+
+  # Cheap eval-only pass across every declared system -- catches
+  # syntax/option errors before the real builds/tests below spend runner
+  # time.
+  flake-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/install-nix
+      - run: nix flake check --all-systems
+
+  # Builds and headless-smoke-tests packages.lite: the base config (nixd +
+  # lua-language-server + editor tooling) with every default-on language
+  # toggle off, so this stays fast on every push/PR. packages.default/bundle
+  # (the full, every-language experience) are intentionally not built here --
+  # that's slow (10+ minutes cold, no caching) and belongs in a separate,
+  # less-frequent workflow, not this one.
+  #
+  # Syncs every lazy.nvim plugin over the network (mason is disabled for LSP
+  # servers, but lazy.nvim itself still self-manages plugins this way -- see
+  # lua/config/lazy.lua), so this is exercising the same first-run experience
+  # a new user gets, not a hermetic nix build. Then verifies startup is
+  # clean and the base LSP binaries (nixd, lua-language-server -- the only
+  # ones packages.lite guarantees) resolve on PATH.
+  test:
+    needs: flake-check
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        runs-on: [macos-14, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/install-nix
+      - id: build
+        run: echo "out=$(nix build .#lite --print-build-logs --no-link --print-out-paths)" >> "$GITHUB_OUTPUT"
+      - name: Put lite's bin on PATH
+        run: echo "${{ steps.build.outputs.out }}/bin" >> "$GITHUB_PATH"
+      - name: Sync plugins
+        run: nvim --headless "+Lazy! sync" +qa
+      - name: Run smoke test
+        run: nvim --headless -S .github/scripts/smoke-test.lua

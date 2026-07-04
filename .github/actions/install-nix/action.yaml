@@ -1,0 +1,7 @@
+name: 'Install Nix'
+description: 'Install Nix'
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Nix
+      uses: nixbuild/nix-quick-install-action@v34

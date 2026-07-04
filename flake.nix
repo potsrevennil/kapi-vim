@@ -36,6 +36,19 @@
             plugins = [ ];
           };
 
+          # Same config-wired-in flags packages.bundle uses, so packages.lite
+          # is also plug-and-play (needed for the neovim CI smoke test to
+          # mean anything -- a toolchain-only package has no init.lua to
+          # actually attach an LSP against).
+          bundleConf = kapiVimConfig // {
+            wrapperArgs = [
+              "--add-flags"
+              ''-u ${kapiVimRC}/init.lua''
+              "--add-flags"
+              ''--cmd "set rtp^=${kapiVimRC}"''
+            ];
+          };
+
           wrapKapiVim =
             { pname, conf }:
             { enable_markdown ? true
@@ -80,28 +93,38 @@
             kapi-vim-bundle = config.packages.bundle;
           };
 
-          # nvim with built-in dependencies, but without any configuration
-          packages.default = pkgs.lib.makeOverridable
-            (wrapKapiVim {
-              pname = "kapi-vim";
-              conf = kapiVimConfig;
-            })
-            { };
+          packages = {
+            # nvim with built-in dependencies, but without any configuration
+            default = pkgs.lib.makeOverridable
+              (wrapKapiVim {
+                pname = "kapi-vim";
+                conf = kapiVimConfig;
+              })
+              { };
 
-          # plug-and-play neovim, no additional setup needed
-          packages.bundle = pkgs.lib.makeOverridable
-            (wrapKapiVim {
-              pname = "kapi-vim-bundle";
-              conf = kapiVimConfig // {
-                wrapperArgs = [
-                  "--add-flags"
-                  ''-u ${kapiVimRC}/init.lua''
-                  "--add-flags"
-                  ''--cmd "set rtp^=${kapiVimRC}"''
-                ];
+            # plug-and-play neovim, no additional setup needed
+            bundle = pkgs.lib.makeOverridable
+              (wrapKapiVim { pname = "kapi-vim-bundle"; conf = bundleConf; })
+              { };
+
+            # plug-and-play neovim with every default-on language toggle off
+            # (haskell/lean are already off by default) -- just the base
+            # nixd + lua-language-server + editor tooling, fast enough for
+            # CI to build and smoke-test on every run. default/bundle (the
+            # full, every-language experience) are exercised in a separate,
+            # slower workflow.
+            lite = pkgs.lib.makeOverridable
+              (wrapKapiVim { pname = "kapi-vim-lite"; conf = bundleConf; })
+              {
+                enable_markdown = false;
+                enable_python = false;
+                enable_shell = false;
+                enable_typst = false;
+                enable_c = false;
+                enable_rust = false;
+                enable_go = false;
               };
-            })
-            { };
+          };
 
           devShells.default = pkgs.mkShellNoCC
             {
@@ -110,6 +133,24 @@
               shellHook = ''
                 export PATH=$PWD/bin:$PATH
               '';
+            };
+
+          # Lean shell for CI: the same tools bin/style and .pre-commit-config.yaml
+          # already use, without pulling in the full LSP/language toolchain from
+          # ./lsp, so `nix develop .#ci` stays small.
+          devShells.ci = pkgs.mkShellNoCC
+            {
+              packages = builtins.attrValues {
+                inherit (pkgs)
+                  nixpkgs-fmt
+                  deadnix
+                  statix
+                  stylua
+                  shfmt
+                  shellcheck
+                  taplo
+                  codespell;
+              };
             };
         };
       flake = {
