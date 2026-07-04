@@ -68,7 +68,9 @@ jobs:
       - uses: ./.github/actions/install-nix
       - id: build
         run: echo "out=$(nix build .#lite --print-build-logs --no-link --print-out-paths)" >> "$GITHUB_OUTPUT"
+      - name: Put lite's bin on PATH
+        run: echo "${{ steps.build.outputs.out }}/bin" >> "$GITHUB_PATH"
       - name: Sync plugins
-        run: ${{ steps.build.outputs.out }}/bin/nvim --headless "+Lazy! sync" +qa
+        run: nvim --headless "+Lazy! sync" +qa
       - name: Run smoke test
-        run: ${{ steps.build.outputs.out }}/bin/nvim --headless -S .github/scripts/smoke-test.lua
+        run: nvim --headless -S .github/scripts/smoke-test.lua
