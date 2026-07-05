@@ -89,7 +89,7 @@ jobs:
   # (a Rust extension), which isn't covered by the aarch64-linux binary
   # cache and has to compile from source; python still works fine via
   # KAPI_VIM_LANGS for real use, this only changes what CI happens to verify.
-  test-bundle:
+  bundle:
     needs: flake-check
     timeout-minutes: 10
     runs-on: ubuntu-24.04-arm
