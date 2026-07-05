@@ -49,24 +49,28 @@
             ];
           };
 
+          # Single source of truth for every per-language toggle name and its
+          # default (shared with lsp/default.nix). Kept import-only -- no
+          # `pkgs` needed -- so packages.lite (below) can derive "every
+          # language off" from just the attribute names.
+          languages = import ./lsp/languages.nix;
+
           wrapKapiVim =
             { pname, conf }:
-            { enable_markdown ? true
-            , enable_python ? true
-            , enable_shell ? true
-            , enable_typst ? true
-            , enable_c ? true
-            , enable_rust ? true
-            , enable_go ? true
-            , enable_haskell ? false
-            , enable_lean ? false
-            }: pkgs.buildEnv {
+            { enable_config ? languages.config
+            , enable_python ? languages.python
+            , enable_shell ? languages.shell
+            , enable_typst ? languages.typst
+            , enable_c ? languages.c
+            , enable_rust ? languages.rust
+            , enable_go ? languages.go
+            , enable_js ? languages.js
+            , enable_haskell ? languages.haskell
+            , enable_lean ? languages.lean
+            }@toggles: pkgs.buildEnv {
               name = pname;
               paths =
-                pkgs.callPackage ./lsp
-                  {
-                    inherit enable_markdown enable_python enable_shell enable_typst enable_c enable_rust enable_go enable_haskell enable_lean;
-                  } ++
+                pkgs.callPackage ./lsp toggles ++
                 builtins.attrValues {
                   nvim = pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped conf;
                   inherit (pkgs)
@@ -74,6 +78,13 @@
                     ripgrep;
                 };
             };
+
+          # Every enable_<language> toggle forced off, derived from the
+          # registry -- adding a language to lsp/languages.nix means
+          # packages.lite automatically excludes it too, no edits here.
+          allLanguagesOff = lib.genAttrs
+            (map (name: "enable_${name}") (builtins.attrNames languages))
+            (_: false);
         in
         {
           _module.args.pkgs = import nixpkgs {
@@ -107,23 +118,16 @@
               (wrapKapiVim { pname = "kapi-vim-bundle"; conf = bundleConf; })
               { };
 
-            # plug-and-play neovim with every default-on language toggle off
-            # (haskell/lean are already off by default) -- just the base
+            # plug-and-play neovim with every language toggle off (derived
+            # from lsp/languages.nix, so this list can never drift from what
+            # lsp/default.nix actually knows how to gate) -- just the base
             # nixd + lua-language-server + editor tooling, fast enough for
             # CI to build and smoke-test on every run. default/bundle (the
             # full, every-language experience) are exercised in a separate,
             # slower workflow.
             lite = pkgs.lib.makeOverridable
               (wrapKapiVim { pname = "kapi-vim-lite"; conf = bundleConf; })
-              {
-                enable_markdown = false;
-                enable_python = false;
-                enable_shell = false;
-                enable_typst = false;
-                enable_c = false;
-                enable_rust = false;
-                enable_go = false;
-              };
+              allLanguagesOff;
           };
 
           devShells.default = pkgs.mkShellNoCC
