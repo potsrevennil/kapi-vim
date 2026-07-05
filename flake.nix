@@ -85,6 +85,22 @@
           allLanguagesOff = lib.genAttrs
             (map (name: "enable_${name}") (builtins.attrNames languages))
             (_: false);
+
+          # packages.bundle's language selection: everything off by default,
+          # except whatever's named in $KAPI_VIM_LANGS (comma-separated,
+          # e.g. "python,go"). Reading the env var requires --impure; without
+          # it builtins.getEnv silently returns "", so a plain `nix build
+          # .#bundle` (no --impure) is always the minimal, all-off build --
+          # KAPI_VIM_LANGS only takes effect when explicitly opted into with
+          # --impure, e.g.:
+          #   KAPI_VIM_LANGS=python,go nix run --impure .#bundle
+          bundleLanguages =
+            let
+              requested =
+                let raw = builtins.getEnv "KAPI_VIM_LANGS";
+                in if raw == "" then [ ] else lib.splitString "," raw;
+            in
+            allLanguagesOff // lib.genAttrs (map (name: "enable_${name}") requested) (_: true);
         in
         {
           _module.args.pkgs = import nixpkgs {
@@ -113,10 +129,14 @@
               })
               { };
 
-            # plug-and-play neovim, no additional setup needed
+            # Plug-and-play neovim (config baked in) for on-demand use --
+            # e.g. a temporary Linux VM you're bringing up for a specific
+            # task -- where you want to choose which LSPs come along rather
+            # than get every one of them. Every language is off unless
+            # named in $KAPI_VIM_LANGS; see bundleLanguages above.
             bundle = pkgs.lib.makeOverridable
               (wrapKapiVim { pname = "kapi-vim-bundle"; conf = bundleConf; })
-              { };
+              bundleLanguages;
 
             # plug-and-play neovim with every language toggle off (derived
             # from lsp/languages.nix, so this list can never drift from what
