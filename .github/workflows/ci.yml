@@ -82,12 +82,19 @@ jobs:
   # Linux-only: this is just confirming the selection mechanism itself
   # works, not exercising every language or every OS -- packages.default
   # (every language, both OSes) is exercised in a separate, slower workflow.
+  #
+  # go/shell specifically: both are small, common nixpkgs packages unlikely
+  # to need a from-source build. python was tried first and timed out here
+  # -- python-lsp-server's dependency chain pulls in python3.11-pydantic-core
+  # (a Rust extension), which isn't covered by the aarch64-linux binary
+  # cache and has to compile from source; python still works fine via
+  # KAPI_VIM_LANGS for real use, this only changes what CI happens to verify.
   test-bundle:
     needs: flake-check
     timeout-minutes: 10
     runs-on: ubuntu-24.04-arm
     env:
-      KAPI_VIM_LANGS: python,go
+      KAPI_VIM_LANGS: shell,go
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/install-nix
