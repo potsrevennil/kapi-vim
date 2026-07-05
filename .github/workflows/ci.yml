@@ -43,64 +43,62 @@ jobs:
       - uses: ./.github/actions/install-nix
       - run: nix flake check --all-systems
 
-  # Builds and headless-smoke-tests packages.lite: the base config (nixd +
-  # lua-language-server + editor tooling) with every language toggle off,
-  # so this stays fast on every push/PR. packages.default (the full,
-  # every-language experience) is intentionally not built here -- that's
-  # slow (10+ minutes cold, no caching) and belongs in a separate,
-  # less-frequent workflow, not this one.
+  # Builds and headless-smoke-tests two things with one job definition:
+  # packages.lite (nixd + lua-language-server + editor tooling, every
+  # language toggle off) on both OSes, fast enough for every push/PR; and
+  # packages.bundle with a couple of languages selected via $KAPI_VIM_LANGS
+  # on Linux, confirming the env-var-driven selection mechanism actually
+  # works end-to-end (not just that it evaluates). lite and bundle with no
+  # languages selected are byte-identical packages, so --impure (needed for
+  # bundle to read $KAPI_VIM_LANGS) is applied uniformly -- it's a no-op for
+  # the lite entries, which never call builtins.getEnv.
+  #
+  # packages.default (the full, every-language experience) is intentionally
+  # not built here -- that's slow (10+ minutes cold, no caching) and belongs
+  # in a separate, less-frequent workflow, not this one.
   #
   # Syncs every lazy.nvim plugin over the network (mason is disabled for LSP
   # servers, but lazy.nvim itself still self-manages plugins this way -- see
   # lua/config/lazy.lua), so this is exercising the same first-run experience
   # a new user gets, not a hermetic nix build. Then verifies startup is
-  # clean and the base LSP binaries (nixd, lua-language-server -- the only
-  # ones packages.lite guarantees) resolve on PATH.
+  # clean and the expected LSP binaries for that entry's languages resolve
+  # on PATH (see smoke-test.lua).
+  #
+  # shell,go specifically: both are small, common nixpkgs packages unlikely
+  # to need a from-source build. python was tried first and timed out --
+  # python-lsp-server's dependency chain pulls in python3.11-pydantic-core
+  # (a Rust extension), which isn't covered by the aarch64-linux binary
+  # cache and has to compile from source; python still works fine via
+  # KAPI_VIM_LANGS for real use, this only changes what CI happens to verify.
   test:
     needs: flake-check
     timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
-        runs-on: [macos-14, ubuntu-24.04-arm]
+        include:
+          - name: lite (macos-14)
+            runs-on: macos-14
+            target: lite
+            langs: ""
+          - name: lite (ubuntu-24.04-arm)
+            runs-on: ubuntu-24.04-arm
+            target: lite
+            langs: ""
+          - name: bundle shell,go (ubuntu-24.04-arm)
+            runs-on: ubuntu-24.04-arm
+            target: bundle
+            langs: "shell,go"
+    name: ${{ matrix.name }}
     runs-on: ${{ matrix.runs-on }}
-    steps:
-      - uses: actions/checkout@v7
-      - uses: ./.github/actions/install-nix
-      - id: build
-        run: echo "out=$(nix build .#lite --print-build-logs --no-link --print-out-paths)" >> "$GITHUB_OUTPUT"
-      - name: Put lite's bin on PATH
-        run: echo "${{ steps.build.outputs.out }}/bin" >> "$GITHUB_PATH"
-      - name: Sync plugins
-        run: nvim --headless "+Lazy! sync" +qa
-      - name: Run smoke test
-        run: nvim --headless -S .github/scripts/smoke-test.lua
-
-  # Builds and smoke-tests packages.bundle with a couple of languages
-  # selected via $KAPI_VIM_LANGS, confirming the env-var-driven language
-  # selection actually works end-to-end (not just that it evaluates).
-  # Linux-only: this is just confirming the selection mechanism itself
-  # works, not exercising every language or every OS -- packages.default
-  # (every language, both OSes) is exercised in a separate, slower workflow.
-  #
-  # go/shell specifically: both are small, common nixpkgs packages unlikely
-  # to need a from-source build. python was tried first and timed out here
-  # -- python-lsp-server's dependency chain pulls in python3.11-pydantic-core
-  # (a Rust extension), which isn't covered by the aarch64-linux binary
-  # cache and has to compile from source; python still works fine via
-  # KAPI_VIM_LANGS for real use, this only changes what CI happens to verify.
-  bundle:
-    needs: flake-check
-    timeout-minutes: 10
-    runs-on: ubuntu-24.04-arm
     env:
-      KAPI_VIM_LANGS: shell,go
+      KAPI_VIM_LANGS: ${{ matrix.langs }}
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/install-nix
       - id: build
-        run: echo "out=$(nix build --impure .#bundle --print-build-logs --no-link --print-out-paths)" >> "$GITHUB_OUTPUT"
-      - name: Put bundle's bin on PATH
+        run: echo "out=$(nix build --impure .#${{ matrix.target }} --print-build-logs --no-link --print-out-paths)" >> "$GITHUB_OUTPUT"
+      - name: Put bin on PATH
         run: echo "${{ steps.build.outputs.out }}/bin" >> "$GITHUB_PATH"
       - name: Sync plugins
         run: nvim --headless "+Lazy! sync" +qa
