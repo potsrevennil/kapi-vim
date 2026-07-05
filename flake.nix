@@ -29,11 +29,36 @@
             '';
           };
 
-          kapiVimConfig = pkgs.neovimUtils.makeNeovimConfig {
+          # neovimUtils.makeNeovimConfig is deprecated as of nixpkgs 26.05
+          # ("use wrapNeovim or wrapNeovimUnstable directly"), so pass
+          # viAlias/vimAlias/wrapRc/plugins straight to wrapNeovimUnstable
+          # below instead of through it -- it accepts them directly.
+          #
+          # makeNeovimConfig also unconditionally added LUA_PATH/LUA_CPATH
+          # wrapperArgs pointing at neovim-unwrapped's own lua env; confirmed
+          # (by diffing the built wrapper script before/after this change)
+          # that wrapNeovimUnstable does NOT reproduce this itself when
+          # wrapRc = false (its own equivalent mechanism is embedded in the
+          # auto-generated init.lua, which wrapRc = false skips in favor of
+          # bundleConf's own -u flag) -- so replicate that computation
+          # explicitly here rather than silently lose it.
+          kapiVimConfig = {
             viAlias = true;
             vimAlias = true;
             wrapRc = false;
             plugins = [ ];
+            wrapperArgs =
+              let luaEnv = pkgs.neovim-unwrapped.lua.withPackages (_: [ ]);
+              in lib.optionals (luaEnv != null) [
+                "--prefix"
+                "LUA_PATH"
+                ";"
+                (pkgs.neovim-unwrapped.lua.pkgs.luaLib.genLuaPathAbsStr luaEnv)
+                "--prefix"
+                "LUA_CPATH"
+                ";"
+                (pkgs.neovim-unwrapped.lua.pkgs.luaLib.genLuaCPathAbsStr luaEnv)
+              ];
           };
 
           # Same config-wired-in flags packages.bundle uses, so packages.lite
