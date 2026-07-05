@@ -18,13 +18,13 @@
 , statix
 , lua54Packages
   # , vim-language-server
-, nodePackages
+, bash-language-server
 , lua-language-server
 , stylua
 , prettierd
 , taplo
 , yaml-language-server
-, python311Packages
+, python3Packages
 , shfmt
 , shellcheck
 , typst
@@ -72,16 +72,13 @@ let
   ];
 
   pyPkgs = builtins.attrValues {
-    inherit (python311Packages)
+    inherit (python3Packages)
       python
       python-lsp-server
       black;
   };
 
-  shPkgs = [ shfmt shellcheck ] ++ builtins.attrValues {
-    inherit (nodePackages)
-      bash-language-server;
-  };
+  shPkgs = [ shfmt shellcheck bash-language-server ];
 
   typstPkgs = [
     typst
