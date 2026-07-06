@@ -22,8 +22,25 @@ end
 
 lazy.setup({
     spec = {
-        -- add LazyVim and import its plugins
-        { "LazyVim/LazyVim", import = "lazyvim.plugins", version = "v15.14.0" },
+        -- LazyVim itself, pinned. `import = "lazyvim.plugins"` used to pull in
+        -- every lazyvim/plugins/*.lua module implicitly in one line; listed
+        -- explicitly below instead so each future removal is a one-line diff,
+        -- not an opaque blanket import. No functional change: this is the
+        -- exact same set of modules `lazyvim.plugins` would have imported
+        -- (verified by diffing the synced lazy-lock.json plugin list before
+        -- and after this change).
+        { "LazyVim/LazyVim", version = "v15.14.0" },
+        { import = "lazyvim.plugins.init" },
+        { import = "lazyvim.plugins.coding" },
+        { import = "lazyvim.plugins.colorscheme" },
+        { import = "lazyvim.plugins.editor" },
+        { import = "lazyvim.plugins.formatting" },
+        { import = "lazyvim.plugins.linting" },
+        { import = "lazyvim.plugins.lsp" },
+        { import = "lazyvim.plugins.treesitter" },
+        { import = "lazyvim.plugins.ui" },
+        { import = "lazyvim.plugins.util" },
+        { import = "lazyvim.plugins.xtras" },
         { import = "lazyvim.plugins.extras.editor.telescope" },
         { import = "lazyvim.plugins.extras.coding.nvim-cmp" },
         { import = "lazyvim.plugins.extras.coding.luasnip" },
