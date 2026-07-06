@@ -20,7 +20,28 @@ if not status_ok then
     return
 end
 
+-- lazy.nvim defaults to stdpath("config")/lazy-lock.json, which isn't this
+-- repo's lazy-lock.json for the nix-wrapped packages (they load via `-u
+-- <store-path>/init.lua`, not via $XDG_CONFIG_HOME). Derive the real path
+-- from this file's own location instead -- works either way.
+local config_root = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":h:h:h")
+local source_lockfile = config_root .. "/lazy-lock.json"
+
+-- Normal usage: read/write that file directly, same as lazy.nvim's default.
+-- Nix-wrapped usage: config_root is a read-only store path, so lazy.nvim
+-- can't write its lockfile update there. Seed a writable copy once and
+-- point lazy.nvim at that instead.
+local lockfile = source_lockfile
+if vim.fn.filewritable(config_root) ~= 2 then
+    lockfile = vim.fn.stdpath("state") .. "/lazy-lock.json"
+    if vim.fn.filereadable(lockfile) == 0 and vim.fn.filereadable(source_lockfile) == 1 then
+        vim.fn.mkdir(vim.fn.fnamemodify(lockfile, ":h"), "p")
+        vim.fn.writefile(vim.fn.readfile(source_lockfile), lockfile)
+    end
+end
+
 lazy.setup({
+    lockfile = lockfile,
     spec = {
         -- LazyVim itself, pinned. `import = "lazyvim.plugins"` used to pull in
         -- every lazyvim/plugins/*.lua module implicitly in one line; listed
@@ -54,7 +75,16 @@ lazy.setup({
     }, -- automatically check for plugin updates
     performance = {
         rtp = {
-            -- disable some rtp plugins
+            -- lazy.setup() rebuilds 'runtimepath' from scratch (reset, on by
+            -- default), dropping config_root for the nix-wrapped packages
+            -- since it's not "your config dir" as far as that reset is
+            -- concerned. That silently broke both `{ import = "plugins" }`
+            -- above and this repo's ftdetect/*.vim + filetype.lua (all
+            -- resolved via a runtimepath scan, confirmed empirically: e.g.
+            -- *.ec fell back to Neovim's built-in esqlc instead of this
+            -- repo's easycrypt rule). `paths` re-adds it right after the
+            -- reset, before specs are resolved.
+            paths = { config_root },
             disabled_plugins = {
                 "gzip",
                 -- "matchit",
