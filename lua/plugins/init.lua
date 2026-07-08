@@ -33,6 +33,13 @@ return {
             "nvim-treesitter/nvim-treesitter",
         },
     },
+    -- catppuccin's spec has an `optional = true` nested spec augmenting
+    -- bufferline.nvim, which errors (and collaterally drops unrelated
+    -- plugins from the lockfile write, e.g. codecompanion.nvim -- confirmed
+    -- empirically) if bufferline.nvim has no spec entry anywhere at all.
+    -- Registering it disabled, like the others below, keeps that hook happy
+    -- without actually loading bufferline.
+    { "akinsho/bufferline.nvim", enabled = false },
     { "folke/noice.nvim", enabled = false },
     { "mason-org/mason-lspconfig.nvim", enabled = false },
     { "mason-org/mason.nvim", enabled = false },

@@ -66,7 +66,6 @@ lazy.setup({
         -- ".init", not "lazyvim.plugins.lsp" -- that directory also has keymaps.lua, a non-spec helper module lazy.nvim would otherwise choke on.
         { import = "lazyvim.plugins.lsp.init" },
         { import = "lazyvim.plugins.treesitter" },
-        { import = "lazyvim.plugins.ui" },
         { import = "lazyvim.plugins.util" },
         { import = "lazyvim.plugins.xtras" },
         { import = "lazyvim.plugins.extras.editor.telescope" },
