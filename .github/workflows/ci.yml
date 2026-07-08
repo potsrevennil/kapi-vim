@@ -57,12 +57,17 @@ jobs:
   # not built here -- that's slow (10+ minutes cold, no caching) and belongs
   # in a separate, less-frequent workflow, not this one.
   #
-  # Syncs every lazy.nvim plugin over the network (mason is disabled for LSP
-  # servers, but lazy.nvim itself still self-manages plugins this way -- see
-  # lua/config/lazy.lua), so this is exercising the same first-run experience
-  # a new user gets, not a hermetic nix build. Then verifies startup is
-  # clean and the expected LSP binaries for that entry's languages resolve
-  # on PATH (see smoke-test.lua).
+  # Restores every lazy.nvim plugin over the network to the exact commit
+  # recorded in lazy-lock.json (mason is disabled for LSP servers, but
+  # lazy.nvim itself still self-manages plugins this way -- see
+  # lua/config/lazy.lua), so this exercises the same first-run experience a
+  # new user gets, not a hermetic nix build -- but a reproducible one:
+  # `:Lazy sync` fetches whatever's newest upstream and rewrites the
+  # lockfile, making this job a moving target; `:Lazy restore` pins to the
+  # committed lockfile instead (see lua/config/lazy.lua for why that lockfile
+  # is actually reachable here). Then verifies startup is clean and the
+  # expected LSP binaries for that entry's languages resolve on PATH (see
+  # smoke-test.lua).
   #
   # shell,go specifically: both are small, common nixpkgs packages unlikely
   # to need a from-source build. python was tried first and timed out --
@@ -100,7 +105,7 @@ jobs:
         run: echo "out=$(nix build --impure .#${{ matrix.target }} --print-build-logs --no-link --print-out-paths)" >> "$GITHUB_OUTPUT"
       - name: Put bin on PATH
         run: echo "${{ steps.build.outputs.out }}/bin" >> "$GITHUB_PATH"
-      - name: Sync plugins
-        run: nvim --headless "+Lazy! sync" +qa
+      - name: Restore plugins
+        run: nvim --headless "+Lazy! restore" +qa
       - name: Run smoke test
         run: nvim --headless -S .github/scripts/smoke-test.lua
