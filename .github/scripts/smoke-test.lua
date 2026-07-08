@@ -44,5 +44,24 @@ if #missing > 0 then
   vim.cmd("cquit 1")
 end
 
+-- lazy.nvim logs plugin-spec errors (e.g. a bad `import` target) as
+-- notifications rather than failing startup or the exit code, so a broken
+-- spec can sit silently until someone notices it in :messages by hand --
+-- confirmed happening for real: `{ import = "lazyvim.plugins.lsp" }`
+-- glob-imported a plain helper module (lsp/keymaps.lua) as if it were a
+-- plugin spec, on every single startup, for as long as that import stood.
+-- Catch that class of bug here instead of relying on someone noticing.
+local spec_errors = {}
+for _, notif in ipairs(require("lazy.core.config").spec.notifs) do
+  if notif.level >= vim.log.levels.ERROR then
+    table.insert(spec_errors, (notif.file and (notif.file .. ": ") or "") .. notif.msg)
+  end
+end
+
+if #spec_errors > 0 then
+  io.stderr:write("kapi-vim smoke test FAILED -- lazy.nvim reported plugin spec errors:\n" .. table.concat(spec_errors, "\n") .. "\n")
+  vim.cmd("cquit 1")
+end
+
 print("kapi-vim smoke test passed: startup clean, expected LSP binaries present (" .. table.concat(required_binaries, ", ") .. ")")
 vim.cmd("qa!")
