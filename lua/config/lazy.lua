@@ -57,12 +57,7 @@ lazy.setup({
         { import = "lazyvim.plugins.editor" },
         { import = "lazyvim.plugins.formatting" },
         { import = "lazyvim.plugins.linting" },
-        -- ".init", not just "lazyvim.plugins.lsp": that directory also has
-        -- keymaps.lua, a plain helper module (not a plugin spec) that
-        -- lazy.nvim's directory-scan import would otherwise glob up as its
-        -- own spec module and choke on (confirmed empirically -- every
-        -- startup logged "Invalid plugin spec" for exactly that table).
-        -- Pointing at .init directly resolves only that one file.
+        -- ".init", not "lazyvim.plugins.lsp" -- that directory also has keymaps.lua, a non-spec helper module lazy.nvim would otherwise choke on.
         { import = "lazyvim.plugins.lsp.init" },
         { import = "lazyvim.plugins.treesitter" },
         { import = "lazyvim.plugins.ui" },
