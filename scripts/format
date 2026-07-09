@@ -6,7 +6,7 @@ set -o nounset
 set -o pipefail
 
 ROOT="$(realpath "$(dirname "$0")"/../)"
-. "$ROOT/bin/log"
+. "$ROOT/scripts/log"
 
 info "Formatting nix files"
 nixpkgs-fmt "$ROOT"
