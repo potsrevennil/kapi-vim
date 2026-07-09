@@ -1,65 +1,32 @@
 return {
-    "nvim-treesitter/nvim-treesitter",
-    branch = "master",
-    opts = {
-        ensure_installed = {
-            "asm",
-            "bash",
-            "c",
-            "cmake",
-            "comment",
-            "dockerfile",
-            "git_config",
-            "git_rebase",
-            "gitcommit",
-            "gitignore",
-            "go",
-            "gomod",
-            "gosum",
-            "haskell",
-            "html",
-            "javascript",
-            "jq",
-            "json",
-            "lua",
-            "luadoc",
-            "nix",
-            "objdump",
-            "ocaml",
-            "python",
-            "rust",
-            "sql",
-            "toml",
-            "typst",
-            "vim",
-            "vimdoc",
-            "yaml",
-        },
-        sync_install = false,
-        auto_install = true,
-        autopairs = {
-            enable = true,
-        },
-        highlight = {
-            enable = true,
-            additional_vim_regex_highlighting = false,
-        },
-        indent = { enable = true, disable = { "yaml" } },
-    },
-    config = function(_, opts)
-        local config = require("nvim-treesitter.parsers").get_parser_configs()
-        config.jasmin = {
-            install_info = {
-                url = "https://github.com/y4cer/tree-sitter-jasmin",
-                files = { "src/parser.c" },
-                generate_requires_npm = false,
-                requires_generate_from_grammar = false,
+    {
+        "nvim-treesitter/nvim-treesitter",
+        opts = {
+            -- Languages this repo needs beyond LazyVim's own defaults
+            -- (lazyvim.plugins.treesitter, opts_extend'd rather than
+            -- replaced -- see lua/config/lazy.lua for import order).
+            ensure_installed = {
+                "asm",
+                "cmake",
+                "comment",
+                "dockerfile",
+                "git_config",
+                "git_rebase",
+                "gitcommit",
+                "gitignore",
+                "go",
+                "gomod",
+                "gosum",
+                "haskell",
+                "jq",
+                "nix",
+                "objdump",
+                "ocaml",
+                "rust",
+                "sql",
+                "typst",
             },
-        }
-        if type(opts.ensure_installed) == "table" then
-            opts.ensure_installed = LazyVim.dedup(opts.ensure_installed)
-        end
-
-        require("nvim-treesitter.configs").setup(opts)
-    end,
+            indent = { enable = true, disable = { "yaml" } },
+        },
+    },
 }
