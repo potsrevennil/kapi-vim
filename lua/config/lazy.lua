@@ -40,6 +40,17 @@ if vim.fn.filewritable(config_root) ~= 2 then
     end
 end
 
+-- LazyVim's own import-order check (fired on the VeryLazy autocmd) only
+-- looks for a spec module literally named "lazyvim.plugins" as import #1
+-- (lazyvim/config/init.lua: `find("^lazyvim%.plugins$")`). This repo never
+-- imports that literal module -- the per-category imports below replace it
+-- on purpose (see the comment above) -- so `lazyvim_plugins` is always nil
+-- and the check fires unconditionally, regardless of actual order. Our
+-- order (LazyVim core categories, then xtras/extras, then our own
+-- `plugins`) is exactly what the check wants; it just can't see it under
+-- this structure. Disabled via LazyVim's own documented escape hatch.
+vim.g.lazyvim_check_order = false
+
 lazy.setup({
     lockfile = lockfile,
     spec = {
