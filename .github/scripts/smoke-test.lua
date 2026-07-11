@@ -82,14 +82,20 @@ do
       core.min, core.max = math.min(core.min or i, i), math.max(core.max or i, i)
     end
   end
-  if core.max and extra.min and core.max > extra.min then
-    table.insert(order_errors, "a lazyvim.plugins.extras.* import appears before a core lazyvim.plugins.* import")
-  end
-  if core.max and own.min and core.max > own.min then
-    table.insert(order_errors, "the `plugins` import appears before a core lazyvim.plugins.* import")
-  end
-  if extra.max and own.min and extra.max > own.min then
-    table.insert(order_errors, "the `plugins` import appears before a lazyvim.plugins.extras.* import")
+  -- {should-come-first, should-come-after, names} -- if `first`'s last
+  -- import lands past `after`'s first, something from `after` snuck in
+  -- too early.
+  local core_name, extra_name, own_name = "a core lazyvim.plugins.* import", "a lazyvim.plugins.extras.* import", "the `plugins` import"
+  local expected_order = {
+    { core, extra, core_name, extra_name },
+    { core, own, core_name, own_name },
+    { extra, own, extra_name, own_name },
+  }
+  for _, check in ipairs(expected_order) do
+    local first, after, first_name, after_name = check[1], check[2], check[3], check[4]
+    if first.max and after.min and first.max > after.min then
+      table.insert(order_errors, after_name .. " appears before " .. first_name)
+    end
   end
 end
 
