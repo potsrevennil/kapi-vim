@@ -29,7 +29,7 @@ jobs:
           statix check .
           stylua --check .
           shfmt -d -s -i 2 -ci -fn .
-          shellcheck --check-sourced --shell bash scripts/format scripts/log scripts/benchmark-startup
+          shellcheck --check-sourced --shell bash scripts/*
           taplo format --check .
           codespell .
 
