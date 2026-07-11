@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Same tools bin/style and .pre-commit-config.yaml already use, run in
+  # Same tools scripts/format and .pre-commit-config.yaml already use, run in
   # devShells.ci so this doesn't need the full LSP/language toolchain from
   # ./lsp.
   lint:
@@ -29,7 +29,7 @@ jobs:
           statix check .
           stylua --check .
           shfmt -d -s -i 2 -ci -fn .
-          shellcheck --check-sourced --shell bash bin/style bin/log
+          shellcheck --check-sourced --shell bash scripts/*
           taplo format --check .
           codespell .
 
@@ -109,3 +109,18 @@ jobs:
         run: nvim --headless "+Lazy! restore" +qa
       - name: Run smoke test
         run: nvim --headless -S .github/scripts/smoke-test.lua
+      # Appended here rather than a separate workflow: this job already paid
+      # for the nix build and lazy.nvim plugin restore above, so benchmarking
+      # in place is just a few headless nvim invocations (seconds) instead of
+      # duplicating that build+restore cost per platform. A full CI run is
+      # only ~2-3 minutes wall clock with plenty of concurrency headroom
+      # (public repo, at most 3 test-matrix jobs running at once), so there's
+      # no runtime pressure pushing this out into its own workflow.
+      - name: Benchmark startup time
+        run: |
+          {
+            echo "### Startup time — ${{ matrix.name }}"
+            echo '```'
+            ./scripts/benchmark-startup 10
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

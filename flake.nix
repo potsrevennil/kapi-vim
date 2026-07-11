@@ -180,11 +180,11 @@
               packages = [ config.packages.default ];
 
               shellHook = ''
-                export PATH=$PWD/bin:$PATH
+                export PATH=$PWD/scripts:$PATH
               '';
             };
 
-          # Lean shell for CI: the same tools bin/style and .pre-commit-config.yaml
+          # Lean shell for CI: the same tools scripts/format and .pre-commit-config.yaml
           # already use, without pulling in the full LSP/language toolchain from
           # ./lsp, so `nix develop .#ci` stays small.
           devShells.ci = pkgs.mkShellNoCC
