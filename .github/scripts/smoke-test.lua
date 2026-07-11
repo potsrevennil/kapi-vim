@@ -63,24 +63,15 @@ if #spec_errors > 0 then
   vim.cmd("cquit 1")
 end
 
--- LazyVim ships its own import-order check (fired on the VeryLazy autocmd,
--- via vim.g.lazyvim_check_order), but it only recognizes a spec module
--- literally named "lazyvim.plugins" as import #1 -- this repo replaces that
--- blanket import with per-category ones (lua/config/lazy.lua), so that
--- check always false-positives here and is disabled. It's also a plain
--- vim.notify call gated behind VeryLazy, which never fires in --headless
--- (no UI ever attaches to trigger it), so CI could never have seen it fire
--- either way. Verify the actual invariant it exists to enforce -- core
--- lazyvim.plugins.* imports before lazyvim.plugins.extras.* before our own
--- `plugins` -- directly against the resolved import list instead.
+-- LazyVim's own import-order check is disabled (lua/config/lazy.lua) and,
+-- being a plain vim.notify on VeryLazy, could never fire under --headless
+-- anyway. Check the same invariant directly instead: core lazyvim.plugins.*
+-- imports before lazyvim.plugins.extras.* before our own `plugins`.
 local order_errors = {}
 do
-  -- min/max per category, not first/last-seen -- a single misplaced import
-  -- (e.g. landing in the middle of the extras list instead of before or
-  -- after all of them) has to move a min or a max to be visible; tracking
-  -- only "first extra" / "last core" missed exactly that case, confirmed
-  -- empirically by moving `plugins` between two extras imports and seeing
-  -- the then-current version of this check pass anyway.
+  -- Track min/max per category rather than first/last-seen, so a single
+  -- import landing mid-list (not just at the very front/back) still trips
+  -- this check.
   local core, extra, own = {}, {}, {}
   for i, m in ipairs(require("lazy.core.config").spec.modules) do
     if m:match("^lazyvim%.plugins%.extras%.") then
