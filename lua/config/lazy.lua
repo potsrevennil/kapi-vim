@@ -40,6 +40,12 @@ if vim.fn.filewritable(config_root) ~= 2 then
     end
 end
 
+-- LazyVim's import-order check only recognizes a spec module literally
+-- named "lazyvim.plugins" as import #1. We never import that (see the
+-- per-category imports below), so it always false-positives regardless of
+-- actual order. Disabled via LazyVim's own documented escape hatch.
+vim.g.lazyvim_check_order = false
+
 lazy.setup({
     lockfile = lockfile,
     spec = {

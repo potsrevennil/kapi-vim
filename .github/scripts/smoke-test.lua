@@ -63,5 +63,46 @@ if #spec_errors > 0 then
   vim.cmd("cquit 1")
 end
 
+-- LazyVim's own import-order check is disabled (lua/config/lazy.lua) and,
+-- being a plain vim.notify on VeryLazy, could never fire under --headless
+-- anyway. Check the same invariant directly instead: core lazyvim.plugins.*
+-- imports before lazyvim.plugins.extras.* before our own `plugins`.
+local order_errors = {}
+do
+  -- Track min/max per category rather than first/last-seen, so a single
+  -- import landing mid-list (not just at the very front/back) still trips
+  -- this check.
+  local core, extra, own = {}, {}, {}
+  for i, m in ipairs(require("lazy.core.config").spec.modules) do
+    if m:match("^lazyvim%.plugins%.extras%.") then
+      extra.min, extra.max = math.min(extra.min or i, i), math.max(extra.max or i, i)
+    elseif m == "plugins" then
+      own.min, own.max = math.min(own.min or i, i), math.max(own.max or i, i)
+    elseif m:match("^lazyvim%.plugins") then
+      core.min, core.max = math.min(core.min or i, i), math.max(core.max or i, i)
+    end
+  end
+  -- {should-come-first, should-come-after, names} -- if `first`'s last
+  -- import lands past `after`'s first, something from `after` snuck in
+  -- too early.
+  local core_name, extra_name, own_name = "a core lazyvim.plugins.* import", "a lazyvim.plugins.extras.* import", "the `plugins` import"
+  local expected_order = {
+    { core, extra, core_name, extra_name },
+    { core, own, core_name, own_name },
+    { extra, own, extra_name, own_name },
+  }
+  for _, check in ipairs(expected_order) do
+    local first, after, first_name, after_name = check[1], check[2], check[3], check[4]
+    if first.max and after.min and first.max > after.min then
+      table.insert(order_errors, after_name .. " appears before " .. first_name)
+    end
+  end
+end
+
+if #order_errors > 0 then
+  io.stderr:write("kapi-vim smoke test FAILED -- lazy.nvim import order is wrong:\n" .. table.concat(order_errors, "\n") .. "\n")
+  vim.cmd("cquit 1")
+end
+
 print("kapi-vim smoke test passed: startup clean, expected LSP binaries present (" .. table.concat(required_binaries, ", ") .. ")")
 vim.cmd("qa!")
