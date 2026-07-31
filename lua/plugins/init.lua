@@ -33,6 +33,12 @@ return {
             "nvim-treesitter/nvim-treesitter",
         },
     },
+    -- neo-tree require()s `nui.line`, but its extra never declares the dep --
+    -- stock LazyVim pulls nui in via lazyvim.plugins.ui, which we dropped.
+    {
+        "nvim-neo-tree/neo-tree.nvim",
+        dependencies = { "MunifTanjim/nui.nvim" },
+    },
     -- catppuccin's spec has an `optional = true` nested spec augmenting
     -- bufferline.nvim, which errors (and collaterally drops unrelated
     -- plugins from the lockfile write, e.g. codecompanion.nvim -- confirmed
