@@ -116,11 +116,21 @@ jobs:
       # only ~2-3 minutes wall clock with plenty of concurrency headroom
       # (public repo, at most 3 test-matrix jobs running at once), so there's
       # no runtime pressure pushing this out into its own workflow.
+      # nvim's own --startuptime only instruments Lua/vimscript execution --
+      # it can't see anything before that (process spawn, dynamic linker
+      # resolving nvim's own .dylib/.so deps, macOS Gatekeeper/AMFI
+      # verification of freshly-downloaded nix-built binaries on a runner
+      # that's never seen them before). Wrapping the whole run with the
+      # shell's `time` builtin gives an outside-in wall-clock figure to
+      # compare against: if `wall clock` here is far above 10x nvim's own
+      # reported mean, the gap is process-launch overhead outside our
+      # config's control, not something the Lua-level breakdown can show.
       - name: Benchmark startup time
         run: |
           {
             echo "### Startup time — ${{ matrix.name }}"
             echo '```'
-            ./scripts/benchmark-startup 10
+            TIMEFORMAT='wall clock for all 10 runs: %R s (user %U s, sys %S s)'
+            { time ./scripts/benchmark-startup 10; } 2>&1
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
