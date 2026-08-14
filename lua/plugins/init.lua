@@ -49,4 +49,11 @@ return {
     { "nvim-mini/mini.icons", enabled = false },
     { "nvim-mini/mini.pairs", enabled = false },
     { "nvim-lualine/lualine.nvim", enabled = false },
+    -- editor/util plugins LazyVim bundles that we don't use; telescope,
+    -- treesitter and the LSP diagnostics cover what these offered.
+    { "MagicDuck/grug-far.nvim", enabled = false },
+    { "folke/todo-comments.nvim", enabled = false },
+    { "folke/trouble.nvim", enabled = false },
+    { "folke/persistence.nvim", enabled = false },
+    { "lewis6991/gitsigns.nvim", enabled = false },
 }
