@@ -59,7 +59,6 @@ lazy.setup({
         { "LazyVim/LazyVim", version = "v15.14.0" },
         { import = "lazyvim.plugins.init" },
         { import = "lazyvim.plugins.coding" },
-        { import = "lazyvim.plugins.colorscheme" },
         { import = "lazyvim.plugins.editor" },
         { import = "lazyvim.plugins.formatting" },
         { import = "lazyvim.plugins.linting" },
