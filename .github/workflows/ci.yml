@@ -105,6 +105,16 @@ jobs:
         run: echo "out=$(nix build --impure .#${{ matrix.target }} --print-build-logs --no-link --print-out-paths)" >> "$GITHUB_OUTPUT"
       - name: Put bin on PATH
         run: echo "${{ steps.build.outputs.out }}/bin" >> "$GITHUB_PATH"
+      # Plugin files land fresh from a network git clone every run below
+      # (no cache = no OS page-cache warmth, and telescope-fzf-native's
+      # native build output is arch-specific, hence keying on runs-on),
+      # which was feeding straight into cold require()/sourcing timings
+      # in the benchmark step further down.
+      - name: Cache lazy.nvim plugins
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/nvim/lazy
+          key: lazy-${{ matrix.runs-on }}-${{ hashFiles('lazy-lock.json') }}
       - name: Restore plugins
         run: nvim --headless "+Lazy! restore" +qa
       - name: Run smoke test
@@ -116,15 +126,20 @@ jobs:
       # only ~2-3 minutes wall clock with plenty of concurrency headroom
       # (public repo, at most 3 test-matrix jobs running at once), so there's
       # no runtime pressure pushing this out into its own workflow.
+      #
       # nvim's own --startuptime only instruments Lua/vimscript execution --
-      # it can't see anything before that (process spawn, dynamic linker
-      # resolving nvim's own .dylib/.so deps, macOS Gatekeeper/AMFI
-      # verification of freshly-downloaded nix-built binaries on a runner
-      # that's never seen them before). Wrapping the whole run with the
-      # shell's `time` builtin gives an outside-in wall-clock figure to
-      # compare against: if `wall clock` here is far above 10x nvim's own
-      # reported mean, the gap is process-launch overhead outside our
-      # config's control, not something the Lua-level breakdown can show.
+      # it can't see process spawn or dynamic-linker/codesign overhead before
+      # that. Measured (see PR #44): that pre-Lua gap is small in practice
+      # (wall clock vs. nvim's own reported mean differs by only ~5-40ms/run,
+      # largest on macOS as expected from Gatekeeper/AMFI, but nowhere near
+      # what explains CI's 100-600ms readings vs. ~25ms locally for the same
+      # build). The real driver is CI hardware itself: per-run numbers are
+      # erratic and non-monotonic (not a clean cold-cache warm-up curve),
+      # consistent with lazy.nvim's CPU-bound spec-resolution work (~40
+      # plugins) getting hit by contention on weak/shared/virtualized
+      # runners -- worst on macos-14. The `time` wrapping stays so future
+      # runs keep confirming that split; it's not solely diagnosing a
+      # one-off.
       - name: Benchmark startup time
         run: |
           {
