@@ -39,13 +39,9 @@ return {
         "nvim-neo-tree/neo-tree.nvim",
         dependencies = { "MunifTanjim/nui.nvim" },
     },
-    -- catppuccin's spec has an `optional = true` nested spec augmenting
-    -- bufferline.nvim, which errors (and collaterally drops unrelated
-    -- plugins from the lockfile write, e.g. codecompanion.nvim -- confirmed
-    -- empirically) if bufferline.nvim has no spec entry anywhere at all.
-    -- Registering it disabled, like the others below, keeps that hook happy
-    -- without actually loading bufferline.
-    { "akinsho/bufferline.nvim", enabled = false },
+    -- LazyVim defaults we don't use, disabled rather than loaded: mason (nix
+    -- provides the LSP servers), mini.pairs (nvim-autopairs instead), and the
+    -- noice/mini.icons/lualine UI layer.
     { "folke/noice.nvim", enabled = false },
     { "mason-org/mason-lspconfig.nvim", enabled = false },
     { "mason-org/mason.nvim", enabled = false },
