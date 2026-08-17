@@ -67,7 +67,6 @@ lazy.setup({
         { import = "lazyvim.plugins.treesitter" },
         { import = "lazyvim.plugins.util" },
         { import = "lazyvim.plugins.xtras" },
-        { import = "lazyvim.plugins.extras.editor.telescope" },
         { import = "lazyvim.plugins.extras.coding.nvim-cmp" },
         { import = "lazyvim.plugins.extras.coding.luasnip" },
         { import = "lazyvim.plugins.extras.lsp.none-ls" },

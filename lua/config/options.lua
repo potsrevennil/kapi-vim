@@ -22,7 +22,6 @@ local gopts = {
     snacks_animate = false,
     lazyvim_cmp = "nvim-cmp",
     trouble_lualine = false,
-    lazyvim_picker = "telescope",
 }
 
 for k, v in pairs(gopts) do
