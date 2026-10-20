@@ -20,6 +20,10 @@ return {
             lsp_format = "fallback",
         },
         log_level = vim.log.levels.DEBUG,
+        -- Per-language formatters (black, goimports, clang-format, ...) come
+        -- from each project's devShell, so outside one they are expected to
+        -- be missing; don't warn about it, same as Neovim does for servers.
+        notify_no_formatters = false,
         formatters = {
             shfmt = {
                 args = { "-s", "-i", "2", "-ci", "-fn", "-filename", "$FILENAME" },

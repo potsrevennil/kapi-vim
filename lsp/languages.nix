@@ -14,19 +14,21 @@
   config = true; # generic formatter (prettierd) + TOML/YAML LSPs -- not markdown-specific
   shell = true;
   typst = true;
+  js = true; # just nodejs; commitlint pulls it into the closure regardless
 
-  # Project toolchains: the server has to match the project's own
-  # compiler/runtime (HLS <-> GHC, gopls <-> go, pylsp <-> the project's
-  # Python packages, clangd <-> its compile_commands.json, ...), so each
+  # Project toolchains: the server, formatter and linter have to match the
+  # project's own compiler/runtime and its CI (HLS <-> GHC, gopls <-> go,
+  # black/clang-format <-> the versions CI checks with, ...), so each
   # project provides them from its flake devShell and direnv puts them
-  # first on PATH. lua/plugins/lsp.lua only names the servers, so it picks
-  # up whichever binary that is. Off by default; turn one on for a machine
-  # without project flakes, e.g. `KAPI_VIM_LANGS=go nix run --impure .#bundle`.
+  # first on PATH. The Lua config only names the tools and stays quiet when
+  # one is missing (Neovim skips non-executable servers; conform.lua and
+  # none-ls.lua are set up to match). Off by default; turn one on for a
+  # machine without project flakes with `kapi-vim.override { enable_go =
+  # true; }`, or `KAPI_VIM_LANGS=go nix run --impure .#bundle`.
   python = false;
   c = false;
   rust = false;
   go = false;
-  js = false;
   haskell = false;
   lean = false;
 }

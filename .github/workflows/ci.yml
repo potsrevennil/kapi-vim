@@ -53,9 +53,9 @@ jobs:
   # bundle to read $KAPI_VIM_LANGS) is applied uniformly -- it's a no-op for
   # the lite entries, which never call builtins.getEnv.
   #
-  # packages.default (the full, every-language experience) is intentionally
-  # not built here -- that's slow (10+ minutes cold, no caching) and belongs
-  # in a separate, less-frequent workflow, not this one.
+  # packages.default (editor-wide tooling, per-language toolchains off) is
+  # intentionally not built here -- it belongs in a separate, less-frequent
+  # workflow, not this one.
   #
   # Restores every lazy.nvim plugin over the network to the exact commit
   # recorded in lazy-lock.json (mason is disabled for LSP servers, but
