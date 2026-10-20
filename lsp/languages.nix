@@ -9,14 +9,27 @@
 # for `? default` values in its own signature -- the actual package attrs
 # (prettierd, gopls, etc.) stay declared where they always were.
 {
+  # Editor-wide: useful on any file, independent of a project's toolchain,
+  # and small. On by default.
   config = true; # generic formatter (prettierd) + TOML/YAML LSPs -- not markdown-specific
-  python = true;
   shell = true;
   typst = true;
-  c = true;
-  rust = true;
-  go = true;
-  js = true;
+  js = true; # just nodejs; commitlint pulls it into the closure regardless
+
+  # Project toolchains: the server, formatter and linter have to match the
+  # project's own compiler/runtime and its CI (HLS <-> GHC, gopls <-> go,
+  # black/clang-format <-> the versions CI checks with, ...), so each
+  # project provides them from its flake devShell and direnv puts them
+  # first on PATH. The Lua config only names the tools and stays quiet when
+  # one is missing (Neovim skips non-executable servers, conform skips
+  # unavailable formatters while codespell still runs, and none-ls.lua gates
+  # golangci-lint on PATH). Off by default; turn one on for a
+  # machine without project flakes with `kapi-vim.override { enable_go =
+  # true; }`, or `KAPI_VIM_LANGS=go nix run --impure .#bundle`.
+  python = false;
+  c = false;
+  rust = false;
+  go = false;
   haskell = false;
   lean = false;
 }

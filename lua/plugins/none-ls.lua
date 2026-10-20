@@ -7,8 +7,13 @@ return {
         local opts = {
             debug = false,
             sources = {
-                -- go
-                diagnostics.golangci_lint,
+                -- go: golangci-lint comes from the project's devShell; skip
+                -- it (rather than erroring on spawn) where it isn't on PATH.
+                diagnostics.golangci_lint.with({
+                    runtime_condition = function()
+                        return vim.fn.executable("golangci-lint") == 1
+                    end,
+                }),
                 -- nix
                 diagnostics.deadnix,
                 code_actions.statix,

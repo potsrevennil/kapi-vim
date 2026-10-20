@@ -49,19 +49,24 @@ vim.g.lazyvim_check_order = false
 lazy.setup({
     lockfile = lockfile,
     spec = {
-        -- LazyVim itself, pinned. `import = "lazyvim.plugins"` used to pull in
-        -- every lazyvim/plugins/*.lua module implicitly in one line; listed
+        -- LazyVim itself. `import = "lazyvim.plugins"` used to pull in every
+        -- lazyvim/plugins/*.lua module implicitly in one line; listed
         -- explicitly below instead so each future removal is a one-line diff,
         -- not an opaque blanket import. No functional change: this is the
         -- exact same set of modules `lazyvim.plugins` would have imported
         -- (verified by diffing the synced lazy-lock.json plugin list before
         -- and after this change).
-        { "LazyVim/LazyVim", version = "v15.14.0" },
+        { "LazyVim/LazyVim" },
         { import = "lazyvim.plugins.init" },
+        -- Held to one major. The pin can't sit on the declaration above:
+        -- lazyvim.plugins.init redeclares LazyVim with version = "*", and
+        -- the later spec wins, so `:Lazy sync` would jump to the newest
+        -- release. The declaration itself has to come first, though, or the
+        -- lazyvim.plugins.* imports can't be resolved.
+        { "LazyVim/LazyVim", version = "^16.0.0" },
         { import = "lazyvim.plugins.coding" },
         { import = "lazyvim.plugins.editor" },
         { import = "lazyvim.plugins.formatting" },
-        { import = "lazyvim.plugins.linting" },
         -- ".init", not "lazyvim.plugins.lsp" -- that directory also has keymaps.lua, a non-spec helper module lazy.nvim would otherwise choke on.
         { import = "lazyvim.plugins.lsp.init" },
         { import = "lazyvim.plugins.treesitter" },
@@ -86,6 +91,11 @@ lazy.setup({
         -- import/override with your plugins
         { import = "plugins" },
     },
+    -- Plugins with semver tags follow releases, not their branch head, so
+    -- the lockfile only moves when upstream cuts a release. Specs that set
+    -- `branch` or `version = false`, and plugins with no tags, still track
+    -- commits; .github/scripts/lazy-update.lua leaves those alone.
+    defaults = { version = "*" },
     checker = {
         enabled = true, -- check for plugin updates periodically
         notify = false, -- notify on update

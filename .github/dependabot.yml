@@ -1,0 +1,25 @@
+# Weekly flake.lock bumps, same setup as kapi-sysconf's. One PR per input,
+# so a bad transitive bump lands alone instead of riding in with the batch.
+# Each input gets its own single-member group because ungrouped PRs are
+# closed and reopened ("Superseded by #N") on every new commit, while a
+# group PR whose members are unchanged is refreshed in place.
+#
+# nixpkgs tracks the nixos-26.05 release branch, so these are backported
+# fixes, not feature updates; moving to the next release is a manual
+# url change in flake.nix.
+version: 2
+updates:
+  - package-ecosystem: "nix"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Etc/UTC"
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      flake-parts:
+        patterns: ["flake-parts"]
+      nixpkgs:
+        patterns: ["nixpkgs"]
