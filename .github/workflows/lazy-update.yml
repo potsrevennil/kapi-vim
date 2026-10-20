@@ -1,0 +1,73 @@
+name: lazy.nvim updates
+on:
+  schedule:
+    # Mondays, an hour after Dependabot's flake.lock run.
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  # Moves lazy-lock.json to new plugin *releases* only and opens (or
+  # refreshes) one PR with the result -- see .github/scripts/lazy-update.lua
+  # for which plugins move and which are held. Dependabot has no lazy.nvim
+  # ecosystem, hence a workflow.
+  update:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+      # gh workflow run below. Pushes and PRs made with GITHUB_TOKEN don't
+      # trigger other workflows; workflow_dispatch is the exception, so CI
+      # is started explicitly on the PR branch.
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+      # Reads CI's plugin cache for the same lockfile, but never writes it:
+      # the plugins on disk are about to move past that lockfile.
+      - uses: ./.github/actions/setup-kapi-vim
+        with:
+          target: lite
+          save-cache: 'false'
+      - name: Update to new releases
+        env:
+          LAZY_UPDATE_REPORT: ${{ runner.temp }}/report.md
+        run: |
+          nvim --headless -c "luafile .github/scripts/lazy-update.lua"
+          # Bring lazy.nvim's stdpath("state") lockfile back into the
+          # checkout (see .github/actions/setup-kapi-vim).
+          cp ~/.local/state/nvim/lazy-lock.json lazy-lock.json
+          cat "$LAZY_UPDATE_REPORT" >> "$GITHUB_STEP_SUMMARY"
+      - id: diff
+        run: |
+          if git diff --quiet lazy-lock.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      # Same check CI runs, against the updated plugins already on disk, so
+      # a release that breaks startup never gets as far as a PR.
+      - name: Run smoke test
+        if: steps.diff.outputs.changed == 'true'
+        run: nvim --headless -S .github/scripts/smoke-test.lua
+      - id: pr
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/lazy-update
+          delete-branch: true
+          add-paths: lazy-lock.json
+          commit-message: "chore(deps): bump lazy.nvim plugin releases"
+          title: "chore(deps): bump lazy.nvim plugin releases"
+          body-path: ${{ runner.temp }}/report.md
+      - name: Run CI on the PR branch
+        if: steps.pr.outputs.pull-request-operation == 'created' || steps.pr.outputs.pull-request-operation == 'updated'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run ci.yml --ref chore/lazy-update

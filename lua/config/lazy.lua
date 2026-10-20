@@ -79,6 +79,11 @@ lazy.setup({
         -- import/override with your plugins
         { import = "plugins" },
     },
+    -- Plugins with semver tags follow releases, not their branch head, so
+    -- the lockfile only moves when upstream cuts a release. Specs that set
+    -- `branch` or `version = false`, and plugins with no tags, still track
+    -- commits; .github/scripts/lazy-update.lua leaves those alone.
+    defaults = { version = "*" },
     checker = {
         enabled = true, -- check for plugin updates periodically
         notify = false, -- notify on update
