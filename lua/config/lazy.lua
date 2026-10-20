@@ -71,19 +71,12 @@ lazy.setup({
         { import = "lazyvim.plugins.lsp.init" },
         { import = "lazyvim.plugins.treesitter" },
         { import = "lazyvim.plugins.util" },
-        -- LazyVim always auto-enables one picker extra (fzf, snacks or
-        -- telescope, depending on lazyvim.json; vim.g.lazyvim_picker has no
-        -- "none"), which would bind <leader><space>, <leader>/, gd, ... over
-        -- mini.pick. Has to run here, after lazyvim.plugins.init has loaded
-        -- LazyVim's config and before xtras picks its default extras. Not
-        -- named lazyvim.plugins.*, so the CI import-order check ignores it.
-        {
-            name = "mini.pick picker",
-            import = function()
-                require("config.picker").setup()
-                return {}
-            end,
-        },
+        -- The snacks picker extra (vim.g.lazyvim_picker = "snacks") adds a
+        -- "Projects" entry to opts.dashboard, which only lazyvim.plugins.ui
+        -- defines -- not imported here, so it would index nil. Give it an
+        -- empty, disabled dashboard to append to; has to come before xtras
+        -- so it is merged in before that extra's opts function runs.
+        { "folke/snacks.nvim", opts = { dashboard = { enabled = false, preset = { keys = {} } } } },
         { import = "lazyvim.plugins.xtras" },
         { import = "lazyvim.plugins.extras.coding.nvim-cmp" },
         { import = "lazyvim.plugins.extras.coding.luasnip" },
