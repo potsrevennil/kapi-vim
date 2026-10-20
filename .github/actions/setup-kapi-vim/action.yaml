@@ -1,0 +1,61 @@
+name: 'Set up kapi-vim'
+description: 'Build a kapi-vim package, put its nvim on PATH, and restore every lazy.nvim plugin to the committed lazy-lock.json'
+inputs:
+  target:
+    description: 'Package to build: lite or bundle (bundle reads $KAPI_VIM_LANGS)'
+    required: true
+  save-cache:
+    description: "Save the plugin cache on a miss. Off for callers that change plugins afterwards, so they can't store them under this lockfile's key."
+    default: 'true'
+runs:
+  using: 'composite'
+  steps:
+    - uses: ./.github/actions/install-nix
+    # --impure so bundle can read $KAPI_VIM_LANGS; a no-op for lite, which
+    # never calls builtins.getEnv.
+    - name: Build and put nvim on PATH
+      shell: bash
+      run: |
+        out=$(nix build --impure ".#${{ inputs.target }}" --print-build-logs --no-link --print-out-paths)
+        echo "$out/bin" >> "$GITHUB_PATH"
+    # Confirmed root cause of CI's inflated startup numbers (see PR #44):
+    # without this cache, plugin files land fresh from a network git clone
+    # on every run, and each cold file read shows up inside nvim's own
+    # require()/sourcing timings (--startuptime measures the whole call
+    # including the read, not just execution). That's what was producing
+    # 100-600ms readings vs. ~25ms locally for the identical build -- not a
+    # slow plugin, not CPU contention, not codesign/Gatekeeper overhead (all
+    # measured and ruled out, see ci.yml's benchmark step). Adding this cache
+    # alone took every matrix entry down to ~20-27ms, matching local numbers
+    # almost exactly. Keyed on OS and arch because telescope-fzf-native's
+    # native build output is platform-specific.
+    - id: cache
+      uses: actions/cache/restore@v4
+      with:
+        path: ~/.local/share/nvim/lazy
+        key: lazy-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lazy-lock.json') }}
+    # The wrapped nvim loads its config from the read-only store, so
+    # lazy.nvim reads and writes the lockfile through a stdpath("state")
+    # copy (see lua/config/lazy.lua), hence the copy in below.
+    #
+    # A bare `Lazy! restore` on a fresh runner (cache miss above) doesn't
+    # reproduce the lock: the first-run install handles LazyVim before the
+    # plugins its specs import are known, rewrites the lockfile without
+    # their entries, and then installs them at their upstream target. So
+    # install first, put the committed lock back, restore, and check it
+    # took. On a cache hit every plugin is already on disk, so the first
+    # `+qa` installs nothing.
+    - name: Restore plugins
+      shell: bash
+      run: |
+        nvim --headless +qa
+        cp lazy-lock.json ~/.local/state/nvim/lazy-lock.json
+        nvim --headless "+Lazy! restore" +qa
+        cmp lazy-lock.json ~/.local/state/nvim/lazy-lock.json
+    # Saved here, straight after the checked restore, rather than at job end:
+    # the cache then always holds exactly the locked plugins.
+    - if: inputs.save-cache == 'true' && steps.cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: ~/.local/share/nvim/lazy
+        key: ${{ steps.cache.outputs.cache-primary-key }}
