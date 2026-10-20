@@ -25,6 +25,16 @@ return {
         dependencies = { "nvim-mini/mini.extra" },
         cmd = "Pick",
         opts = {},
+        init = function()
+            -- vim.ui.select (code actions, LazyVim prompts, ...) through mini.pick
+            -- too, so every list looks the same. setup() installs
+            -- MiniPick.ui_select itself, but mini.pick is lazy-loaded; this
+            -- covers calls made before then and loads it on first use.
+            ---@diagnostic disable-next-line: duplicate-set-field
+            vim.ui.select = function(...)
+                return require("mini.pick").ui_select(...)
+            end
+        end,
         config = function(_, opts)
             require("mini.pick").setup(opts)
             require("mini.extra").setup() -- registers MiniExtra.pickers.*
