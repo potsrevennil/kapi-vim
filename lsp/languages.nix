@@ -21,8 +21,9 @@
   # black/clang-format <-> the versions CI checks with, ...), so each
   # project provides them from its flake devShell and direnv puts them
   # first on PATH. The Lua config only names the tools and stays quiet when
-  # one is missing (Neovim skips non-executable servers; conform.lua and
-  # none-ls.lua are set up to match). Off by default; turn one on for a
+  # one is missing (Neovim skips non-executable servers, conform skips
+  # unavailable formatters while codespell still runs, and none-ls.lua gates
+  # golangci-lint on PATH). Off by default; turn one on for a
   # machine without project flakes with `kapi-vim.override { enable_go =
   # true; }`, or `KAPI_VIM_LANGS=go nix run --impure .#bundle`.
   python = false;
