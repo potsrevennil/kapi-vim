@@ -66,16 +66,16 @@ lazy.setup({
         { import = "lazyvim.plugins.lsp.init" },
         { import = "lazyvim.plugins.treesitter" },
         { import = "lazyvim.plugins.util" },
-        -- LazyVim always auto-enables one picker extra (editor.fzf for this
-        -- install; vim.g.lazyvim_picker has no "none"), which would install
-        -- fzf-lua and bind <leader><space>, <leader>/, ... over mini.pick's
-        -- keys. Claiming that extra's import name first makes lazy.nvim's
-        -- import dedup skip it, and mini.pick takes over LazyVim.pick() in its
-        -- place.
+        -- LazyVim always auto-enables one picker extra (fzf, snacks or
+        -- telescope, depending on lazyvim.json; vim.g.lazyvim_picker has no
+        -- "none"), which would bind <leader><space>, <leader>/, gd, ... over
+        -- mini.pick. Has to run here, after lazyvim.plugins.init has loaded
+        -- LazyVim's config and before xtras picks its default extras. Not
+        -- named lazyvim.plugins.*, so the CI import-order check ignores it.
         {
-            name = "lazyvim.plugins.extras.editor.fzf",
+            name = "mini.pick picker",
             import = function()
-                require("config.picker")
+                require("config.picker").setup()
                 return {}
             end,
         },
