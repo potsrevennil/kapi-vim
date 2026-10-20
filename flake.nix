@@ -146,7 +146,8 @@
           };
 
           packages = {
-            # nvim with built-in dependencies, but without any configuration
+            # nvim with editor-wide tooling (see lsp/languages.nix; per-language
+            # toolchains are off by default), but without any configuration
             default = pkgs.lib.makeOverridable
               (wrapKapiVim {
                 pname = "kapi-vim";
@@ -167,9 +168,9 @@
             # from lsp/languages.nix, so this list can never drift from what
             # lsp/default.nix actually knows how to gate) -- just the base
             # nixd + lua-language-server + editor tooling, fast enough for
-            # CI to build and smoke-test on every run. default/bundle (the
-            # full, every-language experience) are exercised in a separate,
-            # slower workflow.
+            # CI to build and smoke-test on every run. default (editor-wide
+            # tooling) and bundle (whichever languages are requested) are
+            # exercised in a separate, slower workflow.
             lite = pkgs.lib.makeOverridable
               (wrapKapiVim { pname = "kapi-vim-lite"; conf = bundleConf; })
               allLanguagesOff;
