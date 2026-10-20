@@ -59,7 +59,7 @@ lazy.setup({
         { "LazyVim/LazyVim" },
         { import = "lazyvim.plugins.init" },
         -- Held to one major. The pin can't sit on the declaration above:
-        -- lazyvim.plugins.init re-declares LazyVim with version = "*", and
+        -- lazyvim.plugins.init redeclares LazyVim with version = "*", and
         -- the later spec wins, so `:Lazy sync` would jump to the newest
         -- release. The declaration itself has to come first, though, or the
         -- lazyvim.plugins.* imports can't be resolved.
