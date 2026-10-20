@@ -121,8 +121,23 @@ jobs:
         with:
           path: ~/.local/share/nvim/lazy
           key: lazy-${{ matrix.runs-on }}-${{ hashFiles('lazy-lock.json') }}
+      # The wrapped nvim loads its config from the read-only store, so
+      # lazy.nvim reads and writes the lockfile through a stdpath("state")
+      # copy (see lua/config/lazy.lua), hence the copy in below.
+      #
+      # A bare `Lazy! restore` on a fresh runner (cache miss above) doesn't
+      # reproduce the lock: the first-run install handles LazyVim before the
+      # plugins its specs import are known, rewrites the lockfile without
+      # their entries, and then installs them at their upstream target. So
+      # install first, put the committed lock back, restore, and check it
+      # took. On a cache hit every plugin is already on disk, so the first
+      # `+qa` installs nothing.
       - name: Restore plugins
-        run: nvim --headless "+Lazy! restore" +qa
+        run: |
+          nvim --headless +qa
+          cp lazy-lock.json ~/.local/state/nvim/lazy-lock.json
+          nvim --headless "+Lazy! restore" +qa
+          cmp lazy-lock.json ~/.local/state/nvim/lazy-lock.json
       - name: Run smoke test
         run: nvim --headless -S .github/scripts/smoke-test.lua
       # Appended here rather than a separate workflow: this job already paid
