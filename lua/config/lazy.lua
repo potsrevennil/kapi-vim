@@ -71,8 +71,13 @@ lazy.setup({
         { import = "lazyvim.plugins.lsp.init" },
         { import = "lazyvim.plugins.treesitter" },
         { import = "lazyvim.plugins.util" },
+        -- The snacks picker extra (vim.g.lazyvim_picker = "snacks") adds a
+        -- "Projects" entry to opts.dashboard, which only lazyvim.plugins.ui
+        -- defines -- not imported here, so it would index nil. Give it an
+        -- empty, disabled dashboard to append to; has to come before xtras
+        -- so it is merged in before that extra's opts function runs.
+        { "folke/snacks.nvim", opts = { dashboard = { enabled = false, preset = { keys = {} } } } },
         { import = "lazyvim.plugins.xtras" },
-        { import = "lazyvim.plugins.extras.editor.telescope" },
         { import = "lazyvim.plugins.extras.coding.nvim-cmp" },
         { import = "lazyvim.plugins.extras.coding.luasnip" },
         { import = "lazyvim.plugins.extras.lsp.none-ls" },
